@@ -1,0 +1,1538 @@
+{
+    "trump": {},
+    "frontpage": [
+        {
+            "href": "",
+            "top": 64,
+            "left": 11,
+            "bottom": 108,
+            "right": 121
+        },
+        {
+            "href": "https://support.google.com/websearch/answer/181196?hl=en",
+            "top": 64,
+            "left": 11,
+            "bottom": 108,
+            "right": 121
+        },
+        {
+            "href": "",
+            "top": 86,
+            "left": 11,
+            "bottom": 130,
+            "right": 121
+        },
+        {
+            "href": "https://www.google.com/intl/en/about/products?tab=wh",
+            "top": 28,
+            "left": 955.65625,
+            "bottom": 58,
+            "right": 985.65625
+        },
+        {
+            "href": "https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/search%3Fsource%3Dhp%26ei%3DkyOsXLyCEZH7jwSJ2aSICg%26q%3Dtrump%26btnK%3DGoogle%2BSearch%26oq%3D%26gs_l%3Dpsy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.",
+            "top": 28,
+            "left": 1000.65625,
+            "bottom": 58,
+            "right": 1070
+        },
+        {
+            "href": "https://www.google.com/webhp?hl=en&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QPAgH",
+            "top": 28,
+            "left": 30,
+            "bottom": 61,
+            "right": 122
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=kyOsXLyCEZH7jwSJ2aSICg&q=trump&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&source=lnms&tbm=nws&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q_AUIDigB",
+            "top": 92,
+            "left": 209.640625,
+            "bottom": 107,
+            "right": 258.28125
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&source=lnms&tbm=isch&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q_AUIDygC",
+            "top": 92,
+            "left": 274.28125,
+            "bottom": 107,
+            "right": 333.171875
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&source=lnms&tbm=vid&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q_AUIECgD",
+            "top": 92,
+            "left": 349.171875,
+            "bottom": 107,
+            "right": 404.9375
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&source=lnms&tbm=bks&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q_AUIESgE",
+            "top": 92,
+            "left": 420.9375,
+            "bottom": 107,
+            "right": 473.15625
+        },
+        {
+            "href": "",
+            "top": 84,
+            "left": 489.15625,
+            "bottom": 115,
+            "right": 535.09375
+        },
+        {
+            "href": "https://maps.google.com/maps?q=trump&um=1&ie=UTF-8&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q_AUIEygA",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&source=lnms&tbm=shop&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q_AUIFCgB",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/flights?q=trump&source=lnms&tbm=flm&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q_AUIFSgC",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&source=lnms&tbm=fin&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q_AUIFigD",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/preferences",
+            "top": 84,
+            "left": 639.75,
+            "bottom": 115,
+            "right": 703.171875
+        },
+        {
+            "href": "https://www.google.com/preferences?hl=en&prev=https://www.google.com/search?source%3Dhp%26ei%3DkyOsXLyCEZH7jwSJ2aSICg%26q%3Dtrump%26oq%3D%26gs_l%3Dpsy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/preferences?hl=en&prev=https://www.google.com/search?source%3Dhp%26ei%3DkyOsXLyCEZH7jwSJ2aSICg%26q%3Dtrump%26oq%3D%26gs_l%3Dpsy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.#languages",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/setprefs?safeui=on&sig=0_ru1AoZCeHE_8LTWNDKwRf6n2aro%3D&prev=https://www.google.com/search?source%3Dhp%26ei%3DkyOsXLyCEZH7jwSJ2aSICg%26q%3Dtrump%26oq%3D%26gs_l%3Dpsy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/advanced_search?q=trump&hl=en",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/history/privacyadvisor/search?utm_source=googlemenu",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/history/optout?hl=en",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://support.google.com/websearch/?source=g&hl=en",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "",
+            "top": 85,
+            "left": 710.171875,
+            "bottom": 114,
+            "right": 782
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&source=lnt&tbs=qdr:h&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QpwUIJA",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&source=lnt&tbs=qdr:d&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QpwUIJA",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&source=lnt&tbs=qdr:w&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QpwUIJA",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&source=lnt&tbs=qdr:m&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QpwUIJA",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&source=lnt&tbs=qdr:y&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QpwUIJA",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&source=lnt&tbs=li:1&sa=X&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QpwUIJA",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.politico.com/story/2019/04/08/trump-hill-dhs-1262097",
+            "top": 208,
+            "left": 151,
+            "bottom": 427,
+            "right": 354
+        },
+        {
+            "href": "https://www.foxnews.com/opinion/gutfeld-on-chelsea-handlers-brave-admission-about-trump",
+            "top": 208,
+            "left": 364,
+            "bottom": 427,
+            "right": 567
+        },
+        {
+            "href": "https://www.politico.com/story/2019/04/09/trump-legal-nielsen-succession-mcaleenan-thompson-1262655",
+            "top": 208,
+            "left": 577,
+            "bottom": 427,
+            "right": 780
+        },
+        {
+            "href": "https://www.washingtonexaminer.com/opinion/editorials/speaking-truth-to-evil-trump-hits-iranian-terrorists",
+            "top": 208,
+            "left": 790,
+            "bottom": 427,
+            "right": 993
+        },
+        {
+            "href": "https://www.npr.org/2019/04/08/711265433/federal-judge-blocks-trump-administration-policy-of-sending-asylum-seekers-to-me",
+            "top": 208,
+            "left": 1003,
+            "bottom": 427,
+            "right": 1206
+        },
+        {
+            "href": "https://www.newsweek.com/donald-trump-soured-secret-service-director-removing-him-office-called-him-1389970",
+            "top": 208,
+            "left": 1216,
+            "bottom": 427,
+            "right": 1419
+        },
+        {
+            "href": "https://thehill.com/homenews/senate/437930-gop-fears-trump-return-to-family-separations",
+            "top": 208,
+            "left": 1429,
+            "bottom": 427,
+            "right": 1632
+        },
+        {
+            "href": "https://www.washingtonpost.com/opinions/kirstjen-nielsens-attempt-to-suck-up-to-trump-ended-badly-it-always-does/2019/04/08/7d982baa-5a38-11e9-9625-01d48d50ef75_story.html",
+            "top": 208,
+            "left": 1642,
+            "bottom": 427,
+            "right": 1845
+        },
+        {
+            "href": "https://www.cnn.com/2019/04/08/politics/miller-nielsen-trump-immigration-homeland-security/index.html",
+            "top": 208,
+            "left": 1855,
+            "bottom": 427,
+            "right": 2058
+        },
+        {
+            "href": "https://deadspin.com/trump-administration-overturns-deal-making-it-easier-fo-1833895017",
+            "top": 208,
+            "left": 2068,
+            "bottom": 427,
+            "right": 2271
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&tbm=nws&source=univ&tbo=u&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Qt8YBKAF6BAgAEC4",
+            "top": 503,
+            "left": 170,
+            "bottom": 523,
+            "right": 762
+        },
+        {
+            "href": "https://twitter.com/search?q=trump&ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Esearch",
+            "top": 564,
+            "left": 170,
+            "bottom": 585,
+            "right": 302.390625
+        },
+        {
+            "href": "https://twitter.com/realDonaldTrump?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+            "top": 629,
+            "left": 167,
+            "bottom": 673,
+            "right": 333.46875
+        },
+        {
+            "href": "https://twitter.com/realDonaldTrump/status/1115475412606496768?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Etweet",
+            "top": 682,
+            "left": 167,
+            "bottom": 862,
+            "right": 338
+        },
+        {
+            "href": "https://twitter.com/SecNielsen?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+            "top": 629,
+            "left": 380,
+            "bottom": 673,
+            "right": 543.796875
+        },
+        {
+            "href": "https://twitter.com/SecNielsen/status/1115080823068332032?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Etweet",
+            "top": 682,
+            "left": 380,
+            "bottom": 862,
+            "right": 551
+        },
+        {
+            "href": "https://twitter.com/realDonaldTrump?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+            "top": 629,
+            "left": 593,
+            "bottom": 673,
+            "right": 759.46875
+        },
+        {
+            "href": "https://twitter.com/realDonaldTrump/status/1115011884154064896?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Etweet",
+            "top": 682,
+            "left": 593,
+            "bottom": 862,
+            "right": 764
+        },
+        {
+            "href": "https://twitter.com/realDonaldTrump?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+            "top": 629,
+            "left": 806,
+            "bottom": 673,
+            "right": 972.46875
+        },
+        {
+            "href": "https://twitter.com/realDonaldTrump/status/1115295440558280704?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Etweet",
+            "top": 682,
+            "left": 806,
+            "bottom": 862,
+            "right": 977
+        },
+        {
+            "href": "https://twitter.com/realDonaldTrump?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+            "top": 629,
+            "left": 1019,
+            "bottom": 673,
+            "right": 1185.46875
+        },
+        {
+            "href": "https://twitter.com/realDonaldTrump/status/1115228307426095105?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Etweet",
+            "top": 682,
+            "left": 1019,
+            "bottom": 862,
+            "right": 1190
+        },
+        {
+            "href": "https://twitter.com/realDonaldTrump?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+            "top": 629,
+            "left": 1232,
+            "bottom": 673,
+            "right": 1398.46875
+        },
+        {
+            "href": "https://twitter.com/realDonaldTrump/status/1115218802290122752?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Etweet",
+            "top": 682,
+            "left": 1232,
+            "bottom": 862,
+            "right": 1403
+        },
+        {
+            "href": "https://twitter.com/realDonaldTrump?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+            "top": 629,
+            "left": 1445,
+            "bottom": 673,
+            "right": 1611.46875
+        },
+        {
+            "href": "https://twitter.com/realDonaldTrump/status/1115217618846265344?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Etweet",
+            "top": 682,
+            "left": 1445,
+            "bottom": 862,
+            "right": 1616
+        },
+        {
+            "href": "https://twitter.com/search?q=trump&ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Esearch",
+            "top": 910,
+            "left": 170,
+            "bottom": 930,
+            "right": 762
+        },
+        {
+            "href": "https://www.msnbc.com/deadline-white-house/watch/trump-s-weekend-tweet-storm-suggests-bad-news-ahead-of-mueller-report-release-1481776707664",
+            "top": 1006,
+            "left": 151,
+            "bottom": 1247,
+            "right": 354
+        },
+        {
+            "href": "https://www.msnbc.com/the-beat-with-ari/watch/trump-trying-to-hand-keys-to-u-s-economy-to-herman-cain-1482024003924",
+            "top": 1006,
+            "left": 364,
+            "bottom": 1247,
+            "right": 567
+        },
+        {
+            "href": "https://www.msnbc.com/the-last-word/watch/fmr-treasury-secretary-mnuchin-must-not-stop-irs-from-releasing-trump-s-tax-returns-1482515523944",
+            "top": 1006,
+            "left": 577,
+            "bottom": 1247,
+            "right": 780
+        },
+        {
+            "href": "https://www.msnbc.com/all-in/watch/trump-suggests-u-s-jews-are-loyal-to-israel-1482328643716",
+            "top": 1006,
+            "left": 790,
+            "bottom": 1247,
+            "right": 993
+        },
+        {
+            "href": "https://www.msnbc.com/hardball/watch/white-house-signals-it-will-fight-efforts-to-see-trump-s-tax-returns-1482072643558",
+            "top": 1006,
+            "left": 1003,
+            "bottom": 1247,
+            "right": 1206
+        },
+        {
+            "href": "https://www.msnbc.com/hardball/watch/on-immigration-trump-putting-stephen-miller-in-charge-1482047043720",
+            "top": 1006,
+            "left": 1216,
+            "bottom": 1247,
+            "right": 1419
+        },
+        {
+            "href": "https://www.msnbc.com/the-beat-with-ari/watch/neal-katyal-calls-out-potential-trump-cover-up-of-mueller-report-1482030147600",
+            "top": 1006,
+            "left": 1429,
+            "bottom": 1247,
+            "right": 1632
+        },
+        {
+            "href": "https://www.msnbc.com/the-last-word/watch/they-thought-trump-was-taking-notes-then-they-saw-the-paper-1482577475787",
+            "top": 1006,
+            "left": 1642,
+            "bottom": 1247,
+            "right": 1845
+        },
+        {
+            "href": "https://www.msnbc.com/andrea-mitchell-reports/watch/nielsen-speaks-after-resignation-i-share-trump-s-goal-of-securing-the-border-1481325123855",
+            "top": 1006,
+            "left": 1855,
+            "bottom": 1247,
+            "right": 2058
+        },
+        {
+            "href": "https://www.realclearpolitics.com/video/2019/04/08/whs_gidley_on_nadler_if_dems_admit_trump_did_nothing_wrong_theyre_admitting_they_wasted_two_years.html",
+            "top": 1006,
+            "left": 2068,
+            "bottom": 1247,
+            "right": 2271
+        },
+        {
+            "href": "https://www.donaldjtrump.com/",
+            "top": 1324,
+            "left": 170,
+            "bottom": 1361,
+            "right": 471.0625
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=kyOsXLyCEZH7jwSJ2aSICg&q=trump&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 1344.578125,
+            "left": 372.78125,
+            "bottom": 1356.578125,
+            "right": 385.78125
+        },
+        {
+            "href": "https://webcache.googleusercontent.com/search?q=cache:VroOD-R0kP8J:https://www.donaldjtrump.com/+&cd=35&hl=en&ct=clnk&gl=us",
+            "top": 1359.578125,
+            "left": 373.78125,
+            "bottom": 1394.578125,
+            "right": 456.875
+        },
+        {
+            "href": "https://www.google.com/search?q=related:https://www.donaldjtrump.com/+trump&tbo=1&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QHzAiegQIAhAF",
+            "top": 1394.578125,
+            "left": 373.78125,
+            "bottom": 1429.578125,
+            "right": 456.875
+        },
+        {
+            "href": "https://en.wikipedia.org/wiki/Donald_Trump",
+            "top": 1421,
+            "left": 170,
+            "bottom": 1458,
+            "right": 443.375
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=kyOsXLyCEZH7jwSJ2aSICg&q=trump&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 1441.578125,
+            "left": 446.375,
+            "bottom": 1453.578125,
+            "right": 459.375
+        },
+        {
+            "href": "https://www.google.com/search?q=related:https://en.wikipedia.org/wiki/Donald_Trump+trump&tbo=1&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QHzAjegQIBxAE",
+            "top": 1456.578125,
+            "left": 447.375,
+            "bottom": 1491.578125,
+            "right": 526.5
+        },
+        {
+            "href": "https://en.wikipedia.org/wiki/Mike_Pence",
+            "top": 1489,
+            "left": 261.53125,
+            "bottom": 1504,
+            "right": 328.46875
+        },
+        {
+            "href": "https://en.wikipedia.org/wiki/Republican_Party_(United_States)",
+            "top": 1509,
+            "left": 257.4375,
+            "bottom": 1524,
+            "right": 321.4375
+        },
+        {
+            "href": "https://en.wikipedia.org/wiki/Democratic_Party_(United_States)",
+            "top": 1509,
+            "left": 618.890625,
+            "bottom": 1524,
+            "right": 685.328125
+        },
+        {
+            "href": "https://www.politico.com/story/2019/04/08/trump-hill-dhs-1262097",
+            "top": 1563,
+            "left": 170,
+            "bottom": 1600,
+            "right": 594.28125
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=kyOsXLyCEZH7jwSJ2aSICg&q=trump&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 1583.578125,
+            "left": 597.28125,
+            "bottom": 1595.578125,
+            "right": 610.28125
+        },
+        {
+            "href": "https://webcache.googleusercontent.com/search?q=cache:7gKbO8_dsBkJ:https://www.politico.com/story/2019/04/08/trump-hill-dhs-1262097+&cd=37&hl=en&ct=clnk&gl=us",
+            "top": 1598.578125,
+            "left": 598.28125,
+            "bottom": 1633.578125,
+            "right": 681.375
+        },
+        {
+            "href": "http://nymag.com/intelligencer/2019/03/an-abbreviated-history-of-trumps-feud-with-john-mccain.html",
+            "top": 1900,
+            "left": 167,
+            "bottom": 1940,
+            "right": 340
+        },
+        {
+            "href": "https://www.ctpost.com/news/article/Trump-won-t-get-sustained-boom-without-an-13699778.php",
+            "top": 1900,
+            "left": 380,
+            "bottom": 1940,
+            "right": 553
+        },
+        {
+            "href": "http://www.nbcnews.com/politics/donald-trump/google-denies-working-chinese-military-after-trump-criticism-n984116",
+            "top": 1900,
+            "left": 593,
+            "bottom": 1940,
+            "right": 766
+        },
+        {
+            "href": "https://www.concordmonitor.com/Immigration-misconceptions-24072940",
+            "top": 1900,
+            "left": 806,
+            "bottom": 1940,
+            "right": 979
+        },
+        {
+            "href": "https://www.marketwatch.com/story/trump-today-president-vetoes-border-resolution-says-mueller-should-scrap-report-2019-03-15",
+            "top": 1900,
+            "left": 1019,
+            "bottom": 1940,
+            "right": 1192
+        },
+        {
+            "href": "https://www.nbcnews.com/feature/nbc-out/democrats-reintroduce-equality-act-ban-lgbtq-discrimination-n982771",
+            "top": 1900,
+            "left": 1232,
+            "bottom": 1940,
+            "right": 1405
+        },
+        {
+            "href": "https://www.politico.com/story/2019/03/13/trump-california-newsom-death-penalty-1219572",
+            "top": 1900,
+            "left": 1445,
+            "bottom": 1940,
+            "right": 1618
+        },
+        {
+            "href": "https://www.usatoday.com/story/news/politics/2019/03/13/president-trump-visit-border-again-3-weeks-tout-wall/3158446002/",
+            "top": 1900,
+            "left": 1658,
+            "bottom": 1940,
+            "right": 1831
+        },
+        {
+            "href": "https://www.cnbc.com/2019/03/12/trump-2020-budget-proposes-reduced-medicare-and-medicaid-spending.html",
+            "top": 1900,
+            "left": 1871,
+            "bottom": 1940,
+            "right": 2044
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=kyOsXLyCEZH7jwSJ2aSICg&q=trump&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 2001,
+            "left": 714.375,
+            "bottom": 2016,
+            "right": 766
+        },
+        {
+            "href": "https://www.trump.com/",
+            "top": 2052,
+            "left": 170,
+            "bottom": 2089,
+            "right": 597.03125
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=kyOsXLyCEZH7jwSJ2aSICg&q=trump&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 2072.578125,
+            "left": 326.921875,
+            "bottom": 2084.578125,
+            "right": 339.921875
+        },
+        {
+            "href": "https://webcache.googleusercontent.com/search?q=cache:sJWBOIKhGGYJ:https://www.trump.com/+&cd=39&hl=en&ct=clnk&gl=us",
+            "top": 2087.578125,
+            "left": 327.921875,
+            "bottom": 2122.578125,
+            "right": 411.015625
+        },
+        {
+            "href": "https://www.cnbc.com/donald-trump/",
+            "top": 2169,
+            "left": 170,
+            "bottom": 2206,
+            "right": 445.640625
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=kyOsXLyCEZH7jwSJ2aSICg&q=trump&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 2189.578125,
+            "left": 409.3125,
+            "bottom": 2201.578125,
+            "right": 422.3125
+        },
+        {
+            "href": "https://webcache.googleusercontent.com/search?q=cache:2-T2MfwsiSUJ:https://www.cnbc.com/donald-trump/+&cd=40&hl=en&ct=clnk&gl=us",
+            "top": 2204.578125,
+            "left": 410.3125,
+            "bottom": 2239.578125,
+            "right": 493.40625
+        },
+        {
+            "href": "https://www.cnn.com/specials/politics/president-donald-trump-45",
+            "top": 2286,
+            "left": 170,
+            "bottom": 2323,
+            "right": 685.4375
+        },
+        {
+            "href": "https://www.npr.org/2019/04/08/711265433/federal-judge-blocks-trump-administration-policy-of-sending-asylum-seekers-to-me",
+            "top": 2383,
+            "left": 170,
+            "bottom": 2420,
+            "right": 738.15625
+        },
+        {
+            "href": "https://en.wikipedia.org/wiki/List_of_richest_American_politicians",
+            "top": 2815,
+            "left": 167,
+            "bottom": 2852,
+            "right": 576.5625
+        },
+        {
+            "href": "https://www.google.com/search?q=Who+is+the+richest+president%3F&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Qzmd6BAgREAk",
+            "top": 2877,
+            "left": 248.015625,
+            "bottom": 2896,
+            "right": 453.03125
+        },
+        {
+            "href": "https://en.m.wikipedia.org/wiki/Family_of_Donald_Trump",
+            "top": 2670,
+            "left": 167,
+            "bottom": 2707,
+            "right": 522.609375
+        },
+        {
+            "href": "https://www.google.com/search?q=How+many+grandchildren+does+Donald+Trump+have%3F&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Qzmd6BAgREBE",
+            "top": 2732,
+            "left": 248.015625,
+            "bottom": 2751,
+            "right": 612.84375
+        },
+        {
+            "href": "https://en.wikipedia.org/wiki/Melania_Trump",
+            "top": 2724,
+            "left": 167,
+            "bottom": 2761,
+            "right": 445.96875
+        },
+        {
+            "href": "https://www.google.com/search?q=What+religion+is+Trump%27s+wife%3F&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Qzmd6BAgREBk",
+            "top": 2786,
+            "left": 248.015625,
+            "bottom": 2805,
+            "right": 458.9375
+        },
+        {
+            "href": "https://en.wikipedia.org/wiki/United_States_presidential_approval_rating",
+            "top": 2907,
+            "left": 167,
+            "bottom": 2944,
+            "right": 616.53125
+        },
+        {
+            "href": "https://www.google.com/search?q=What+is+the+lowest+approval+rating+for+any+president%3F&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Qzmd6BAgRECE",
+            "top": 2969,
+            "left": 248.015625,
+            "bottom": 2988,
+            "right": 619.28125
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=kyOsXLyCEZH7jwSJ2aSICg&q=trump&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 2675,
+            "left": 714.375,
+            "bottom": 2690,
+            "right": 766
+        },
+        {
+            "href": "https://www.google.com/search?q=Donald+Trump&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQQjC1pLKTrfQLUvMLclKBVFFxfp5VcWZKanliZfEqRv40q9BghYKiVJBQXknxIlYel_y8xJwUhZCi0twCAKl5MIdVAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QzTooADAyegQIFBAC",
+            "top": 2743,
+            "left": 679.53125,
+            "bottom": 2758,
+            "right": 765.984375
+        },
+        {
+            "href": "https://www.google.com/search?q=Barack+Obama&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjONcrNyi7SkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpG_jSr0GCFgqJUkFBeSfEiVh6nxKLE5GwF_6TE3EQAtUCAKlUAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wMnoECBQQBQ",
+            "top": 2774,
+            "left": 168,
+            "bottom": 2884,
+            "right": 240
+        },
+        {
+            "href": "https://www.google.com/search?q=Bill+Clinton&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQ4gAxDU3Nc7WkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpG_jSr0GCFgqJUkFBeSfEiVh6nzJwcBeeczLyS_DwA4Fr-fVQAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wMnoECBQQBw",
+            "top": 2774,
+            "left": 256,
+            "bottom": 2867,
+            "right": 328
+        },
+        {
+            "href": "https://www.google.com/search?q=George+W.+Bush&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjMtk8yqirSkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpG_jSr0GCFgqJUkFBeSfEiVj731Pyi9FSFcD0Fp9LiDADY7gBfVwAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wMnoECBQQCQ",
+            "top": 2774,
+            "left": 344,
+            "bottom": 2884,
+            "right": 416
+        },
+        {
+            "href": "https://www.google.com/search?q=Ronald+Reagan&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQ4gAxzZINsrSkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpG_jSr0GCFgqJUkFBeSfEiVt6g_LzEnBSFoNTE9MQ8ABe3vNtVAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wMnoECBQQCw",
+            "top": 2774,
+            "left": 432,
+            "bottom": 2884,
+            "right": 504
+        },
+        {
+            "href": "https://www.google.com/search?q=John+F.+Kennedy&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjNTjLMNTbSkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpG_jSr0GCFgqJUkFBeSfEiVn6v_Iw8BTc9Be_UvLzUlEoA7ZBQwFgAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wMnoECBQQDQ",
+            "top": 2774,
+            "left": 520,
+            "bottom": 2884,
+            "right": 592
+        },
+        {
+            "href": "https://www.google.com/search?q=Thomas+Jefferson&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQ4gAxzZOTirWkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpG_jSr0GCFgqJUkFBeSfEiVoGQjPzcxGIFr9S0NLBqACCp5r5YAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wMnoECBQQDw",
+            "top": 2774,
+            "left": 608,
+            "bottom": 2884,
+            "right": 680
+        },
+        {
+            "href": "https://www.google.com/search?q=James+Madison&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQ4gAxTYxMcrWkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpG_jSr0GCFgqJUkFBeSfEiVl6vxNzUYgXfxJRMoFIA60ZHm1UAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wMnoECBQQEQ",
+            "top": 2774,
+            "left": 696,
+            "bottom": 2884,
+            "right": 768
+        },
+        {
+            "href": "https://www.google.com/search?q=Donald+Trump&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQQjC1pLKTrfQLUvMLclKBVFFxfp5VcWZKanliZfEqRok0q6DUgtKknMzkxDyFgvyczJLM5MzEvOJFrDwu-XmJOSkKIUWluQUARqSEQF4AAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QzTooADAzegQIExAC",
+            "top": 2957,
+            "left": 679.53125,
+            "bottom": 2972,
+            "right": 765.984375
+        },
+        {
+            "href": "https://www.google.com/search?q=Robert+Mueller&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjONUrJyM7SkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpGiTSroNSC0qSczOTEPIWC_JzMkszkzMS84kWsfEH5SalFJQq-pak5OalFAMzyD65gAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wM3oECBMQBQ",
+            "top": 2988,
+            "left": 168,
+            "bottom": 3098,
+            "right": 240
+        },
+        {
+            "href": "https://www.google.com/search?q=Melania+Trump&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjNNMtLyyrSkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpGiTSroNSC0qSczOTEPIWC_JzMkszkzMS84kWsvL6pOYl5mYkKIUWluQUAqoEGBF8AAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wM3oECBMQBw",
+            "top": 2988,
+            "left": 256,
+            "bottom": 3098,
+            "right": 328
+        },
+        {
+            "href": "https://www.google.com/search?q=Brett+Kavanaugh&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjMtUlIsk7SkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpGiTSroNSC0qSczOTEPIWC_JzMkszkzMS84kWs_E5FqSUlCt6JZYl5iaXpGQAadqULYQAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wM3oECBMQCQ",
+            "top": 2988,
+            "left": 344,
+            "bottom": 3098,
+            "right": 416
+        },
+        {
+            "href": "https://www.google.com/search?q=Paul+Manafort&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQ4gIxTZLL0gpztKSyk630C1LzC3JSgVRRcX6eVXFmSmp5YmXxKkaJNKug1ILSpJzM5MQ8hYL8nMySzOTMxLziRay8AYmlOQq-iXmJaflFJQDZCbAjYAAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wM3oECBMQCw",
+            "top": 2988,
+            "left": 432,
+            "bottom": 3098,
+            "right": 504
+        },
+        {
+            "href": "https://www.google.com/search?q=Steve+Bannon&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQ4gIxkwqLk4vTtaSyk630C1LzC3JSgVRRcX6eVXFmSmp5YmXxKkaJNKug1ILSpJzM5MQ8hYL8nMySzOTMxLziRaw8wSWpZakKTol5efl5ADDkK3VfAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wM3oECBMQDQ",
+            "top": 2988,
+            "left": 520,
+            "bottom": 3098,
+            "right": 592
+        },
+        {
+            "href": "https://www.google.com/search?q=Rudy+Giuliani&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQ4gAxzdLzzLWkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpGiTSroNSC0qSczOTEPIWC_JzMkszkzMS84kWsvEGlKZUK7pmlOUB-JgAdYA61XgAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wM3oECBMQDw",
+            "top": 2988,
+            "left": 608,
+            "bottom": 3098,
+            "right": 680
+        },
+        {
+            "href": "https://www.google.com/search?q=Paul+Ryan&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjONTMqMsrSkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpGiTSroNSC0qSczOTEPIWC_JzMkszkzMS84kWsnAGJpTkKQZWJeQDOwv9PWwAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wM3oECBMQEQ",
+            "top": 2988,
+            "left": 696,
+            "bottom": 3081,
+            "right": 768
+        },
+        {
+            "href": "https://www.google.com/search?q=Donald+Trump&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQQjC1pLKTrfQLUvMLclKBVFFxfp5VcWZKanliZfEqRrE0q9CC1Lw8hbz8ksSknFSFxJzS3LzMRaw8Lvl5iTkpCiFFpbkFAKmdNjtcAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QzTooADA0egQIDhAC",
+            "top": 3171,
+            "left": 679.53125,
+            "bottom": 3186,
+            "right": 765.984375
+        },
+        {
+            "href": "https://www.google.com/search?q=Ivanka+Trump&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjPNDMvTcrWkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpGsTSr0ILUvDyFvPySxKScVIXEnNLcvMxFrDyeZYl52YkKIUWluQUAugtL_FwAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wNHoECA4QBQ",
+            "top": 3202,
+            "left": 168,
+            "bottom": 3312,
+            "right": 240
+        },
+        {
+            "href": "https://www.google.com/search?q=Elon+Musk&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjON86rSDLWkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpGsTSr0ILUvDyFvPySxKScVIXEnNLcvMxFrJyuOfl5Cr6lxdkA6G66rVkAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wNHoECA4QBw",
+            "top": 3202,
+            "left": 256,
+            "bottom": 3295,
+            "right": 328
+        },
+        {
+            "href": "https://www.google.com/search?q=Tiffany+Trump&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQ4gIxMyzSco1StKSyk630C1LzC3JSgVRRcX6eVXFmSmp5YmXxKkaxNKvQgtS8PIW8_JLEpJxUhcSc0ty8zEWsvCGZaWmJeZUKIUWluQUAgjFoul4AAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wNHoECA4QCQ",
+            "top": 3202,
+            "left": 344,
+            "bottom": 3312,
+            "right": 416
+        },
+        {
+            "href": "https://www.google.com/search?q=Warren+Buffett&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjMNU-Iri7WkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpGsTSr0ILUvDyFvPySxKScVIXEnNLcvMxFrHzhiUVFqXkKTqVpaaklJQCjQEiBXgAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wNHoECA4QCw",
+            "top": 3202,
+            "left": 432,
+            "bottom": 3312,
+            "right": 504
+        },
+        {
+            "href": "https://www.google.com/search?q=Gloria+Allred&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjONc9OycrWkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpGsTSr0ILUvDyFvPySxKScVIXEnNLcvMxFrLzuOflFmYkKjjk5RakpACVuYyRdAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wNHoECA4QDQ",
+            "top": 3202,
+            "left": 520,
+            "bottom": 3295,
+            "right": 592
+        },
+        {
+            "href": "https://www.google.com/search?q=Tory+Burch&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQ4gIxTdKLcyuMtKSyk630C1LzC3JSgVRRcX6eVXFmSmp5YmXxKkaxNKvQgtS8PIW8_JLEpJxUhcSc0ty8zEWsXCH5RZUKTqVFyRkAw6D4h1sAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wNHoECA4QDw",
+            "top": 3202,
+            "left": 608,
+            "bottom": 3295,
+            "right": 680
+        },
+        {
+            "href": "https://www.google.com/search?q=Noam+Chomsky&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjOTzC0yyrWkspOt9AtS8wtyUoFUUXF-nlVxZkpqeWJl8SpGsTSr0ILUvDyFvPySxKScVIXEnNLcvMxFrDx--Ym5Cs4Z-bnF2ZUAcV0oS1wAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wNHoECA4QEQ",
+            "top": 3202,
+            "left": 696,
+            "bottom": 3312,
+            "right": 768
+        },
+        {
+            "href": "https://www.google.com/search?q=trump+twitter&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q1QIoAHoECBUQAQ",
+            "top": 3414,
+            "left": 170,
+            "bottom": 3440,
+            "right": 291.5
+        },
+        {
+            "href": "https://www.google.com/search?q=melania+trump&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q1QIoAXoECBUQAg",
+            "top": 3440,
+            "left": 170,
+            "bottom": 3466,
+            "right": 300.59375
+        },
+        {
+            "href": "https://www.google.com/search?q=fred+trump&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q1QIoAnoECBUQAw",
+            "top": 3466,
+            "left": 170,
+            "bottom": 3492,
+            "right": 276.078125
+        },
+        {
+            "href": "https://www.google.com/search?q=donald+trump+education&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q1QIoA3oECBUQBA",
+            "top": 3492,
+            "left": 170,
+            "bottom": 3518,
+            "right": 359.15625
+        },
+        {
+            "href": "https://www.google.com/search?q=donald+trump+spouse&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q1QIoBHoECBUQBQ",
+            "top": 3414,
+            "left": 359.15625,
+            "bottom": 3440,
+            "right": 531.625
+        },
+        {
+            "href": "https://www.google.com/search?q=ivana+trump&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q1QIoBXoECBUQBg",
+            "top": 3440,
+            "left": 359.15625,
+            "bottom": 3466,
+            "right": 473.328125
+        },
+        {
+            "href": "https://www.google.com/search?q=donald+trump+age&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q1QIoBnoECBUQBw",
+            "top": 3466,
+            "left": 359.15625,
+            "bottom": 3492,
+            "right": 509.09375
+        },
+        {
+            "href": "https://www.google.com/search?q=trump+news&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q1QIoB3oECBUQCA",
+            "top": 3492,
+            "left": 359.15625,
+            "bottom": 3518,
+            "right": 472.6875
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&ei=kyOsXLXaNMvbjwTOrq3oCg&start=10&sa=N&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q8tMDCNQC",
+            "top": 3549,
+            "left": 360,
+            "bottom": 3604,
+            "right": 380
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&ei=kyOsXLXaNMvbjwTOrq3oCg&start=20&sa=N&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q8tMDCNYC",
+            "top": 3549,
+            "left": 380,
+            "bottom": 3604,
+            "right": 400
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&ei=kyOsXLXaNMvbjwTOrq3oCg&start=30&sa=N&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q8tMDCNgC",
+            "top": 3549,
+            "left": 400,
+            "bottom": 3604,
+            "right": 420
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&ei=kyOsXLXaNMvbjwTOrq3oCg&start=40&sa=N&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q8tMDCNoC",
+            "top": 3549,
+            "left": 420,
+            "bottom": 3604,
+            "right": 440
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&ei=kyOsXLXaNMvbjwTOrq3oCg&start=50&sa=N&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q8tMDCNwC",
+            "top": 3549,
+            "left": 440,
+            "bottom": 3604,
+            "right": 460
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&ei=kyOsXLXaNMvbjwTOrq3oCg&start=60&sa=N&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q8tMDCN4C",
+            "top": 3549,
+            "left": 460,
+            "bottom": 3604,
+            "right": 480
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&ei=kyOsXLXaNMvbjwTOrq3oCg&start=70&sa=N&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q8tMDCOAC",
+            "top": 3549,
+            "left": 480,
+            "bottom": 3604,
+            "right": 500
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&ei=kyOsXLXaNMvbjwTOrq3oCg&start=80&sa=N&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q8tMDCOIC",
+            "top": 3549,
+            "left": 500,
+            "bottom": 3604,
+            "right": 520
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&ei=kyOsXLXaNMvbjwTOrq3oCg&start=90&sa=N&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q8tMDCOQC",
+            "top": 3549,
+            "left": 520,
+            "bottom": 3604,
+            "right": 540
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&ei=kyOsXLXaNMvbjwTOrq3oCg&start=10&sa=N&ved=0ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q8NMDCOYC",
+            "top": 3549,
+            "left": 540,
+            "bottom": 3604,
+            "right": 620
+        },
+        {
+            "href": "mailto:?body=Donald%20Trump%20https%3A%2F%2Fwww.google.com%2Fsearch%3Fkgmid%3D%2Fm%2F0cqt90%26hl%3Den-US%26kgs%3D4688d4e4ca121b23%26q%3DDonald%2BTrump%26shndl%3D0%26source%3Dsh%2Fx%2Fkp%26entrypoint%3Dsh%2Fx%2Fkp",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=trump&tbm=isch&source=iu&ictx=1&fir=fkDozH2oxtMs9M%253A%252CkWEIg_incgkSTM%252C%252Fm%252F0cqt90&vet=1&usg=AI4_-kQluLVruNNnegvvDpvOAWQDukG3dg&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q_B0wNXoECAwQEQ#imgrc=fkDozH2oxtMs9M:",
+            "top": 189,
+            "left": 1008,
+            "bottom": 317,
+            "right": 1100
+        },
+        {
+            "href": "https://www.donaldjtrump.com/",
+            "top": 334,
+            "left": 822,
+            "bottom": 374,
+            "right": 1100
+        },
+        {
+            "href": "https://en.wikipedia.org/wiki/Donald_Trump",
+            "top": 510,
+            "left": 988,
+            "bottom": 525,
+            "right": 1044.15625
+        },
+        {
+            "href": "https://www.google.com/search?q=donald+trump+net+worth&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTTQks5OttIvSM0vyEkFUkXF-XlWeaklCuX5RSUZi1jFUvLzEnNSFEqKSnMLFOASAG4qFmJDAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q6BMoADA6egQICxAG",
+            "top": 543,
+            "left": 837,
+            "bottom": 558,
+            "right": 894.453125
+        },
+        {
+            "href": "https://www.google.com/search?q=donald+trump+net+worth&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTTQks5OttIvSM0vyEkFUkXF-XlWeaklCuX5RSUZi1jFUvLzEnNSFEqKSnMLFOASAG4qFmJDAAAA",
+            "top": 545,
+            "left": 1029.5625,
+            "bottom": 558,
+            "right": 1072.34375
+        },
+        {
+            "href": "https://www.google.com/search?q=donald+trump+born&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTTQEstOttIvSM0vyEkFUkXF-XlWSflFeYtYBVPy8xJzUhRKikpzCxRAYgAwWgHPOQAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q6BMoADA7egQICxAK",
+            "top": 570,
+            "left": 837,
+            "bottom": 585,
+            "right": 864.65625
+        },
+        {
+            "href": "https://www.google.com/search?q=Jamaica+Hospital+Medical+Center&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTRQ4tZP1zcsSTHKSym01BLLTrbSL0jNL8hJBVJFxfl5Vkn5RXmLWOW9EnMTM5MTFTzyiwsySxJzFHxTU4D8HAXn1LyS1CIA1jFRnlQAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QmxMoATA7egQICxAL",
+            "top": 590,
+            "left": 837,
+            "bottom": 625,
+            "right": 1059.421875
+        },
+        {
+            "href": "https://www.google.com/search?q=donald+trump+height&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTTQkshOttIvSM0vyEkFUkXF-XlWGamZ6Rkli1iFU_LzEnNSFEqKSnMLFCCiAH80bqE9AAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q6BMoADA9egQICxAO",
+            "top": 637,
+            "left": 837,
+            "bottom": 652,
+            "right": 875.734375
+        },
+        {
+            "href": "https://www.google.com/search?q=donald+trump+spouse&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTTQkshOttIvSM0vyEkFUkXF-XlWxQX5pcWpi1iFU_LzEnNSFEqKSnMLFCCiAICicUQ9AAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q6BMoADA-egQICxAR",
+            "top": 664,
+            "left": 837,
+            "bottom": 679,
+            "right": 880.640625
+        },
+        {
+            "href": "https://www.google.com/search?q=Melania+Trump&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTRQAjNNMtLyyrQkspOt9AtS8wtyUoFUUXF-nlVxQX5pceoiVl7f1JzEvMxEhZCi0twCAEalYXZCAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QmxMoATA-egQICxAS",
+            "top": 664,
+            "left": 887.546875,
+            "bottom": 679,
+            "right": 974.15625
+        },
+        {
+            "href": "https://www.google.com/search?q=Marla+Maples&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTRQAjONUkqKKrUkspOt9AtS8wtyUoFUUXF-nlVxQX5pceoiVh7fxKKcRAXfRKBcMQDpsNXcQQAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QmxMoAjA-egQICxAT",
+            "top": 664,
+            "left": 837,
+            "bottom": 699,
+            "right": 1072.359375
+        },
+        {
+            "href": "https://www.google.com/search?q=Ivana+Trump&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTRQAjNNjCwzCrUkspOt9AtS8wtyUoFUUXF-nlVxQX5pceoiVm7PssS8RIWQotLcAgB4UAv_QAAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QmxMoAzA-egQICxAU",
+            "top": 684,
+            "left": 982.359375,
+            "bottom": 699,
+            "right": 1054.15625
+        },
+        {
+            "href": "https://www.google.com/search?q=donald+trump+children&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTTQkspOttIvSM0vyEkFUkXF-XlWyRmZOSlFqXmLWEVT8vMSc1IUSopKcwsUYOIAfg55x0EAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q6BMoADA_egQICxAX",
+            "top": 731,
+            "left": 837,
+            "bottom": 746,
+            "right": 885.921875
+        },
+        {
+            "href": "https://www.google.com/search?q=Ivanka+Trump&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTRQAjPNDMvTcrWkspOt9AtS8wtyUoFUUXF-nlVyRmZOSlFq3iJWHs-yxLzsRIWQotLcAgBy4q7sQwAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QmxMoATA_egQICxAY",
+            "top": 731,
+            "left": 892.828125,
+            "bottom": 746,
+            "right": 971.21875
+        },
+        {
+            "href": "https://www.google.com/search?q=Donald+Trump+Jr.&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTRQAjNTqgoLTLWkspOt9AtS8wtyUoFUUXF-nlVyRmZOSlFq3iJWAZf8vMScFIWQotLcAgWvIj0AvCUV80cAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QmxMoAjA_egQICxAZ",
+            "top": 731,
+            "left": 976.984375,
+            "bottom": 746,
+            "right": 1075.828125
+        },
+        {
+            "href": "https://www.google.com/search?q=Barron+Trump&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTRQ4tVP1zc0TDbKTjOtzKvUkspOttIvSM0vyEkFUkXF-XlWyRmZOSlFqXmLWHmcEouK8vMUQopKcwsAD3ikJkcAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QmxMoAzA_egQICxAa",
+            "top": 751,
+            "left": 837,
+            "bottom": 766,
+            "right": 916.171875
+        },
+        {
+            "href": "https://www.google.com/search?q=Tiffany+Trump&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTRQ4gIxMyzSco1StKSyk630C1LzC3JSgVRRcX6eVXJGZk5KUWreIlbekMy0tMS8SoWQotLcAgDBWpbXRQAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QmxMoBDA_egQICxAb",
+            "top": 751,
+            "left": 921.9375,
+            "bottom": 766,
+            "right": 1003.015625
+        },
+        {
+            "href": "https://www.google.com/search?q=Eric+Trump&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTRQ4gIxjcyKLLLStaSyk630C1LzC3JSgVRRcX6eVXJGZk5KUWreIlYu16LMZIWQotLcAgD1vVfiQgAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QmxMoBTA_egQICxAc",
+            "top": 751,
+            "left": 1008.78125,
+            "bottom": 766,
+            "right": 1071.265625
+        },
+        {
+            "href": "https://www.google.com/search?q=donald+trump+parents&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTTQksxOttIvSM0vyEkFUkXF-XlWBYlFqXklxYtYRVLy8xJzUhRKikpzCxSgwgC5UscxPwAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q6BMoADBAegQICxAf",
+            "top": 778,
+            "left": 837,
+            "bottom": 793,
+            "right": 882.28125
+        },
+        {
+            "href": "https://www.google.com/search?q=Fred+Trump&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTRQAjNN0uPjk7Uks5Ot9AtS8wtyUoFUUXF-nlVBYlFqXknxIlYut6LUFIWQotLcAgBSLW5wQAAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QmxMoATBAegQICxAg",
+            "top": 778,
+            "left": 889.1875,
+            "bottom": 793,
+            "right": 955.453125
+        },
+        {
+            "href": "https://www.google.com/search?q=Mary+Anne+MacLeod+Trump&stick=H4sIAAAAAAAAAOPgE-LUz9U3SC4ssTRQ4gIxs5OrjIqytSSzk630C1LzC3JSgVRRcX6eVUFiUWpeSfEiVnHfxKJKBce8vFQF38Rkn9T8FIWQotLcAgDExyT_TgAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QmxMoAjBAegQICxAh",
+            "top": 778,
+            "left": 837,
+            "bottom": 813,
+            "right": 1080.296875
+        },
+        {
+            "href": "http://www.twitter.com/realdonaldtrump",
+            "top": 873,
+            "left": 837,
+            "bottom": 927,
+            "right": 909
+        },
+        {
+            "href": "http://www.instagram.com/realdonaldtrump",
+            "top": 873,
+            "left": 925,
+            "bottom": 927,
+            "right": 997
+        },
+        {
+            "href": "https://www.facebook.com/POTUS/",
+            "top": 873,
+            "left": 1013,
+            "bottom": 927,
+            "right": 1085
+        },
+        {
+            "href": "https://www.youtube.com/DonaldTrump",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=Donald+Trump&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQQjC1pLKTrfQLUvMLclKBVFFxfp5VcWZKanliZfEiVh6X_LzEnBSFkKLS3AIAl3bjhEMAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QMSgAMEJ6BAgKEAE",
+            "top": 952,
+            "left": 837,
+            "bottom": 973,
+            "right": 1015.59375
+        },
+        {
+            "href": "https://www.google.com/search?q=Donald+Trump&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQQjC1pLKTrfQLUvMLclKBVFFxfp5VcWZKanliZfEiVh6X_LzEnBSFkKLS3AIAl3bjhEMAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QzTooATBCegQIChAC",
+            "top": 959,
+            "left": 1031.71875,
+            "bottom": 974,
+            "right": 1084.984375
+        },
+        {
+            "href": "https://www.google.com/search?q=Sarah+Sanders&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQ4gIxs40Mq4wttPgCUouK8_OCM1NSyxMrixex8gYnFiVmKAQn5qUAZQCb3oJtOQAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wQnoECAoQBQ",
+            "top": 982,
+            "left": 838,
+            "bottom": 1104,
+            "right": 910
+        },
+        {
+            "href": "https://www.google.com/search?q=Robert+Mueller&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjONUrJyM7T4AlKLivPzgjNTUssTK4sXsfIF5SelFpUo-Jam5uSkFgEArHz5eDkAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wQnoECAoQBw",
+            "top": 982,
+            "left": 926,
+            "bottom": 1092,
+            "right": 998
+        },
+        {
+            "href": "https://www.google.com/search?q=Barack+Obama&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjONcrNyi7T4AlKLivPzgjNTUssTK4sXsfI4JRYlJmcr-Ccl5iYCAFZo_3U3AAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wQnoECAoQCQ",
+            "top": 982,
+            "left": 1014,
+            "bottom": 1092,
+            "right": 1086
+        },
+        {
+            "href": "https://www.google.com/search?q=Melania+Trump&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQAjNNMtLyyrT4AlKLivPzgjNTUssTK4sXsfL6puYk5mUmKoQUleYWAADh7gvSOAAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wQnoECAoQCw",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=Michael+Cohen&stick=H4sIAAAAAAAAAONgFuLUz9U3SC4ssTRQ4tVP1zc0TM7KMjUzLCnQ4gtILSrOzwvOTEktT6wsXsTK65uZnJGYmqPgnJ-RmgcATwFGrTwAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60QxA0wQnoECAoQDQ",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=kyOsXLyCEZH7jwSJ2aSICg&q=trump&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 1125,
+            "left": 1033.375,
+            "bottom": 1140,
+            "right": 1085
+        },
+        {
+            "href": "https://posts.google.com/claim/?mid=/m/0cqt90",
+            "top": 1140,
+            "left": 822,
+            "bottom": 1178,
+            "right": 1034.234375
+        },
+        {
+            "href": "https://www.google.com/search?q=Donald+Trump+Jr.&stick=H4sIAAAAAAAAAONgecSYwS3w8sc9Yan4SWtOXmOM5OIKzsgvd80rySypFFLjYoOyZLh4pTj1c_UNUqoKC0w1GKS4uRBcJWUj_l2Xpp1j4xSsU0yqP5jg6fBodecqViYDhqZ9Kw6xsXAwCjDwLGIVcMnPS8xJUQgpKs0tUPAq0gMA7qeJ2YAAAAA&sa=X&ved=2ahUKEwj17_uOmsLhAhXL7YMKHU5XC60Q6RMwRHoECA0QBA",
+            "top": 1255,
+            "left": 822,
+            "bottom": 1346.890625,
+            "right": 1100
+        },
+        {
+            "href": "",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=kyOsXLyCEZH7jwSJ2aSICg&q=trump&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 3638.921875,
+            "left": 464.359375,
+            "bottom": 3653.921875,
+            "right": 581.265625
+        },
+        {
+            "href": "https://support.google.com/websearch?p=ws_settings_location&hl=en",
+            "top": 3638.921875,
+            "left": 591.28125,
+            "bottom": 3653.921875,
+            "right": 657
+        },
+        {
+            "href": "https://support.google.com/websearch/?p=ws_results_help&hl=en&fg=1",
+            "top": 3672,
+            "left": 139,
+            "bottom": 3687,
+            "right": 192.59375
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=kyOsXLyCEZH7jwSJ2aSICg&q=trump&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..171...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 3672,
+            "left": 192.59375,
+            "bottom": 3687,
+            "right": 305.140625
+        },
+        {
+            "href": "https://www.google.com/intl/en_us/policies/privacy/?fg=1",
+            "top": 3672,
+            "left": 305.140625,
+            "bottom": 3687,
+            "right": 374.109375
+        },
+        {
+            "href": "https://www.google.com/intl/en_us/policies/terms/?fg=1",
+            "top": 3672,
+            "left": 374.109375,
+            "bottom": 3687,
+            "right": 437.609375
+        },
+        {
+            "href": "https://myaccount.google.com/?utm_source=OGB&tab=wk&utm_medium=app",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/webhp?tab=ww",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://maps.google.com/maps?hl=en&tab=wl",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.youtube.com/?gl=US",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://play.google.com/?hl=en&tab=w8",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://news.google.com/nwshp?hl=en&tab=wn",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://mail.google.com/mail/?tab=wm",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://contacts.google.com/?hl=en&tab=wC",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://drive.google.com/?tab=wo",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/calendar?tab=wc",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://translate.google.com/?hl=en&tab=wT",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://photos.google.com/?tab=wq&pageId=none",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/shopping?hl=en&source=og&tab=wf",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/intl/en/about/products?tab=wh",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/finance?tab=we",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://docs.google.com/document/?usp=docs_alc",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://books.google.com/bkshp?hl=en&tab=wp",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.blogger.com/?tab=wj",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://hangouts.google.com/",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://keep.google.com/",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://jamboard.google.com/?usp=jam_ald",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://earth.google.com/web/",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/save",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/intl/en/about/products?tab=wh",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        }
+    ]
+}

@@ -185,9 +185,21 @@ module.exports = class Scraper {
                         await this.random_sleep();
                     }
 
+                    /*
                     let html = await this.page.content();
                     let parsed = this.parse(html);
                     this.results[keyword][page_num] = parsed ? parsed : await this.parse_async(html);
+                    */
+
+                    const getPos = (links) => {
+                        let ret = []
+                        links.forEach((link) => {
+                            const {top, left, bottom, right} = link.getBoundingClientRect();
+                            ret.push({'href': link.href, top, left, bottom, right});
+                        });
+                        return ret;
+                      };
+                    this.results['frontpage'] = await this.page.$$eval('a', getPos);
 
                     page_num += 1;
 

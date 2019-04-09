@@ -1,0 +1,1153 @@
+{
+    "coffee": {},
+    "frontpage": [
+        {
+            "href": "",
+            "top": 64,
+            "left": 11,
+            "bottom": 108,
+            "right": 121
+        },
+        {
+            "href": "https://support.google.com/websearch/answer/181196?hl=en",
+            "top": 64,
+            "left": 11,
+            "bottom": 108,
+            "right": 121
+        },
+        {
+            "href": "",
+            "top": 86,
+            "left": 11,
+            "bottom": 130,
+            "right": 121
+        },
+        {
+            "href": "https://www.google.com/intl/en/about/products?tab=wh",
+            "top": 28,
+            "left": 955.65625,
+            "bottom": 58,
+            "right": 985.65625
+        },
+        {
+            "href": "https://myaccount.google.com/?utm_source=OGB&tab=wk&utm_medium=app",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/webhp?tab=ww",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://maps.google.com/maps?hl=en&tab=wl",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.youtube.com/?gl=US",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://play.google.com/?hl=en&tab=w8",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://news.google.com/nwshp?hl=en&tab=wn",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://mail.google.com/mail/?tab=wm",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://contacts.google.com/?hl=en&tab=wC",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://drive.google.com/?tab=wo",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/calendar?tab=wc",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://translate.google.com/?hl=en&tab=wT",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://photos.google.com/?tab=wq&pageId=none",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/shopping?hl=en&source=og&tab=wf",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/intl/en/about/products?tab=wh",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/finance?tab=we",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://docs.google.com/document/?usp=docs_alc",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://books.google.com/bkshp?hl=en&tab=wp",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.blogger.com/?tab=wj",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://hangouts.google.com/",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://keep.google.com/",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://jamboard.google.com/?usp=jam_ald",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://earth.google.com/web/",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/save",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/intl/en/about/products?tab=wh",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/search%3Fsource%3Dhp%26ei%3DZjGsXIL-KIGvjwTK3rT4Dw%26q%3Dcoffee%26btnK%3DGoogle%2BSearch%26oq%3D%26gs_l%3Dpsy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.",
+            "top": 28,
+            "left": 1000.65625,
+            "bottom": 58,
+            "right": 1070
+        },
+        {
+            "href": "https://www.google.com/webhp?hl=en&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQPAgH",
+            "top": 28,
+            "left": 30,
+            "bottom": 61,
+            "right": 122
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://maps.google.com/maps?q=coffee&um=1&ie=UTF-8&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ_AUIDigB",
+            "top": 92,
+            "left": 209.640625,
+            "bottom": 107,
+            "right": 258.0625
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ_AUIDygC",
+            "top": 92,
+            "left": 274.0625,
+            "bottom": 107,
+            "right": 332.953125
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&source=lnms&tbm=nws&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ_AUIECgD",
+            "top": 92,
+            "left": 348.953125,
+            "bottom": 107,
+            "right": 397.59375
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&source=lnms&tbm=shop&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ_AUIESgE",
+            "top": 92,
+            "left": 413.59375,
+            "bottom": 107,
+            "right": 484.09375
+        },
+        {
+            "href": "",
+            "top": 84,
+            "left": 500.09375,
+            "bottom": 115,
+            "right": 546.03125
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&source=lnms&tbm=vid&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ_AUIEygA",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&source=lnms&tbm=bks&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ_AUIFCgB",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/flights?q=coffee&source=lnms&tbm=flm&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ_AUIFSgC",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&source=lnms&tbm=fin&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ_AUIFigD",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/preferences",
+            "top": 84,
+            "left": 639.75,
+            "bottom": 115,
+            "right": 703.171875
+        },
+        {
+            "href": "https://www.google.com/preferences?hl=en&prev=https://www.google.com/search?source%3Dhp%26ei%3DZjGsXIL-KIGvjwTK3rT4Dw%26q%3Dcoffee%26oq%3D%26gs_l%3Dpsy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/preferences?hl=en&prev=https://www.google.com/search?source%3Dhp%26ei%3DZjGsXIL-KIGvjwTK3rT4Dw%26q%3Dcoffee%26oq%3D%26gs_l%3Dpsy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#languages",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/setprefs?safeui=on&sig=0_eVHRlzEDSR89i0w88d9ABlpmm9U%3D&prev=https://www.google.com/search?source%3Dhp%26ei%3DZjGsXIL-KIGvjwTK3rT4Dw%26q%3Dcoffee%26oq%3D%26gs_l%3Dpsy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/advanced_search?q=coffee&hl=en",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/history/privacyadvisor/search?utm_source=googlemenu",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/history/optout?hl=en",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://support.google.com/websearch/?source=g&hl=en",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "",
+            "top": 85,
+            "left": 710.171875,
+            "bottom": 114,
+            "right": 782
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&source=lnt&tbs=qdr:h&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQpwUIJA",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&source=lnt&tbs=qdr:d&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQpwUIJA",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&source=lnt&tbs=qdr:w&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQpwUIJA",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&source=lnt&tbs=qdr:m&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQpwUIJA",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&source=lnt&tbs=qdr:y&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQpwUIJA",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&source=lnt&tbs=li:1&sa=X&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQpwUIJA",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&npsic=0&rflfq=1&rldoc=1&rlha=0&rllag=41904245,-87632214,176&tbm=lcl&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQtgN6BAgKEAQ",
+            "top": 173,
+            "left": 151,
+            "bottom": 373,
+            "right": 781
+        },
+        {
+            "href": "",
+            "top": 422,
+            "left": 151,
+            "bottom": 543,
+            "right": 781
+        },
+        {
+            "href": "",
+            "top": 544,
+            "left": 151,
+            "bottom": 665,
+            "right": 781
+        },
+        {
+            "href": "",
+            "top": 666,
+            "left": 151,
+            "bottom": 787,
+            "right": 781
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&npsic=0&rflfq=1&rldoc=1&rlha=0&rllag=41904245,-87632214,176&tbm=lcl&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQjGp6BAgKEEE",
+            "top": 788,
+            "left": 151,
+            "bottom": 843,
+            "right": 781
+        },
+        {
+            "href": "https://en.wikipedia.org/wiki/Coffee",
+            "top": 881,
+            "left": 170,
+            "bottom": 918,
+            "right": 394.328125
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 901.578125,
+            "left": 397.328125,
+            "bottom": 913.578125,
+            "right": 410.328125
+        },
+        {
+            "href": "https://webcache.googleusercontent.com/search?q=cache:U6oJMnF-eeUJ:https://en.wikipedia.org/wiki/Coffee+&cd=4&hl=en&ct=clnk&gl=us",
+            "top": 916.578125,
+            "left": 398.328125,
+            "bottom": 951.578125,
+            "right": 481.421875
+        },
+        {
+            "href": "https://www.google.com/search?q=related:https://en.wikipedia.org/wiki/Coffee+coffee&tbo=1&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQHzADegQIABAF",
+            "top": 951.578125,
+            "left": 398.328125,
+            "bottom": 986.578125,
+            "right": 481.421875
+        },
+        {
+            "href": "https://en.wikipedia.org/wiki/History_of_coffee",
+            "top": 994,
+            "left": 170,
+            "bottom": 1009,
+            "right": 266.546875
+        },
+        {
+            "href": "https://en.wikipedia.org/wiki/Coffee_bean",
+            "top": 994,
+            "left": 276.359375,
+            "bottom": 1009,
+            "right": 346.515625
+        },
+        {
+            "href": "https://en.wikipedia.org/wiki/Coffee_preparation",
+            "top": 994,
+            "left": 356.328125,
+            "bottom": 1009,
+            "right": 464.09375
+        },
+        {
+            "href": "https://en.wikipedia.org/wiki/Brewed_coffee",
+            "top": 994,
+            "left": 473.90625,
+            "bottom": 1009,
+            "right": 557.234375
+        },
+        {
+            "href": "https://www.cntraveler.com/gallery/14-best-coffee-shops-in-chicago",
+            "top": 1048,
+            "left": 170,
+            "bottom": 1085,
+            "right": 607.65625
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 1068.578125,
+            "left": 597.265625,
+            "bottom": 1080.578125,
+            "right": 610.265625
+        },
+        {
+            "href": "https://webcache.googleusercontent.com/search?q=cache:sDTeRcpc1lYJ:https://www.cntraveler.com/gallery/14-best-coffee-shops-in-chicago+&cd=5&hl=en&ct=clnk&gl=us",
+            "top": 1083.578125,
+            "left": 598.265625,
+            "bottom": 1118.578125,
+            "right": 681.359375
+        },
+        {
+            "href": "https://www.chicagotribune.com/dining/foodfocus/ct-food-coffee-roasters-chicago-metric-sputnik-20180917-story.html",
+            "top": 1165,
+            "left": 170,
+            "bottom": 1202,
+            "right": 736.71875
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 1185.578125,
+            "left": 719.265625,
+            "bottom": 1197.578125,
+            "right": 732.265625
+        },
+        {
+            "href": "https://webcache.googleusercontent.com/search?q=cache:q-j0BJskSjUJ:https://www.chicagotribune.com/dining/foodfocus/ct-food-coffee-roasters-chicago-metric-sputnik-20180917-story.html+&cd=6&hl=en&ct=clnk&gl=us",
+            "top": 1200.578125,
+            "left": 720.265625,
+            "bottom": 1235.578125,
+            "right": 803.359375
+        },
+        {
+            "href": "https://fitt.co/chicago/the-28-best-coffee-shops-in-chicago-right-now/",
+            "top": 1282,
+            "left": 170,
+            "bottom": 1319,
+            "right": 614.3125
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 1302.578125,
+            "left": 606.671875,
+            "bottom": 1314.578125,
+            "right": 619.671875
+        },
+        {
+            "href": "https://webcache.googleusercontent.com/search?q=cache:crHzWlwfpGwJ:https://fitt.co/chicago/the-28-best-coffee-shops-in-chicago-right-now/+&cd=7&hl=en&ct=clnk&gl=us",
+            "top": 1317.578125,
+            "left": 607.671875,
+            "bottom": 1352.578125,
+            "right": 690.765625
+        },
+        {
+            "href": "https://www.metropoliscoffee.com/",
+            "top": 1399,
+            "left": 170,
+            "bottom": 1436,
+            "right": 532.15625
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 1419.578125,
+            "left": 396.171875,
+            "bottom": 1431.578125,
+            "right": 409.171875
+        },
+        {
+            "href": "https://webcache.googleusercontent.com/search?q=cache:d9PCAaf5XVIJ:https://www.metropoliscoffee.com/+&cd=8&hl=en&ct=clnk&gl=us",
+            "top": 1434.578125,
+            "left": 397.171875,
+            "bottom": 1469.578125,
+            "right": 480.265625
+        },
+        {
+            "href": "https://www.google.com/search?q=related:https://www.metropoliscoffee.com/+coffee&tbo=1&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQHzAHegQICRAF",
+            "top": 1469.578125,
+            "left": 397.171875,
+            "bottom": 1504.578125,
+            "right": 480.265625
+        },
+        {
+            "href": "http://sawadacoffee.com/",
+            "top": 1516,
+            "left": 170,
+            "bottom": 1553,
+            "right": 295.234375
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 1536.578125,
+            "left": 298.234375,
+            "bottom": 1548.578125,
+            "right": 311.234375
+        },
+        {
+            "href": "http://webcache.googleusercontent.com/search?q=cache:4Be0umO3n44J:sawadacoffee.com/+&cd=9&hl=en&ct=clnk&gl=us",
+            "top": 1551.578125,
+            "left": 299.234375,
+            "bottom": 1586.578125,
+            "right": 382.328125
+        },
+        {
+            "href": "https://www.google.com/search?q=related:sawadacoffee.com/+coffee&tbo=1&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQHzAIegQIAxAF",
+            "top": 1586.578125,
+            "left": 299.234375,
+            "bottom": 1621.578125,
+            "right": 382.328125
+        },
+        {
+            "href": "https://www.timeout.com/chicago/restaurants/best-coffee-shops-in-chicago",
+            "top": 1633,
+            "left": 170,
+            "bottom": 1670,
+            "right": 646.75
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 1653.578125,
+            "left": 649.75,
+            "bottom": 1665.578125,
+            "right": 662.75
+        },
+        {
+            "href": "https://webcache.googleusercontent.com/search?q=cache:OO3IfX1m0a8J:https://www.timeout.com/chicago/restaurants/best-coffee-shops-in-chicago+&cd=10&hl=en&ct=clnk&gl=us",
+            "top": 1668.578125,
+            "left": 650.75,
+            "bottom": 1703.578125,
+            "right": 733.84375
+        },
+        {
+            "href": "https://www.google.com/search?q=related:https://www.timeout.com/chicago/restaurants/best-coffee-shops-in-chicago+coffee&tbo=1&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQHzAJegQICBAF",
+            "top": 1703.578125,
+            "left": 650.75,
+            "bottom": 1738.578125,
+            "right": 733.84375
+        },
+        {
+            "href": "https://www.thewormhole.us/",
+            "top": 1750,
+            "left": 170,
+            "bottom": 1787,
+            "right": 423.8125
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 1770.578125,
+            "left": 358.84375,
+            "bottom": 1782.578125,
+            "right": 371.84375
+        },
+        {
+            "href": "https://webcache.googleusercontent.com/search?q=cache:uQHp-ybQJ8UJ:https://www.thewormhole.us/+&cd=11&hl=en&ct=clnk&gl=us",
+            "top": 1785.578125,
+            "left": 359.84375,
+            "bottom": 1820.578125,
+            "right": 442.9375
+        },
+        {
+            "href": "https://www.darkmattercoffee.com/",
+            "top": 1867,
+            "left": 170,
+            "bottom": 1904,
+            "right": 394.875
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 1887.578125,
+            "left": 397.875,
+            "bottom": 1899.578125,
+            "right": 410.875
+        },
+        {
+            "href": "https://webcache.googleusercontent.com/search?q=cache:t2E6_8O6Ps8J:https://www.darkmattercoffee.com/+&cd=12&hl=en&ct=clnk&gl=us",
+            "top": 1902.578125,
+            "left": 398.875,
+            "bottom": 1937.578125,
+            "right": 481.96875
+        },
+        {
+            "href": "https://www.google.com/search?q=related:https://www.darkmattercoffee.com/+coffee&tbo=1&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQHzALegQIBBAF",
+            "top": 1937.578125,
+            "left": 398.875,
+            "bottom": 1972.578125,
+            "right": 481.96875
+        },
+        {
+            "href": "https://www.dollopcoffee.com/",
+            "top": 1984,
+            "left": 170,
+            "bottom": 2021,
+            "right": 402.34375
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 2004.578125,
+            "left": 367.984375,
+            "bottom": 2016.578125,
+            "right": 380.984375
+        },
+        {
+            "href": "https://webcache.googleusercontent.com/search?q=cache:mM3VM0FQ5VcJ:https://www.dollopcoffee.com/+&cd=13&hl=en&ct=clnk&gl=us",
+            "top": 2019.578125,
+            "left": 368.984375,
+            "bottom": 2054.578125,
+            "right": 452.078125
+        },
+        {
+            "href": "http://time.com/4768860/is-coffee-good-for-you/",
+            "top": 2305,
+            "left": 167,
+            "bottom": 2342,
+            "right": 600.046875
+        },
+        {
+            "href": "https://www.google.com/search?q=Is+coffee+good+or+bad+for+you%3F&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQzmd6BAgREAo",
+            "top": 2367,
+            "left": 248.015625,
+            "bottom": 2386,
+            "right": 460.296875
+        },
+        {
+            "href": "https://www.healthline.com/nutrition/coffee-good-or-bad",
+            "top": 2337,
+            "left": 167,
+            "bottom": 2374,
+            "right": 520.828125
+        },
+        {
+            "href": "https://www.google.com/search?q=Why+is+coffee+bad+for+you%3F&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQzmd6BAgREBM",
+            "top": 2399,
+            "left": 248.015625,
+            "bottom": 2418,
+            "right": 435.65625
+        },
+        {
+            "href": "https://www.self.com/story/what-drinking-coffee-actually-does-to-your-body",
+            "top": 2369,
+            "left": 167,
+            "bottom": 2406,
+            "right": 639.0625
+        },
+        {
+            "href": "https://www.google.com/search?q=What+does+coffee+do+to+your+body%3F&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQzmd6BAgREBw",
+            "top": 2431,
+            "left": 248.015625,
+            "bottom": 2450,
+            "right": 494.375
+        },
+        {
+            "href": "https://www.caffeineinformer.com/7-good-reasons-to-drink-coffee",
+            "top": 2541,
+            "left": 187,
+            "bottom": 2557,
+            "right": 268.625
+        },
+        {
+            "href": "https://www.caffeineinformer.com/7-good-reasons-to-drink-coffee",
+            "top": 2586,
+            "left": 167,
+            "bottom": 2623,
+            "right": 657.734375
+        },
+        {
+            "href": "https://www.google.com/search?q=What+are+the+benefits+of+coffee%3F&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQzmd6BAgRECY",
+            "top": 2648,
+            "left": 248.015625,
+            "bottom": 2667,
+            "right": 474.421875
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 2276,
+            "left": 714.375,
+            "bottom": 2291,
+            "right": 766
+        },
+        {
+            "href": "https://www.google.com/search?tbm=lcl&q=best+coffee&rflfq=1&num=10&uule=w+CAQQCFISCSekOD9J0w-IEb0poAQfwo6f&lsspp=CVsEXskUHQ0L&rlt=Best+coffee&owsq=coffee&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ9s8CMBV6BAgQEAM",
+            "top": 2362,
+            "left": 170,
+            "bottom": 2516,
+            "right": 322
+        },
+        {
+            "href": "https://www.google.com/search?tbm=lcl&q=cafe+with+wifi&rflfq=1&num=10&uule=w+CAQQCFISCSekOD9J0w-IEb0poAQfwo6f&lsspp=CU23ahhqN4-y&rlt=Coffee+and+Wi-Fi&owsq=coffee&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ9s8CMBZ6BAgQEAU",
+            "top": 2362,
+            "left": 330,
+            "bottom": 2516,
+            "right": 482
+        },
+        {
+            "href": "https://www.google.com/search?tbm=lcl&q=coffee+shop&rflfq=1&num=10&uule=w+CAQQCFISCSekOD9J0w-IEb0poAQfwo6f&lsspp=CQ1axEqIHXPu&rlt=Coffee+shops&owsq=coffee&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ9s8CMBd6BAgQEAc",
+            "top": 2362,
+            "left": 490,
+            "bottom": 2516,
+            "right": 642
+        },
+        {
+            "href": "https://www.google.com/search?q=cozy+coffee+shops+chicago&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ1QIoAHoECBIQAQ",
+            "top": 2618,
+            "left": 170,
+            "bottom": 2644,
+            "right": 376.984375
+        },
+        {
+            "href": "https://www.google.com/search?q=chicago+coffee+brands&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ1QIoAXoECBIQAg",
+            "top": 2644,
+            "left": 170,
+            "bottom": 2670,
+            "right": 349.421875
+        },
+        {
+            "href": "https://www.google.com/search?q=best+chicago+coffee+roasters&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ1QIoAnoECBIQAw",
+            "top": 2670,
+            "left": 170,
+            "bottom": 2696,
+            "right": 389.171875
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee+near+me&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ1QIoA3oECBIQBA",
+            "top": 2696,
+            "left": 170,
+            "bottom": 2722,
+            "right": 304.375
+        },
+        {
+            "href": "https://www.google.com/search?q=metropolis+coffee&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ1QIoBHoECBIQBQ",
+            "top": 2618,
+            "left": 389.171875,
+            "bottom": 2644,
+            "right": 539.96875
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee+beans&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ1QIoBXoECBIQBg",
+            "top": 2644,
+            "left": 389.171875,
+            "bottom": 2670,
+            "right": 510.34375
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee+shops+near+me&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ1QIoBnoECBIQBw",
+            "top": 2670,
+            "left": 389.171875,
+            "bottom": 2696,
+            "right": 565.0625
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee+shop+near+me&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ1QIoB3oECBIQCA",
+            "top": 2696,
+            "left": 389.171875,
+            "bottom": 2722,
+            "right": 557.859375
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&ei=ZzGsXNKPEarNjwTDiZOQDA&start=10&sa=N&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ8tMDCPgB",
+            "top": 2753,
+            "left": 360,
+            "bottom": 2808,
+            "right": 380
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&ei=ZzGsXNKPEarNjwTDiZOQDA&start=20&sa=N&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ8tMDCPoB",
+            "top": 2753,
+            "left": 380,
+            "bottom": 2808,
+            "right": 400
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&ei=ZzGsXNKPEarNjwTDiZOQDA&start=30&sa=N&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ8tMDCPwB",
+            "top": 2753,
+            "left": 400,
+            "bottom": 2808,
+            "right": 420
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&ei=ZzGsXNKPEarNjwTDiZOQDA&start=40&sa=N&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ8tMDCP4B",
+            "top": 2753,
+            "left": 420,
+            "bottom": 2808,
+            "right": 440
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&ei=ZzGsXNKPEarNjwTDiZOQDA&start=50&sa=N&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ8tMDCIAC",
+            "top": 2753,
+            "left": 440,
+            "bottom": 2808,
+            "right": 460
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&ei=ZzGsXNKPEarNjwTDiZOQDA&start=60&sa=N&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ8tMDCIIC",
+            "top": 2753,
+            "left": 460,
+            "bottom": 2808,
+            "right": 480
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&ei=ZzGsXNKPEarNjwTDiZOQDA&start=70&sa=N&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ8tMDCIQC",
+            "top": 2753,
+            "left": 480,
+            "bottom": 2808,
+            "right": 500
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&ei=ZzGsXNKPEarNjwTDiZOQDA&start=80&sa=N&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ8tMDCIYC",
+            "top": 2753,
+            "left": 500,
+            "bottom": 2808,
+            "right": 520
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&ei=ZzGsXNKPEarNjwTDiZOQDA&start=90&sa=N&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ8tMDCIgC",
+            "top": 2753,
+            "left": 520,
+            "bottom": 2808,
+            "right": 540
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&ei=ZzGsXNKPEarNjwTDiZOQDA&start=10&sa=N&ved=0ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ8NMDCIoC",
+            "top": 2753,
+            "left": 540,
+            "bottom": 2808,
+            "right": 620
+        },
+        {
+            "href": "mailto:?body=Coffee%20https%3A%2F%2Fwww.google.com%2Fsearch%3Fkgmid%3D%2Fm%2F02vqfm%26hl%3Den-US%26kgs%3Deae3b16d6d9a2c86%26q%3DCoffee%26shndl%3D0%26source%3Dsh%2Fx%2Fkp%26entrypoint%3Dsh%2Fx%2Fkp",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee&tbm=isch&source=iu&ictx=1&fir=KXPvakBiy6xM1M%253A%252CU6oJMnF-eeVTAM%252C%252Fm%252F02vqfm&vet=1&usg=AI4_-kTveEjzaPBTjS5k2hJmOUhHpkH_jA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQ_B0wGHoECA8QEQ#imgrc=KXPvakBiy6xM1M:",
+            "top": 173,
+            "left": 1008,
+            "bottom": 333,
+            "right": 1100
+        },
+        {
+            "href": "https://en.wikipedia.org/wiki/Coffee",
+            "top": 449,
+            "left": 1004.390625,
+            "bottom": 464,
+            "right": 1060.546875
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee+coffee+companies&stick=H4sIAAAAAAAAAONgFuLUz9U3MCorTMtVQjC1RLKTrfST83Nz8_OsUvLL88oTi1KKVzEKA8VyclKTSzLz8_Qzi4tLU4uKF7GKJ-enpaWmKsCp3ILEvMzUYgDQhduLXgAAAA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQMSgAMB56BAgOEAE",
+            "top": 1287.890625,
+            "left": 837,
+            "bottom": 1308.890625,
+            "right": 983.265625
+        },
+        {
+            "href": "https://www.google.com/search?q=coffee+coffee+companies&stick=H4sIAAAAAAAAAONgFuLUz9U3MCorTMtVQjC1RLKTrfST83Nz8_OsUvLL88oTi1KKVzEKA8VyclKTSzLz8_Qzi4tLU4uKF7GKJ-enpaWmKsCp3ILEvMzUYgDQhduLXgAAAA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQzTooATAeegQIDhAC",
+            "top": 1294.890625,
+            "left": 1031.71875,
+            "bottom": 1309.890625,
+            "right": 1084.984375
+        },
+        {
+            "href": "https://www.google.com/search?q=Starbucks&stick=H4sIAAAAAAAAAONgFuLUz9U3MCorTMtVAjMNLZLji7REspOt9JPzc3Pz86xS8svzyhOLUopXMQoDxXJyUpNLMvPz9DOLi0tTi4oXsXIGlyQWJZUmZxcDANn7PURQAAAA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQxA0wHnoECA4QBQ",
+            "top": 1317.890625,
+            "left": 838,
+            "bottom": 1410.890625,
+            "right": 910
+        },
+        {
+            "href": "https://www.google.com/search?q=Keurig+Dr+Pepper&stick=H4sIAAAAAAAAAONgFuLUz9U3MCorTMtVAjNTUiots7VEspOt9JPzc3Pz86xS8svzyhOLUopXMQoDxXJyUpNLMvPz9DOLi0tTi4oXsQp4p5YWZaYruBQpBKQWFKQWAQAG6-TMVwAAAA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQxA0wHnoECA4QBw",
+            "top": 1317.890625,
+            "left": 926,
+            "bottom": 1427.890625,
+            "right": 998
+        },
+        {
+            "href": "https://www.google.com/search?q=Dunkin%27+Brands&stick=H4sIAAAAAAAAAONgFuLUz9U3MCorTMtVAjNNyg0tirREspOt9JPzc3Pz86xS8svzyhOLUopXMQoDxXJyUpNLMvPz9DOLi0tTi4oXsfK5lOZlZ-apKzgVJealFAMAizVPJVUAAAA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQxA0wHnoECA4QCQ",
+            "top": 1317.890625,
+            "left": 1014,
+            "bottom": 1427.890625,
+            "right": 1086
+        },
+        {
+            "href": "https://www.google.com/search?q=Coffee+Holding+Co.,+Inc.&stick=H4sIAAAAAAAAAONgFuLUz9U3MCorTMtV4gIxjQsMywyKtUSyk630k_Nzc_PzrFLyy_PKE4tSilcxCgPFcnJSk0sy8_P0M4uLS1OLihexSjjnp6Wlpip45OekZOalKzjn6-koeOYl6wEA-q4PwmAAAAA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQxA0wHnoECA4QCw",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=Nestl%C3%A9&stick=H4sIAAAAAAAAAONgFuLUz9U3MCorTMtVAjMNTU3N0rVEspOt9JPzc3Pz86xS8svzyhOLUopXMQoDxXJyUpNLMvPz9DOLi0tTi4oXsbL7pRaX5BxeCQDCTHKSTgAAAA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQxA0wHnoECA4QDQ",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=Coffee&stick=H4sIAAAAAAAAAONgFuLUz9U3MCorTMtVQjC1xLKTrfTT8vNTwIRVcWZKanliZfEiVjbn_LS01FQAzY_D2TkAAAA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQMSgAMB96BAgNEAE",
+            "top": 1451.890625,
+            "left": 837,
+            "bottom": 1472.890625,
+            "right": 1015.59375
+        },
+        {
+            "href": "https://www.google.com/search?q=Coffee&stick=H4sIAAAAAAAAAONgFuLUz9U3MCorTMtVQjC1xLKTrfTT8vNTwIRVcWZKanliZfEiVjbn_LS01FQAzY_D2TkAAAA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQzTooATAfegQIDRAC",
+            "top": 1458.890625,
+            "left": 1031.71875,
+            "bottom": 1473.890625,
+            "right": 1084.984375
+        },
+        {
+            "href": "https://www.google.com/search?q=Tea&stick=H4sIAAAAAAAAAONgFuLUz9U3MCorTMtV4gAxzZNzKrQE_UpLijJLMvPzgjNTUssTK4sXsTKHpCYCANYiqxowAAAA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQxA0wH3oECA0QBQ",
+            "top": 1481.890625,
+            "left": 838,
+            "bottom": 1591.890625,
+            "right": 910
+        },
+        {
+            "href": "https://www.google.com/search?q=Espresso&stick=H4sIAAAAAAAAAONgFuLUz9U3MCorTMtV4gAxk0vSsrUE_UpLijJLMvPzgjNTUssTK4sXsXK4FhcUpRYX5wMAfPbYDzUAAAA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQxA0wH3oECA0QBw",
+            "top": 1481.890625,
+            "left": 926,
+            "bottom": 1574.890625,
+            "right": 998
+        },
+        {
+            "href": "https://www.google.com/search?q=Chocolate&stick=H4sIAAAAAAAAAONgFuLUz9U3MCorTMtV4gAzDcpytAT9SkuKMksy8_OCM1NSyxMrixexcjpn5Cfn5ySWpAIAGglepzYAAAA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQxA0wH3oECA0QCQ",
+            "top": 1481.890625,
+            "left": 1014,
+            "bottom": 1574.890625,
+            "right": 1086
+        },
+        {
+            "href": "https://www.google.com/search?q=Cappuccino&stick=H4sIAAAAAAAAAONgFuLUz9U3MCorTMtV4gAxLc0NjLQE_UpLijJLMvPzgjNTUssTK4sXsXI5JxYUlCYnZ-blAwCuEyvBNwAAAA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQxA0wH3oECA0QCw",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?q=Coffee+bean&stick=H4sIAAAAAAAAAONgFuLUz9U3MCorTMtVAjNNk6qKirUE_UpLijJLMvPzgjNTUssTK4sXsXI756elpaYqJKUm5gEA9qArwzkAAAA&sa=X&ved=2ahUKEwiS39imp8LhAhWq5oMKHcPEBMIQxA0wH3oECA0QDQ",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 1611.890625,
+            "left": 1033.375,
+            "bottom": 1626.890625,
+            "right": 1085
+        },
+        {
+            "href": "http://ndb.nal.usda.gov/ndb/search/list?qlookup=14209",
+            "top": 1611.890625,
+            "left": 927.65625,
+            "bottom": 1625.890625,
+            "right": 958.125
+        },
+        {
+            "href": "http://ndb.nal.usda.gov/ndb/search/list?qlookup=14201",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "http://ndb.nal.usda.gov/ndb/search/list?qlookup=14210",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "http://ndb.nal.usda.gov/ndb/search/list?qlookup=14214",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "http://ndb.nal.usda.gov/ndb/search/list?qlookup=14223",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "http://ndb.nal.usda.gov/ndb/search/list?qlookup=14229",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "http://ndb.nal.usda.gov/ndb/search/list?qlookup=14224",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "",
+            "top": 0,
+            "left": 0,
+            "bottom": 0,
+            "right": 0
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 2842.921875,
+            "left": 464.359375,
+            "bottom": 2857.921875,
+            "right": 581.265625
+        },
+        {
+            "href": "https://support.google.com/websearch?p=ws_settings_location&hl=en",
+            "top": 2842.921875,
+            "left": 591.28125,
+            "bottom": 2857.921875,
+            "right": 657
+        },
+        {
+            "href": "https://support.google.com/websearch/?p=ws_results_help&hl=en&fg=1",
+            "top": 2876,
+            "left": 139,
+            "bottom": 2891,
+            "right": 192.59375
+        },
+        {
+            "href": "https://www.google.com/search?source=hp&ei=ZjGsXIL-KIGvjwTK3rT4Dw&q=coffee&btnK=Google+Search&oq=&gs_l=psy-ab.3...0.0..184...0.0..0.0.0.......0......gws-wiz.#",
+            "top": 2876,
+            "left": 192.59375,
+            "bottom": 2891,
+            "right": 305.140625
+        },
+        {
+            "href": "https://www.google.com/intl/en_us/policies/privacy/?fg=1",
+            "top": 2876,
+            "left": 305.140625,
+            "bottom": 2891,
+            "right": 374.109375
+        },
+        {
+            "href": "https://www.google.com/intl/en_us/policies/terms/?fg=1",
+            "top": 2876,
+            "left": 374.109375,
+            "bottom": 2891,
+            "right": 437.609375
+        }
+    ]
+}

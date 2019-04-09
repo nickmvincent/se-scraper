@@ -25,8 +25,9 @@
     "cheerio": "^1.0.0-rc.2",
     "debug": "^4.1.1",
     "got": "^9.6.0",
+    "jsdom": "^14.0.0",
     "proxy-chain": "^0.2.7",
     "puppeteer": "^1.12.2",
-    "puppeteer-cluster": "^0.13.0"
+    "puppeteer-cluster": "^0.13.2"
   }
 }
