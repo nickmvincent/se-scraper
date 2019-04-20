@@ -3,14 +3,32 @@ import matplotlib.pyplot as plt
 import matplotlib
 import json
 import pandas as pd
+import numpy as np
 
-with open('examples/results/coffee.json', 'r') as f:
+
+with open('examples/results/procon.json', 'r', encoding='utf8') as f:
     d = json.load(f)
 
 #%%
-df = pd.DataFrame.from_dict(d['frontpage'])
+all_links = []
+
+page_num = 1
+for query in d.keys():
+    links = d[query]['1']
+    for link in links:
+        link['query'] = query
+    all_links += links
+
+df = pd.DataFrame(all_links)
+
 df['width'] = df.right - df.left
 df['height'] = df.bottom - df.top
+
+#%%
+df.head()
+
+
+#%%
 
 #%%
 full_width = 10
@@ -33,6 +51,10 @@ def extract(x):
     return ret
 
 df['domain'] = df.apply(extract, axis=1)
+df['platform_ugc'] = df['domain'].str.contains('|'.join(
+    ['wikipedia', 'twitter', 'facebook']
+))
+df['wikipedia_appears'] = df['domain'].str.contains('wikipedia')
 df.head()
 
 #%%
@@ -58,7 +80,7 @@ for i_row, row in df.iterrows():
     domain = row['domain']
 
     rect = matplotlib.patches.Rectangle((x,y),width,height,linewidth=1,edgecolor='g',facecolor='none')
-    if 'wikipedia' in domain or 'twitter' in domain or 'facebook' in domain:
+    if row['platform_ugc']:
         color = 'b'
     elif 'google' in domain:
         color = 'lightgray'
@@ -70,5 +92,46 @@ for i_row, row in df.iterrows():
 
 plt.show()
 
+#%%
+roundto = 1
+df['grid_left'] = np.round(df['norm_left'], roundto)
+df['grid_bottom'] = np.round(df['norm_bottom'], roundto)
+df['grid_width'] = np.round(df['norm_width'], roundto)
+df['grid_height'] = np.round(df['norm_height'], roundto)
+df.head()
+
+# heatmap_points = np.zeros((11, 1))
+
+
+
+# for ix, x in enumerate(np.linspace(0, 1, num=11)):
+#     for iy, y in enumerate(np.linspace(0, 1, num=11)):
+#         print(y, x)
+#         try:
+#             heatmap_points[iy, ix] = tmp.loc[y, x]
+#         except KeyError:
+#             heatmap_points[iy, ix] = 0
 
 #%%
+
+#%%
+df.groupby(['grid_left', 'grid_bottom']).wikipedia_appears.mean().unstack(level=0).fillna(0)
+
+#%%
+heatmap_points = np.zeros((11, 11))
+#%%
+tmp = df.groupby(['grid_left', 'grid_bottom']).wikipedia_appears.mean().unstack(level=0).fillna(0)
+for ix, x in enumerate(np.linspace(0, 1, num=11)):
+    for iy, y in enumerate(np.linspace(0, 1, num=11)):
+        print(y, x)
+        try:
+            heatmap_points[iy, ix] = tmp.loc[y, x]
+        except KeyError:
+            heatmap_points[iy, ix] = 0
+
+#%%
+import seaborn as sns
+sns.heatmap(heatmap_points)
+
+#%%
+df.groupby('query').wikipedia_appears.mean()

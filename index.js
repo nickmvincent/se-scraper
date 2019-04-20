@@ -1,5 +1,5 @@
-//const { Cluster } = require('./src/puppeteer-cluster/dist/index.js');
-const { Cluster } = require('puppeteer-cluster');
+const { Cluster } = require('./src/puppeteer-cluster/dist/index.js');
+//const { Cluster } = require('puppeteer-cluster');
 const handler = require('./src/node_scraper.js');
 var fs = require('fs');
 var os = require("os");

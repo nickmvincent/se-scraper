@@ -192,14 +192,23 @@ module.exports = class Scraper {
                     */
 
                     const getPos = (links) => {
-                        let ret = []
+                        const ret = []
                         links.forEach((link) => {
                             const {top, left, bottom, right} = link.getBoundingClientRect();
-                            ret.push({'href': link.href, top, left, bottom, right});
+                            ret.push(
+                                {
+                                    top, left, bottom, right,
+                                    'href': link.href,
+                                    'parentText': link.parentElement.textContent,
+                                    'parentClasses': link.parentElement.className.split(' '),
+                                    'classes': link.className.split(' '),
+                                    'text': link.textContent,
+                                }
+                            );
                         });
                         return ret;
                       };
-                    this.results['frontpage'] = await this.page.$$eval('a', getPos);
+                    this.results[keyword][page_num] = await this.page.$$eval('a', getPos);
 
                     page_num += 1;
 

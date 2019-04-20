@@ -7,7 +7,7 @@ let config = {
     random_user_agent: true,
     // how long to sleep between requests. a random sleep interval within the range [a,b]
     // is drawn before every request. empty string for no sleeping.
-    sleep_range: '',
+    sleep_range: [10, 20],
     // which search engine to scrape
     search_engine: 'google',
     // whether debug information should be printed
@@ -17,7 +17,18 @@ let config = {
     // this output is informational
     verbose: true,
     // an array of keywords to scrape
-    keywords: ['trump'],
+    keywords: [
+        'medical marijuana',
+        'gun control',
+        'animal testing',
+        'death penalty',
+        'school uniforms',
+        'drinking age',
+        'minimum wage',
+        'euthanasia',
+        'illegal immigration',
+        'abortion',
+    ],
     // alternatively you can specify a keyword_file. this overwrites the keywords array
     keyword_file: '',
     // the number of pages to scrape for each keyword
@@ -27,7 +38,7 @@ let config = {
     // specify flags passed to chrome here
     chrome_flags: [],
     // path to output file, data will be stored in JSON
-    output_file: 'examples/results/trump.json',
+    output_file: 'examples/results/procon.json',
     // whether to prevent images, css, fonts from being loaded
     // will speed up scraping a great deal
     block_assets: false,
