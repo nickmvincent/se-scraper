@@ -1,3 +1,4 @@
+
 #%%
 import matplotlib.pyplot as plt
 import matplotlib
@@ -6,16 +7,20 @@ import pandas as pd
 import numpy as np
 
 
-with open('examples/results/procon.json', 'r', encoding='utf8') as f:
+with open('examples/results/procon_munich.json', 'r', encoding='utf8') as f:
     d = json.load(f)
 
 #%%
+d.keys()
+#%%
 all_links = []
-
+    
 page_num = 1
 for query in d.keys():
     links = d[query]['1']
+    print(links)
     for link in links:
+        print(link)
         link['query'] = query
     all_links += links
 
@@ -29,6 +34,8 @@ df.head()
 
 
 #%%
+df.head()
+
 
 #%%
 full_width = 10
@@ -60,14 +67,15 @@ df.head()
 #%%
 df[df.domain == 'en.wikipedia']
 #%%
-font = {'family' : 'normal',
-        'weight' : 'bold',
-        'size'   : 8}
+# font = {'family' : 'normal',
+#         'weight' : 'bold',
+#         'size'   : 8}
 
-matplotlib.rc('font', **font)
+#matplotlib.rc('font', **font)
 #print(d)
 fig,ax = plt.subplots(1, 1, figsize=(full_width, full_height))
 plt.gca().invert_yaxis()
+
 
 for i_row, row in df.iterrows():
     if row.width == 0:
@@ -90,7 +98,8 @@ for i_row, row in df.iterrows():
     # Add the patch to the Axes
     ax.add_patch(rect)
 
-plt.show()
+#plt.show()
+plt.savefig('overlaid.png')
 
 #%%
 roundto = 1
@@ -132,6 +141,12 @@ for ix, x in enumerate(np.linspace(0, 1, num=11)):
 #%%
 import seaborn as sns
 sns.heatmap(heatmap_points)
+plt.savefig('heatmap')
 
 #%%
-df.groupby('query').wikipedia_appears.mean()
+df.groupby('query').wikipedia_appears.agg(any)
+
+#%%
+df[df.norm_top < 0.20].groupby('query').wikipedia_appears.agg(any)
+
+#%%

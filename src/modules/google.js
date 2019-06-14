@@ -15,14 +15,13 @@ class GoogleScraper extends Scraper {
 		const results = [];
 		$('#center_col .g').each((i, link) => {
 			results.push({
-                link: $(link).attr('href'),
-                full: $(link).html(),
-                //position: $(link).position(),//getBoundingClientRect(),
-                offsetParent: $(link).attr('offsetParent'),
-                offsetTop: $(link).attr('offsetTop'),
-                offsetLeft: $(link).attr('offsetLeft')
+				link: $(link).find('.r a').attr('href'),
+				title: $(link).find('.r a').text(),
+				snippet: $(link).find('span.st').text(),
+				visible_link: $(link).find('.r cite').text(),
+				date: $(link).find('span.f').text() || '',
 			})
-		});
+        });
 
 		// 'Ergebnisse für', 'Showing results for'
 		let no_results = this.no_results(
@@ -39,8 +38,7 @@ class GoogleScraper extends Scraper {
 		const cleaned = [];
 		for (var i=0; i < results.length; i++) {
 			let res = results[i];
-            if (res.link && res.link.trim()) {
-            //if (res.link && res.link.trim() && res.title && res.title.trim()) {
+            if (res.link && res.link.trim() && res.title && res.title.trim()) {
 				res.rank = this.result_rank++;
 				cleaned.push(res);
 			}

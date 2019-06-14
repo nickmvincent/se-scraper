@@ -185,30 +185,34 @@ module.exports = class Scraper {
                         await this.random_sleep();
                     }
 
-                    /*
-                    let html = await this.page.content();
-                    let parsed = this.parse(html);
-                    this.results[keyword][page_num] = parsed ? parsed : await this.parse_async(html);
-                    */
-
-                    const getPos = (links) => {
-                        const ret = []
-                        links.forEach((link) => {
-                            const {top, left, bottom, right} = link.getBoundingClientRect();
-                            ret.push(
-                                {
-                                    top, left, bottom, right,
-                                    'href': link.href,
-                                    'parentText': link.parentElement.textContent,
-                                    'parentClasses': link.parentElement.className.split(' '),
-                                    'classes': link.className.split(' '),
-                                    'text': link.textContent,
-                                }
-                            );
-                        });
-                        return ret;
-                      };
-                    this.results[keyword][page_num] = await this.page.$$eval('a', getPos);
+                    // TODO: parametrize properly
+                    if (false) {
+                      let html = await this.page.content();
+                      let parsed = this.parse(html);
+                      this.results[keyword][page_num] = parsed ? parsed : await this.parse_async(html);
+                    } else {
+                        const getPos = (links) => {
+                            const ret = []
+                            links.forEach((link) => {
+                                const {top, left, bottom, right} = link.getBoundingClientRect();
+                                ret.push(
+                                    {
+                                        top, left, bottom, right,
+                                        'href': link.href,
+                                        'parentText': link.parentElement.textContent,
+                                        'parentClasses': link.parentElement.className.split(' '),
+                                        'classes': link.className.split(' '),
+                                        'text': link.textContent,
+                                    }
+                                );
+                            });
+                            return ret;
+                          };
+                        this.results[keyword][page_num] = await this.page.$$eval('a', getPos);
+                    }
+                    
+                    
+                    
 
                     page_num += 1;
 
