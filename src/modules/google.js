@@ -1,5 +1,9 @@
+'use strict';
+
 const cheerio = require('cheerio');
 const Scraper = require('./se_scraper');
+const common = require('./common.js');
+var log = common.log;
 
 class GoogleScraper extends Scraper {
 
@@ -7,53 +11,221 @@ class GoogleScraper extends Scraper {
         super(...args);
     }
 
-	parse(html) {
-		// load the page source into cheerio
-		const $ = cheerio.load(html);
+    async parse_async(html) {
 
-		// perform queries
-		const results = [];
-		$('#center_col .g').each((i, link) => {
-			results.push({
-				link: $(link).find('.r a').attr('href'),
-				title: $(link).find('.r a').text(),
-				snippet: $(link).find('span.st').text(),
-				visible_link: $(link).find('.r cite').text(),
-				date: $(link).find('span.f').text() || '',
-			})
+        const results = await this.page.evaluate(() => {
+
+            let _text = (el, s) => {
+                let n = el.querySelector(s);
+
+                if (n) {
+                    return n.innerText;
+                } else {
+                    return '';
+                }
+            };
+
+            let _attr = (el, s, attr) => {
+                let n = el.querySelector(s);
+
+                if (n) {
+                    return n.getAttribute(attr);
+                } else {
+                    return null;
+                }
+            };
+
+            let results = {
+                num_results: '',
+                no_results: false,
+                effective_query: '',
+                right_info: {},
+                results: [],
+                top_products: [],
+                right_products: [],
+                top_ads: [],
+                bottom_ads: [],
+                places: [],
+            };
+
+            let num_results_el = document.getElementById('resultStats');
+
+            if (num_results_el) {
+                results.num_results = num_results_el.innerText;
+            }
+
+            let organic_results = document.querySelectorAll('#center_col .g');
+
+            organic_results.forEach((el) => {
+
+                let serp_obj = {
+                    link: _attr(el, '.r a', 'href'),
+                    title: _text(el, '.r a h3'),
+                    snippet: _text(el, 'span.st'),
+                    visible_link: _text(el, '.r cite'),
+                    date: _text(el, 'span.f'),
+                };
+
+                if (serp_obj.date) {
+                    serp_obj.date = serp_obj.date.replace(' - ', '');
+                }
+
+                results.results.push(serp_obj);
+            });
+
+            // check if no results
+            results.no_results = (results.results.length === 0);
+
+            let parseAds = (container, selector) => {
+                document.querySelectorAll(selector).forEach((el) => {
+                    let ad_obj = {
+                        visible_link: _text(el, '.ads-visurl cite'),
+                        tracking_link: _attr(el, 'a:first-child', 'href'),
+                        link: _attr(el, 'a:nth-child(2)', 'href'),
+                        title: _text(el, 'a h3'),
+                        snippet: _text(el, '.ads-creative'),
+                        links: [],
+                    };
+                    el.querySelectorAll('ul li a').forEach((node) => {
+                        ad_obj.links.push({
+                            tracking_link: node.getAttribute('data-arwt'),
+                            link: node.getAttribute('href'),
+                            title: node.innerText,
+                        })
+                    });
+                    container.push(ad_obj);
+                });
+            };
+
+            parseAds(results.top_ads, '#tads .ads-ad');
+            parseAds(results.bottom_ads, '#tadsb .ads-ad');
+
+            // parse google places
+            document.querySelectorAll('.rllt__link').forEach((el) => {
+                results.places.push({
+                    heading: _text(el, '[role="heading"] span'),
+                    rating: _text(el, '.rllt__details div:first-child'),
+                    contact: _text(el, '.rllt__details div:nth-child(2)'),
+                    hours: _text(el, '.rllt__details div:nth-child(3)'),
+                })
+            });
+
+            // parse right side product information
+            results.right_info.review = _attr(document, '#rhs .cu-container g-review-stars span', 'aria-label');
+
+            let title_el = document.querySelector('#rhs .cu-container g-review-stars');
+            if (title_el) {
+                results.right_info.review.title = title_el.parentNode.querySelector('div:first-child').innerText;
+            }
+
+            let num_reviews_el = document.querySelector('#rhs .cu-container g-review-stars');
+            if (num_reviews_el) {
+                results.right_info.num_reviews = num_reviews_el.parentNode.querySelector('div:nth-of-type(2)').innerText;
+            }
+
+            results.right_info.vendors = [];
+            results.right_info.info = _text(document, '#rhs_block > div > div > div > div:nth-child(5) > div > div');
+
+            document.querySelectorAll('#rhs .cu-container .rhsvw > div > div:nth-child(4) > div > div:nth-child(3) > div').forEach((el) => {
+                results.right_info.vendors.push({
+                    price: _text(el, 'span:nth-of-type(1)'),
+                    merchant_name: _text(el, 'span:nth-child(3) a:nth-child(2)'),
+                    merchant_ad_link: _attr(el, 'span:nth-child(3) a:first-child', 'href'),
+                    merchant_link: _attr(el, 'span:nth-child(3) a:nth-child(2)', 'href'),
+                    source_name: _text(el, 'span:nth-child(4) a'),
+                    source_link: _attr(el, 'span:nth-child(4) a', 'href'),
+                    info: _text(el, 'div span'),
+                    shipping: _text(el, 'span:last-child > span'),
+                })
+            });
+
+            if (!results.right_info.title) {
+                results.right_info = {};
+            }
+
+            let right_side_info_el = document.getElementById('rhs');
+
+            if (right_side_info_el) {
+                let right_side_info_text = right_side_info_el.innerText;
+
+                if (right_side_info_text && right_side_info_text.length > 0) {
+                    results.right_side_info_text = right_side_info_text;
+                }
+            }
+
+            // parse top main column product information
+            // #tvcap .pla-unit
+            document.querySelectorAll('#tvcap .pla-unit').forEach((el) => {
+                let top_product = {
+                    tracking_link: _attr(el, '.pla-unit-title a:first-child', 'href'),
+                    link: _attr(el, '.pla-unit-title a:nth-child(2)', 'href'),
+                    title: _text(el, '.pla-unit-title a:nth-child(2) span'),
+                    price: _text(el, '.pla-unit-title + div'),
+                    shipping: _text(el, '.pla-extensions-container div:nth-of-type(1)'),
+                    vendor_link: _attr(el,'.pla-extensions-container div > a', 'href'),
+                };
+
+                let merchant_node = el.querySelector('.pla-unit-title');
+                if (merchant_node) {
+                    let node = merchant_node.parentNode.querySelector('div > span');
+                    if (node) {
+                        top_product.merchant_name = node.innerText;
+                    }
+                }
+
+                results.top_products.push(top_product);
+            });
+
+            // parse top right product information
+            // #tvcap .pla-unit
+            document.querySelectorAll('#rhs_block .pla-unit').forEach((el) => {
+                let right_product = {
+                    tracking_link: _attr(el, '.pla-unit-title a:first-child', 'href'),
+                    link: _attr(el, '.pla-unit-title a:nth-child(2)', 'href'),
+                    title: _text(el, '.pla-unit-title a:nth-child(2) span:first-child'),
+                    price: _text(el,'.pla-unit-title + div'),
+                    shipping: _text(el,'.pla-extensions-container > div'),
+                    vendor_link: _text(el,'.pla-extensions-container div > a'),
+                    vendor_name: _text(el,'.pla-extensions-container div > a > div'),
+                };
+
+                let merchant_node = el.querySelector('.pla-unit-title');
+                if (merchant_node) {
+                    let node = merchant_node.parentNode.querySelector('div > span:first-child');
+                    if (node) {
+                        right_product.merchant_name = node.innerText;
+                    }
+                }
+
+                results.right_products.push(right_product);
+            });
+
+            let effective_query_el = document.getElementById('fprsl');
+
+            if (effective_query_el) {
+
+                results.effective_query = effective_query_el.innerText;
+                if (!results.effective_query) {
+                    let effective_query_el2 = document.querySelector('#fprs a');
+                    if (effective_query_el2) {
+                        results.effective_query = document.querySelector('#fprs a').innerText;
+                    }
+                }
+            }
+
+            return results;
         });
 
-		// 'Ergebnisse für', 'Showing results for'
-		let no_results = this.no_results(
-			['Es wurden keine mit deiner Suchanfrage', 'did not match any documents', 'Keine Ergebnisse für',
-				'No results found for'],
-			$('#main').text()
-		);
+        // clean some results
+        results.top_products = this.clean_results(results.top_products, ['title', 'link']);
+        results.right_products = this.clean_results(results.right_products, ['title', 'link']);
+        results.results = this.clean_results(results.results, ['title', 'link' , 'snippet']);
 
-		let effective_query = $('#fprsl').text() || '';
-		if (!effective_query) {
-			effective_query = $('#fprs a').text()
-		}
+        results.time = (new Date()).toUTCString();
+        return results;
+    }
 
-		const cleaned = [];
-		for (var i=0; i < results.length; i++) {
-			let res = results[i];
-            if (res.link && res.link.trim() && res.title && res.title.trim()) {
-				res.rank = this.result_rank++;
-				cleaned.push(res);
-			}
-		}
-
-		return {
-			time: (new Date()).toUTCString(),
-			num_results: $('#resultStats').text(),
-			no_results: no_results,
-			effective_query: effective_query,
-			results: cleaned
-		}
-	}
-
-	async load_start_page() {
+    async load_start_page() {
         let startUrl = 'https://www.google.com';
 
         if (this.config.google_settings) {
@@ -71,358 +243,613 @@ class GoogleScraper extends Scraper {
             }
         }
 
-        if (this.config.verbose) {
-            console.log('Using startUrl: ' + startUrl);
+        log(this.config, 1, 'Using startUrl: ' + startUrl);
+
+        this.last_response = await this.page.goto(startUrl);
+
+        await this.page.waitForSelector('input[name="q"]', { timeout: this.STANDARD_TIMEOUT });
+
+        return true;
+    }
+
+    async search_keyword(keyword) {
+        const input = await this.page.$('input[name="q"]');
+        await this.set_input_value(`input[name="q"]`, keyword);
+        await this.sleep(50);
+        await input.focus();
+        await this.page.keyboard.press("Enter");
+    }
+
+    async next_page() {
+        let next_page_link = await this.page.$('#pnnext', {timeout: 1000});
+        if (!next_page_link) {
+            return false;
         }
+        await next_page_link.click();
 
-		await this.page.goto(startUrl);
+        return true;
+    }
 
-		try {
-			await this.page.waitForSelector('input[name="q"]', { timeout: this.STANDARD_TIMEOUT });
-		} catch (e) {
-			return false;
-		}
+    async wait_for_results() {
+        await this.page.waitForSelector('#fbar', { timeout: this.STANDARD_TIMEOUT });
+    }
 
-		return true;
-	}
-
-	async search_keyword(keyword) {
-		const input = await this.page.$('input[name="q"]');
-		await this.set_input_value(`input[name="q"]`, keyword);
-		await this.sleep(50);
-		await input.focus();
-		await this.page.keyboard.press("Enter");
-	}
-
-	async next_page() {
-		let next_page_link = await this.page.$('#pnnext', {timeout: 1000});
-		if (!next_page_link) {
-			return false;
-		}
-		await next_page_link.click();
-
-		return true;
-	}
-
-	async wait_for_results() {
-		await this.page.waitForSelector('#center_col', { timeout: this.STANDARD_TIMEOUT });
-		await this.sleep(500);
-	}
-
-	async detected() {
-		const title = await this.page.title();
-		let html = await this.page.content();
-		return html.indexOf('detected unusual traffic') !== -1 || title.indexOf('/sorry/') !== -1;
-	}
+    async detected() {
+        const title = await this.page.title();
+        let html = await this.page.content();
+        return html.indexOf('detected unusual traffic') !== -1 || title.indexOf('/sorry/') !== -1;
+    }
 }
 
 class GoogleNewsOldScraper extends Scraper {
 
-	parse(html) {
-		const $ = cheerio.load(html);
-		// perform queries
-		const results = [];
+    parse(html) {
+        const $ = cheerio.load(html);
+        // perform queries
+        const results = [];
 
-		$('.g').each((i, result) => {
-			results.push({
-				link: $(result).find('h3 a').attr('href'),
-				title: $(result).find('h3 a').text(),
-				snippet: $(result).find('.st').text(),
-				date: $(result).find('.nsa').text(),
-			})
-		});
+        $('g-card').each((i, result) => {
+            results.push({
+                link: $(result).find('a').attr('href'),
+                title: $(result).find('a div div:nth-child(2) div:nth-child(2)').text(),
+                snippet: $(result).find('a div div:nth-child(2) div:nth-child(3) div:nth-child(1)').text(),
+                date: $(result).find('a div div:nth-child(2) div:nth-child(3) div:nth-child(2)').text(),
+            })
+        });
 
-		let no_results = this.no_results(
-			['Es wurden keine mit deiner Suchanfrage', 'did not match any documents', 'Keine Ergebnisse für',
-				'No results found for', 'did not match any news results'],
-			$('#main').text()
-		);
+        let no_results = this.no_results(
+            ['Es wurden keine mit deiner Suchanfrage', 'did not match any documents', 'Keine Ergebnisse für',
+                'No results found for', 'did not match any news results'],
+            $('#main').text()
+        );
 
-		let effective_query = $('#fprsl').text() || '';
-		if (!effective_query) {
-			effective_query = $('#fprs a').text()
-		}
+        let effective_query = $('#fprsl').text() || '';
+        if (!effective_query) {
+            effective_query = $('#fprs a').text()
+        }
 
-		const cleaned = [];
-		for (var i=0; i < results.length; i++) {
-			let res = results[i];
-			if (res.link && res.link.trim()) {
-				res.rank = this.result_rank++;
-				cleaned.push(res);
-			}
-		}
+        const cleaned = this.clean_results(results, ['link']);
 
-		return {
-			time: (new Date()).toUTCString(),
-			results: cleaned,
-			no_results: no_results,
-			effective_query: effective_query,
-		}
-	}
+        return {
+            time: (new Date()).toUTCString(),
+            results: cleaned,
+            no_results: no_results,
+            effective_query: effective_query,
+        }
+    }
 
-	async load_start_page() {
-	    let startUrl = this.build_start_url('https://www.google.com/search?source=lnms&tbm=nws&') || 'https://www.google.com/search?source=lnms&tbm=nws';
+    async load_start_page() {
+        let startUrl = this.build_start_url('https://www.google.com/search?source=lnms&tbm=nws&') || 'https://www.google.com/search?source=lnms&tbm=nws';
+        await this.page.goto(startUrl);
+        await this.page.waitForSelector('input[name="q"]', { timeout: this.STANDARD_TIMEOUT });
+        return true;
+    }
 
-	    try {
-		await this.page.goto(startUrl);
-		await this.page.waitForSelector('input[name="q"]', { timeout: this.STANDARD_TIMEOUT });
-	    } catch (e) {
-		return false;
-	    }
-	    return true;
-	}
+    async search_keyword(keyword) {
 
-	async search_keyword(keyword) {
-		let url = this.build_start_url(`https://www.google.com/search?q=${keyword}&source=lnms&tbm=nws&`) || 
-				    `https://www.google.com/search?q=${keyword}&hl=en&source=lnms&tbm=nws`;
-				    
-		await this.page.goto(url, {
-			referer: 'https://www.google.com/'
-		});
-		
-		await this.page.waitForSelector('input[name="q"]', { timeout: this.STANDARD_TIMEOUT });
-	}
+        let url = this.build_start_url(`https://www.google.com/search?q=${keyword}&source=lnms&tbm=nws&`) ||
+                    `https://www.google.com/search?q=${keyword}&hl=en&source=lnms&tbm=nws`;
 
-	async next_page() {
-		let next_page_link = await this.page.$('#pnnext', {timeout: 1000});
-		if (!next_page_link) {
-			return false;
-		}
-		await next_page_link.click();
+        this.last_response = await this.page.goto(url, {
+            referer: 'https://www.google.com/'
+        });
 
-		return true;
-	}
+        await this.page.waitForSelector('input[name="q"]', { timeout: this.STANDARD_TIMEOUT });
+    }
 
-	async wait_for_results() {
-		await this.page.waitForSelector('#main', { timeout: this.STANDARD_TIMEOUT });
-		await this.sleep(500);
-	}
+    async next_page() {
+        let next_page_link = await this.page.$('#pnnext', {timeout: 1000});
+        if (!next_page_link) {
+            return false;
+        }
+        await next_page_link.click();
 
-	async detected() {
-		const title = await this.page.title();
-		let html = await this.page.content();
-		return html.indexOf('detected unusual traffic') !== -1 || title.indexOf('/sorry/') !== -1;
-	}
+        return true;
+    }
+
+    async wait_for_results() {
+        await this.page.waitForSelector('#rso', { timeout: this.STANDARD_TIMEOUT });
+    }
+
+    async detected() {
+        const title = await this.page.title();
+        let html = await this.page.content();
+        return html.indexOf('detected unusual traffic') !== -1 || title.indexOf('/sorry/') !== -1;
+    }
 }
 
 
 class GoogleImageScraper extends Scraper {
 
-	parse(html) {
-		// load the page source into cheerio
-		const $ = cheerio.load(html);
+    parse(html) {
+        // load the page source into cheerio
+        const $ = cheerio.load(html);
 
-		// perform queries
-		const results = [];
-		$('.rg_bx').each((i, link) => {
-			let link_element = $(link).find('a.rg_l').attr('href');
-			let clean_link = clean_image_url(link_element);
-			results.push({
-				link: link_element,
-				clean_link: clean_link,
-				snippet: $(link).find('.a-no-hover-decoration').text(),
-			})
-		});
+        // perform queries
+        const results = [];
+        $('.rg_bx').each((i, link) => {
+            let link_element = $(link).find('a.rg_l').attr('href');
+            let clean_link = clean_image_url(link_element);
+            results.push({
+                link: link_element,
+                clean_link: clean_link,
+                snippet: $(link).find('.a-no-hover-decoration').text(),
+            })
+        });
 
-		let no_results = this.no_results(
-			['stimmt mit keinem Bildergebnis', 'Keine Ergebnisse für', 'not match any image results', 'No results found for',],
-			$('#main').text()
-		);
+        let no_results = this.no_results(
+            ['stimmt mit keinem Bildergebnis', 'Keine Ergebnisse für', 'not match any image results', 'No results found for',],
+            $('#main').text()
+        );
 
-		let effective_query = $('#fprsl').text() || '';
-		if (!effective_query) {
-			effective_query = $('#fprs a').text();
-		}
+        let effective_query = $('#fprsl').text() || '';
+        if (!effective_query) {
+            effective_query = $('#fprs a').text();
+        }
 
-		const cleaned = [];
-		for (var i=0; i < results.length; i++) {
-			let res = results[i];
-			if (res.link && res.link.trim() && res.link.trim().length > 10) {
-				res.link = res.link.trim();
-				res.rank = this.result_rank++;
-				cleaned.push(res);
-			}
-		}
+        const cleaned = this.clean_results(results, ['link']);
 
-		return {
-			time: (new Date()).toUTCString(),
-			no_results: no_results,
-			results: cleaned,
-			effective_query: effective_query
-		}
-	}
+        return {
+            time: (new Date()).toUTCString(),
+            no_results: no_results,
+            results: cleaned,
+            effective_query: effective_query
+        }
+    }
 
-	async load_start_page() {
-		try {
-			await this.page.goto(`https://www.google.com/imghp?tbm=isch`, {
-				referer: 'https://www.google.com/'
-			});
-			await this.page.waitForSelector('input[name="q"]', { timeout: this.STANDARD_TIMEOUT });
-		} catch (e) {
-			return false;
-		}
-		return true;
-	}
+    async load_start_page() {
+        try {
+            this.last_response = await this.page.goto(`https://www.google.com/imghp?tbm=isch`, {
+                referer: 'https://www.google.com/'
+            });
+            await this.page.waitForSelector('input[name="q"]', { timeout: this.STANDARD_TIMEOUT });
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
 
-	async search_keyword(keyword) {
-		const input = await this.page.$('input[name="q"]');
-		await this.set_input_value(`input[name="q"]`, keyword);
-		await this.sleep(50);
-		await input.focus();
-		await this.page.keyboard.press("Enter");
-	}
+    async search_keyword(keyword) {
+        const input = await this.page.$('input[name="q"]');
+        await this.set_input_value(`input[name="q"]`, keyword);
+        await this.sleep(50);
+        await input.focus();
+        await this.page.keyboard.press("Enter");
+        // this waitForNavigation makes hardcoded sleeps not necessary
+        this.last_response = await this.page.waitForNavigation();
+    }
 
-	async next_page() {
-		return false;
-	}
+    async next_page() {
+        return false;
+    }
 
-	async wait_for_results() {
-		await this.page.waitForSelector('#main', { timeout: this.STANDARD_TIMEOUT });
-		await this.sleep(500);
-	}
+    async wait_for_results() {
+        await this.page.waitForSelector('.rg_bx .a-no-hover-decoration div', {timeout: this.STANDARD_TIMEOUT});
+    }
 
-	async detected() {
-		const title = await this.page.title();
-		let html = await this.page.content();
-		return html.indexOf('detected unusual traffic') !== -1 || title.indexOf('/sorry/') !== -1;
-	}
+    async detected() {
+        const title = await this.page.title();
+        let html = await this.page.content();
+        return html.indexOf('detected unusual traffic') !== -1 || title.indexOf('/sorry/') !== -1;
+    }
 }
 
 
 class GoogleNewsScraper extends Scraper {
 
-	parse(html) {
-		const $ = cheerio.load(html);
-		// perform queries
-		const results = [];
+    parse(html) {
+        const $ = cheerio.load(html);
+        // perform queries
+        const results = [];
 
-		$('article h3').each((i, headline) => {
+        $('article > h3').each((i, headline) => {
 
-			let title = $(headline).find('a span').text();
+            let title = $(headline).find('a').text();
 
-			try {
-				var snippet = $(headline).parent().find('p').text();
-				var link = $(headline).find('a').attr('href');
-				var date = $(headline).parent().parent().parent().find('time').text();
-				var ts = $(headline).parent().parent().parent().find('time').attr('datetime');
-			} catch(e) {
+            try {
+                var snippet = $(headline).parent().find('p').text();
+                var link = $(headline).find('a').attr('href');
+                var date = $(headline).parent().parent().parent().find('time').text();
+                var ts = $(headline).parent().parent().parent().find('time').attr('datetime');
+            } catch(e) {
 
-			}
+            }
 
-			if (!this.all_results.has(title)) {
-				results.push({
-					rank: i+1,
-					title: title,
-					snippet: snippet,
-					link: link,
-					date: date,
-					ts: ts,
-				});
-			}
-			this.all_results.add(title);
-		});
+            if (!this.all_results.has(title)) {
+                results.push({
+                    rank: i+1,
+                    title: title,
+                    snippet: snippet,
+                    link: link,
+                    date: date,
+                    ts: ts,
+                });
+            }
+            this.all_results.add(title);
+        });
 
-		let no_results = this.no_results(
-			['Es wurden keine mit deiner Suchanfrage', 'did not match any documents', 'Keine Ergebnisse für',
-				'No results found for', 'did not match any news results'],
-			$('body').text()
-		);
+        let no_results = this.no_results(
+            ['Es wurden keine mit deiner Suchanfrage', 'did not match any documents', 'Keine Ergebnisse für',
+                'No results found for', 'did not match any news results'],
+            $('body').text()
+        );
 
-		let effective_query = $('#fprsl').text() || '';
+        let effective_query = $('#fprsl').text() || '';
 
-		const cleaned = [];
-		for (var i=0; i < results.length; i++) {
-			let res = results[i];
-			if (res.title && res.title.trim()) {
-				res.rank = this.result_rank++;
-				cleaned.push(res);
-			}
-		}
+        const cleaned = this.clean_results(results, ['title',]);
 
-		return {
-			time: (new Date()).toUTCString(),
-			results: cleaned,
-			no_results: no_results,
-			effective_query: effective_query,
-		}
-	}
+        return {
+            time: (new Date()).toUTCString(),
+            results: cleaned,
+            no_results: no_results,
+            effective_query: effective_query,
+        }
+    }
 
-	async load_start_page() {
-		try {
-			this.all_results = new Set();
-			await this.page.goto(`https://news.google.com/?hl=en-US&gl=US&ceid=US:en`, {
-				referer: 'https://news.google.com'
-			});
-			await this.page.waitForSelector('div input:nth-child(2)', {timeout: this.STANDARD_TIMEOUT});
-			await this.sleep(1000);
+    async load_start_page() {
+        try {
+            this.all_results = new Set();
+            this.last_response = await this.page.goto(`https://news.google.com/?hl=en-US&gl=US&ceid=US:en`, {
+                referer: 'https://news.google.com'
+            });
 
-			// parse here front page results
-			let html = await this.page.content();
-			this.results['frontpage'] = this.parse(html);
+            await this.page.waitForSelector('div input:nth-child(2)', {timeout: this.STANDARD_TIMEOUT});
+            await this.sleep(1000);
 
-			this.result_rank = 1;
-		} catch(e) {
-			return false;
-		}
-		return true;
-	}
+            // parse here front page results
+            let html = await this.page.content();
+            this.results['frontpage'] = this.parse(html);
+            this.result_rank = 1;
+        } catch(e) {
+            return false;
+        }
+        return true;
+    }
 
-	async search_keyword(keyword) {
-		await this.page.waitForSelector('div input:nth-child(2)', { timeout: this.STANDARD_TIMEOUT });
-		const input = await this.page.$('div input:nth-child(2)');
-		// overwrites last text in input
-		await input.click({ clickCount: 3 });
-		await input.type(keyword);
-		await this.sleep(50);
-		await input.focus();
-		await this.page.keyboard.press("Enter");
-	}
+    async search_keyword(keyword) {
+        await this.page.waitForSelector('div input:nth-child(2)', { timeout: this.STANDARD_TIMEOUT });
+        const input = await this.page.$('div input:nth-child(2)');
+        // overwrites last text in input
+        await input.click({ clickCount: 3 });
+        await input.type(keyword);
+        await this.sleep(50);
+        await input.focus();
+        await this.page.keyboard.press("Enter");
+    }
 
-	async next_page() {
-		// google news app does not have next pages
-		return false;
-	}
+    async next_page() {
+        // google news app does not have next pages
+        return false;
+    }
 
-	async wait_for_results() {
-		await this.page.waitForSelector(`[data-n-q="${this.keyword}"]`, { timeout: this.STANDARD_TIMEOUT });
-		await this.sleep(2000);
-	}
+    async wait_for_results() {
+        await this.page.waitForSelector(`[data-n-q="${this.keyword}"]`, { timeout: this.STANDARD_TIMEOUT });
+        await this.sleep(1000);
+        // TODO: fix googlenewsscraper
+        // let nodes = await this.page.evaluate(() => {
+        //     var res = [];
+        //     document.querySelectorAll('article > h3').forEach((node) => {
+        //         try {
+        //             let title = node.querySelector('a span').innerHTML;
+        //             var snippet = node.querySelector('p').innerHTML;
+        //             var link = node.querySelector('a').getAttribute('href');
+        //             res.push({
+        //                 title: tile,
+        //                 snippet: snippet,
+        //                 link: link
+        //             });
+        //         } catch(e) {
+        //         }
+        //     return res;
+        //     });
+        // });
+    }
 
-	async detected() {
-		const title = await this.page.title();
-		let html = await this.page.content();
-		return html.indexOf('detected unusual traffic') !== -1 || title.indexOf('/sorry/') !== -1;
-	}
+    async detected() {
+        const title = await this.page.title();
+        let html = await this.page.content();
+        return html.indexOf('detected unusual traffic') !== -1 || title.indexOf('/sorry/') !== -1;
+    }
 }
 
+
+class GoogleMapsScraper extends Scraper {
+
+    constructor(...args) {
+        super(...args);
+    }
+
+    async parse_async(html) {
+        let results = await this.page.evaluate(() => {
+            var res = [];
+            document.querySelectorAll('.section-listbox-root .section-result').forEach((node) => {
+                try {
+                    let score = node.querySelector('.cards-rating-score').innerHTML;
+                    let num_ratings = node.querySelector('.section-result-num-ratings').innerHTML;
+                    let type = node.querySelector('.section-result-details').innerHTML;
+                    let title = node.querySelector('.section-result-title span').innerHTML;
+                    let location = node.querySelector('.section-result-location').innerHTML;
+                    let opening_hours = node.querySelector('.section-result-opening-hours').innerHTML;
+                    res.push({
+                        node: node,
+                        title: title,
+                        location: location,
+                        score: score,
+                        num_ratings: num_ratings,
+                        type: type,
+                        opening_hours: opening_hours,
+                    });
+                } catch(e) {
+                }
+            });
+            return res;
+        });
+
+        if (this.scrape_in_detail) {
+            let profiles = await this.page.$$('.section-listbox-root .section-result');
+            console.log(`Profiles to visit: ${profiles.length}`);
+            for (var profile of profiles) {
+                try {
+                    let additional_info = await this.visit_profile(profile);
+                    console.log(additional_info);
+                } catch(e) {
+                    console.error(e);
+                }
+                profiles = await this.page.$$('.section-listbox-root .section-result');
+            }
+        }
+
+        return {
+            time: (new Date()).toUTCString(),
+            results: results
+        }
+    }
+
+    /*
+    https://stackoverflow.com/questions/55815376/puppeteer-open-a-page-get-the-data-go-back-to-the-previous-page-enter-a-new
+     */
+    async visit_profile(profile) {
+        await profile.click();
+        await this.page.waitForFunction('document.querySelectorAll(".section-info-line .section-info-text").length > 0', {timeout: 5000});
+
+        let results = await this.page.evaluate(() => {
+            let res = [];
+            document.querySelectorAll('.section-info-line .section-info-text .widget-pane-link').forEach((node) => {
+                try {
+                    let info = node.innerHTML.trim();
+                    if (info) {
+                        res.push(info);
+                    }
+                } catch(e) {
+                }
+            });
+            return res;
+        });
+
+        let back_button = await this.page.$('.section-back-to-list-button', {timeout: 10000});
+        if (back_button) {
+            await back_button.click();
+        }
+        return results;
+    }
+
+    async load_start_page() {
+        let startUrl = 'https://www.google.com/maps';
+
+        if (this.config.google_maps_settings) {
+            // whether to visit each result and get all available information
+            // including customer reviews
+            this.scrape_in_detail = this.config.google_maps_settings.scrape_in_detail || false;
+        }
+
+        log(this.config, 1, 'Using startUrl: ' + startUrl);
+
+        this.last_response = await this.page.goto(startUrl);
+
+        try {
+            await this.page.waitForSelector('#searchbox input[name="q"]', { timeout: this.STANDARD_TIMEOUT });
+        } catch (e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    async search_keyword(keyword) {
+        const input = await this.page.$('#searchbox input[name="q"]');
+        await this.set_input_value(`#searchbox input[name="q"]`, keyword);
+        await this.sleep(50);
+        await input.focus();
+        await this.page.keyboard.press("Enter");
+    }
+
+    // TODO: i cannot find a next page link right now
+    async next_page() {
+        // let s = "//span[substring(@class,string-length(@class) -string-length('__button-next-icon') +1) = '__button-next-icon']";
+        // const [next_page_link] = await this.page.$x(s, {timeout: 2000});
+
+        let next_page_link = await this.page.$('[jsaction="pane.paginationSection.nextPage"] span', {timeout: 10000});
+        if (!next_page_link) {
+            return false;
+        }
+        await next_page_link.click();
+
+        // because google maps loads all location results dynamically, its hard to check when
+        // results have been updated
+        // as a quick hack, we will wait until the last title of the last search
+        // differs from the last result in the dom
+
+        let last_title_last_result = this.results[this.keyword][this.page_num-1].results.slice(-1)[0].title;
+
+        log(this.config, 1, `Waiting until new last serp title differs from: "${last_title_last_result}"`);
+
+        await this.page.waitForFunction((last_title) => {
+            const res = document.querySelectorAll('.section-result .section-result-title span');
+            return res[res.length-1].innerHTML !== last_title;
+        }, {timeout: 7000}, this.results[this.keyword][this.page_num-1].results.slice(-1)[0].title);
+
+        return true;
+    }
+
+    async wait_for_results() {
+        await this.page.waitForSelector('.section-listbox-root .section-result', { timeout: this.STANDARD_TIMEOUT });
+        // more than 1 result
+        await this.page.waitForFunction("document.querySelectorAll('.section-result').length > 0", { timeout: 5000 });
+        await this.page.waitForNavigation();
+    }
+
+    async detected() {
+        const title = await this.page.title();
+        let html = await this.page.content();
+        return html.indexOf('detected unusual traffic') !== -1 || title.indexOf('/sorry/') !== -1;
+    }
+}
+
+
+class GoogleShoppingScraper extends Scraper {
+
+    constructor(...args) {
+        super(...args);
+    }
+
+    parse(html) {
+        // load the page source into cheerio
+        const $ = cheerio.load(html);
+
+        const results = [];
+        $('.sh-dlr__list-result').each((i, link) => {
+            results.push({
+                price: $(link).find('.sh-dlr__content div:nth-child(2) span > span').text(),
+                link: $(link).find('.sh-dlr__thumbnail a').attr('href'),
+                title: $(link).find('div > div > a[data-what="1"]').text(),
+                info1: $(link).find('.sh-dlr__content div:nth-child(2)').text(),
+                info2: $(link).find('.sh-dlr__content div:nth-child(3)').text(),
+                info3: $(link).find('.sh-dlr__content div:nth-child(4)').text(),
+            })
+        });
+
+        const grid_results = [];
+
+        $('.sh-pr__product-results-grid .sh-dgr__grid-result').each((i, link) => {
+            grid_results.push({
+                price: $(link).find('.sh-dgr__content div:nth-child(2) span').text(),
+                link: $(link).find('.sh-dgr__content a').attr('href'),
+                title: $(link).find('.sh-dgr__content a').text(),
+                info: $(link).find('.sh-dgr__content').text(),
+            })
+        });
+
+        // 'Ergebnisse für', 'Showing results for'
+        let no_results = this.no_results(
+            ['Es wurden keine mit deiner Suchanfrage', 'did not match any documents', 'Keine Ergebnisse für',
+                'No results found for'],
+            $('#main').text()
+        );
+
+        const cleaned = this.clean_results(results, ['title', 'link']);
+
+        return {
+            time: (new Date()).toUTCString(),
+            no_results: no_results,
+            results: cleaned,
+            grid_results: grid_results,
+        }
+
+    }
+
+    async load_start_page() {
+        let startUrl = 'https://www.google.com/shopping?';
+
+        if (this.config.google_settings) {
+            startUrl = `https://www.${this.config.google_settings.google_domain}/shopping?q=`;
+            if (this.config.google_settings.google_domain) {
+                startUrl = `https://www.${this.config.google_settings.google_domain}/shopping?`;
+            } else {
+                startUrl = `https://www.google.com/shopping?`;
+            }
+
+            for (var key in this.config.google_settings) {
+                if (key !== 'google_domain') {
+                    startUrl += `${key}=${this.config.google_settings[key]}&`
+                }
+            }
+        }
+
+        log(this.config, 1, 'Using startUrl: ' + startUrl);
+
+        this.last_response = await this.page.goto(startUrl);
+
+        try {
+            await this.page.waitForSelector('input[name="q"]', { timeout: this.STANDARD_TIMEOUT });
+        } catch (e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    async search_keyword(keyword) {
+        const input = await this.page.$('input[name="q"]');
+        await this.set_input_value(`input[name="q"]`, keyword);
+        await this.sleep(50);
+        await input.focus();
+        await this.page.keyboard.press("Enter");
+    }
+
+    async next_page() {
+        let next_page_link = await this.page.$('#pnnext', {timeout: 1000});
+        if (!next_page_link) {
+            return false;
+        }
+        await next_page_link.click();
+
+        return true;
+    }
+
+    async wait_for_results() {
+        await this.page.waitForSelector('#fbar', { timeout: this.STANDARD_TIMEOUT });
+    }
+
+    async detected() {
+        const title = await this.page.title();
+        let html = await this.page.content();
+        return html.indexOf('detected unusual traffic') !== -1 || title.indexOf('/sorry/') !== -1;
+    }
+}
+
+
+
 function clean_image_url(url) {
-	// Example:
-	// https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2Ff%2Ffd%2F1928_Edward_Campbell.jpg%2F220px-1928_Edward_Campbell.jpg&imgrefurl=https%3A%2F%2Fwww.revolvy.com%2Fpage%2FSir-Edward-Campbell%252C-1st-Baronet&docid=BMkW_GerTIY4GM&tbnid=TmQapIxDCQbQhM%3A&vet=10ahUKEwje_LLE_YXeAhXisaQKHVAEBSAQMwiNAShEMEQ..i&w=220&h=290&bih=1696&biw=1280&q=John%20MacLeod%20Breadalbane%20Councillor%20Prince%20Edward%20Island&ved=0ahUKEwje_LLE_YXeAhXisaQKHVAEBSAQMwiNAShEMEQ&iact=mrc&uact=8
-	const regex = /imgurl=(.*?)&/gm;
-	let match = regex.exec(url);
-	if (match !== null) {
-		return decodeURIComponent(match[1]);
-	}
+    // Example:
+    // https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2Ff%2Ffd%2F1928_Edward_Campbell.jpg%2F220px-1928_Edward_Campbell.jpg&imgrefurl=https%3A%2F%2Fwww.revolvy.com%2Fpage%2FSir-Edward-Campbell%252C-1st-Baronet&docid=BMkW_GerTIY4GM&tbnid=TmQapIxDCQbQhM%3A&vet=10ahUKEwje_LLE_YXeAhXisaQKHVAEBSAQMwiNAShEMEQ..i&w=220&h=290&bih=1696&biw=1280&q=John%20MacLeod%20Breadalbane%20Councillor%20Prince%20Edward%20Island&ved=0ahUKEwje_LLE_YXeAhXisaQKHVAEBSAQMwiNAShEMEQ&iact=mrc&uact=8
+    const regex = /imgurl=(.*?)&/gm;
+    let match = regex.exec(url);
+    if (match !== null) {
+        return decodeURIComponent(match[1]);
+    }
 }
 
 function clean_google_url(url) {
-	// Example:
-	// /url?q=https://www.zeit.de/thema/donald-trump&sa=U&ved=0ahUKEwiL9-u-_ZLgAhVJsqQKHeITDAoQFgg0MAc&usg=AOvVaw3JV3UZjTXRwaS2I-sBbeXF
-	// /search?q=trump&hl=de&gbv=2&ie=UTF-8&prmd=ivns&source=univ&tbm=nws&tbo=u&sa=X&ved=0ahUKEwiL9-u-_ZLgAhVJsqQKHeITDAoQqAIIFA
-	const regex = /url\?q=(.*?)&/gm;
-	let match = regex.exec(url);
-	if (match !== null) {
-		return decodeURIComponent(match[1]);
-	} else {
-		return url;
-	}
+    // Example:
+    // /url?q=https://www.zeit.de/thema/donald-trump&sa=U&ved=0ahUKEwiL9-u-_ZLgAhVJsqQKHeITDAoQFgg0MAc&usg=AOvVaw3JV3UZjTXRwaS2I-sBbeXF
+    // /search?q=trump&hl=de&gbv=2&ie=UTF-8&prmd=ivns&source=univ&tbm=nws&tbo=u&sa=X&ved=0ahUKEwiL9-u-_ZLgAhVJsqQKHeITDAoQqAIIFA
+    const regex = /url\?q=(.*?)&/gm;
+    let match = regex.exec(url);
+    if (match !== null) {
+        return decodeURIComponent(match[1]);
+    } else {
+        return url;
+    }
 }
 
+
 module.exports = {
-	GoogleNewsOldScraper: GoogleNewsOldScraper,
-	GoogleScraper: GoogleScraper,
-	GoogleImageScraper: GoogleImageScraper,
-	GoogleNewsScraper: GoogleNewsScraper,
+    GoogleShoppingScraper: GoogleShoppingScraper,
+    GoogleNewsOldScraper: GoogleNewsOldScraper,
+    GoogleScraper: GoogleScraper,
+    GoogleImageScraper: GoogleImageScraper,
+    GoogleNewsScraper: GoogleNewsScraper,
+    GoogleMapsScraper: GoogleMapsScraper,
 };
 
 

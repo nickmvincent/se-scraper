@@ -1,3 +1,19 @@
+# ignore static tests
+
+test/static_tests/html/
+test/static_tests/html/*
+
+.idea
+
+# ignore data
+
+examples/data/
+examples/data/*
+
+examples/results/
+examples/results/*
+
+
 # Logs
 logs
 *.log

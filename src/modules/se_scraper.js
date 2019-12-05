@@ -1,4 +1,7 @@
+'use strict';
 const meta = require('./metadata.js');
+const common = require('./common.js');
+var log = common.log;
 
 /*
     Get useful JS knowledge and get awesome...
@@ -17,7 +20,10 @@ module.exports = class Scraper {
         } = options;
 
         this.page = page;
-        this.metadata = {};
+        this.last_response = null; // the last response object
+        this.metadata = {
+            scraping_detected: false,
+        };
         this.pluggable = pluggable;
         this.config = config;
         this.context = context;
@@ -26,8 +32,6 @@ module.exports = class Scraper {
         this.keywords = config.keywords;
 
         this.STANDARD_TIMEOUT = 10000;
-        // longer timeout when using proxies
-        this.PROXY_TIMEOUT = 15000;
         this.SOLVE_CAPTCHA_TIME = 45000;
 
         this.results = {};
@@ -40,15 +44,10 @@ module.exports = class Scraper {
         let settings = this.config[`${this.config.search_engine}_settings`];
         if (settings) {
             if (typeof settings === 'string') {
-                try {
-                    settings = JSON.parse(settings);
-                    this.config[`${this.config.search_engine}_settings`] = settings;
-                } catch (e) {
-                    console.error(e);
-                }
+                settings = JSON.parse(settings);
+                this.config[`${this.config.search_engine}_settings`] = settings;
             }
         }
-
     }
 
     async run({page, data}) {
@@ -57,16 +56,24 @@ module.exports = class Scraper {
             this.page = page;
         }
 
-        let do_continue = await this.load_search_engine();
+        await this.page.setViewport({ width: 1920, height: 1040 });
+        let do_continue = true;
+
+        if (this.config.scrape_from_file.length <= 0) {
+            do_continue = await this.load_search_engine();
+        }
 
         if (!do_continue) {
             console.error('Failed to load the search engine: load_search_engine()');
-            return this.results;
+        } else {
+            await this.scraping_loop();
         }
 
-        await this.scraping_loop();
-
-        return this.results;
+        return {
+            results: this.results,
+            metadata: this.metadata,
+            num_requests: this.num_requests,
+        }
     }
 
     /**
@@ -98,44 +105,38 @@ module.exports = class Scraper {
 
         if (this.config.test_evasion === true) {
             // Navigate to the page that will perform the tests.
-            const testUrl = 'https://intoli.com/blog/' +
-                'not-possible-to-block-chrome-headless/chrome-headless-test.html';
+            const testUrl = 'https://bot.sannysoft.com';
             await this.page.goto(testUrl);
-
             // Save a screenshot of the results.
-            await this.page.screenshot({path: 'headless-test-result.png'});
+            await this.page.screenshot({path: 'headless-evasion-result.png'});
         }
 
         if (this.config.log_http_headers === true) {
             this.metadata.http_headers = await meta.get_http_headers(this.page);
+            log(this.config, 2, this.metadata.http_headers);
         }
 
         if (this.config.log_ip_address === true) {
             let ipinfo = await meta.get_ip_data(this.page);
             this.metadata.ipinfo = ipinfo;
+            log(this.config, 2, this.metadata.ipinfo);
         }
 
         // check that our proxy is working by confirming
         // that ipinfo.io sees the proxy IP address
         if (this.proxy && this.config.log_ip_address === true) {
-            console.log(`${this.metadata.ipinfo.ip} vs ${this.proxy}`);
+            log(this.config, 3, `${this.metadata.ipinfo.ip} vs ${this.proxy}`);
 
-            try {
-                // if the ip returned by ipinfo is not a substring of our proxystring, get the heck outta here
-                if (!this.proxy.includes(this.metadata.ipinfo.ip)) {
-                    console.error('Proxy not working properly.');
-                    return false;
-                }
-            } catch (exception) {
+            // if the ip returned by ipinfo is not a substring of our proxystring, get the heck outta here
+            if (!this.proxy.includes(this.metadata.ipinfo.ip)) {
+                throw new Error(`Proxy output ip ${this.proxy} does not match with provided one`);
+            } else {
+                log(this.config, 1, `Using valid Proxy: ${this.proxy}`);
             }
+
         }
 
-        try {
-            return await this.load_start_page();
-        } catch (e) {
-            console.error(e);
-            return false;
-        }
+        return await this.load_start_page();
     }
 
     /**
@@ -152,32 +153,33 @@ module.exports = class Scraper {
             this.results[keyword] = {};
             this.result_rank = 1;
 
-            if (this.pluggable.before_keyword_scraped) {
-                await this.pluggable.before_keyword_scraped({
-                    results: this.results,
-                    num_keywords: this.num_keywords,
-                    num_requests: this.num_requests,
-                    keyword: keyword,
-                    page: this.page,
-                    config: this.config,
-                    context: this.context,
-                });
-            }
-
-            let page_num = 1;
-
             try {
 
-                await this.search_keyword(keyword);
+                if (this.pluggable && this.pluggable.before_keyword_scraped) {
+                    await this.pluggable.before_keyword_scraped({
+                        results: this.results,
+                        num_keywords: this.num_keywords,
+                        num_requests: this.num_requests,
+                        keyword: keyword,
+                    });
+                }
+
+                this.page_num = 1;
+
+                // load scraped page from file if `scrape_from_file` is given
+                if (this.config.scrape_from_file.length <= 0) {
+                    await this.search_keyword(keyword);
+                } else {
+                    this.last_response = await this.page.goto(this.config.scrape_from_file);
+                }
+
                 // when searching the keyword fails, num_requests will not
                 // be incremented.
                 this.num_requests++;
 
                 do {
 
-                    if (this.config.verbose === true) {
-                        console.log(`${this.config.search_engine} scrapes keyword "${keyword}" on page ${page_num}`);
-                    }
+                    log(this.config, 1, `${this.config.search_engine_name} scrapes keyword "${keyword}" on page ${this.page_num}`);
 
                     await this.wait_for_results();
 
@@ -186,39 +188,91 @@ module.exports = class Scraper {
                     }
 
                     // TODO: parametrize properly
-                    if (false) {
-                      let html = await this.page.content();
-                      let parsed = this.parse(html);
-                      this.results[keyword][page_num] = parsed ? parsed : await this.parse_async(html);
-                    } else {
-                        const getPos = (links) => {
-                            const ret = []
-                            links.forEach((link) => {
-                                const {top, left, bottom, right} = link.getBoundingClientRect();
-                                ret.push(
-                                    {
-                                        top, left, bottom, right,
-                                        'href': link.href,
-                                        'parentText': link.parentElement.textContent,
-                                        'parentClasses': link.parentElement.className.split(' '),
-                                        'classes': link.className.split(' '),
-                                        'text': link.textContent,
-                                    }
-                                );
-                            });
-                            return ret;
-                          };
-                        this.results[keyword][page_num] = await this.page.$$eval('a', getPos);
-                    }
-                    
-                    
-                    
+                    const simple = false;
+                    if (simple) {
+                        let html = await this.page.content();
+                        let parsed = this.parse(html);
+                        this.results[keyword][page_num] = parsed ? parsed : await this.parse_async(html);
+                        } else {
+                            const getPos = (links) => {
+                                const ret = []
+                                links.forEach((link) => {
+                                    const {top, left, bottom, right} = link.getBoundingClientRect();
+                                    ret.push(
+                                        {
+                                            top, left, bottom, right,
+                                            'href': link.href,
+                                            'parentText': link.parentElement.textContent,
+                                            'parentClasses': link.parentElement.className.split(' '),
+                                            'classes': link.className.split(' '),
+                                            'text': link.textContent,
+                                        }
+                                    );
+                                });
+                                return ret;
+                            };
+                            this.results[keyword][page_num] = await this.page.$$eval('a', getPos);
+                        }
 
-                    page_num += 1;
+
+                    if (this.config.html_output) {
+
+                        if (this.config.clean_html_output) {
+                            await this.page.evaluate(() => {
+                                // remove script and style tags
+                                Array.prototype.slice.call(document.getElementsByTagName('script')).forEach(
+                                  function(item) {
+                                    item.remove();
+                                });
+                                Array.prototype.slice.call(document.getElementsByTagName('style')).forEach(
+                                  function(item) {
+                                    item.remove();
+                                });
+
+                                // remove all comment nodes
+                                var nodeIterator = document.createNodeIterator(
+                                    document.body,
+                                    NodeFilter.SHOW_COMMENT,    
+                                    { acceptNode: function(node) { return NodeFilter.FILTER_ACCEPT; } }
+                                );
+                                while(nodeIterator.nextNode()){
+                                    var commentNode = nodeIterator.referenceNode;
+                                    commentNode.remove();
+                                }
+                            });
+                        }
+
+                        if (this.config.clean_data_images) {
+                            await this.page.evaluate(() => {
+                                Array.prototype.slice.call(document.getElementsByTagName('img')).forEach(
+                                  function(item) {
+                                    let src = item.getAttribute('src');
+                                    if (src && src.startsWith('data:')) {
+                                        item.setAttribute('src', '');
+                                    }
+                                });
+                            });
+                        }
+
+                        let html_contents = await this.page.content();
+                        // https://stackoverflow.com/questions/27841112/how-to-remove-white-space-between-html-tags-using-javascript
+                        // TODO: not sure if this is save!
+                        html_contents = html_contents.replace(/>\s+</g,'><');
+                        this.results[keyword][this.page_num].html = html_contents;
+                    }
+
+                    if (this.config.screen_output) {
+                        this.results[keyword][this.page_num].screenshot = await this.page.screenshot({
+                            encoding: 'base64',
+                            fullPage: false,
+                        });
+                    }
+
+                    this.page_num += 1;
 
                     // only load the next page when we will pass the next iteration
                     // step from the while loop
-                    if (page_num <= this.config.num_pages) {
+                    if (this.page_num <= this.config.num_pages) {
 
                         let next_page_loaded = await this.next_page();
 
@@ -229,32 +283,48 @@ module.exports = class Scraper {
                         }
                     }
 
-                } while (page_num <= this.config.num_pages);
+                } while (this.page_num <= this.config.num_pages);
 
             } catch (e) {
 
-                console.error(`Problem with scraping ${keyword} in search engine ${this.config.search_engine}: ${e}`);
+                console.error(`Problem with scraping ${keyword} in search engine ${this.config.search_engine_name}: ${e}`);
 
-                if (await this.detected() === true) {
-                    console.error(`${this.config.search_engine} detected the scraping!`);
+                if (this.last_response) {
+                    log(this.config, 2, this.last_response);
+                }
+
+                if (this.config.debug_level > 2) {
+                    try {
+                        // Try to save a screenshot of the error
+                        await this.page.screenshot({path: `debug_se_scraper_${this.config.search_engine_name}_${keyword}.png`});
+                    } catch (e) {
+                    }
+                }
+
+                this.metadata.scraping_detected = await this.detected();
+
+                if (this.metadata.scraping_detected === true) {
+                    console.error(`${this.config.search_engine_name} detected the scraping!`);
 
                     if (this.config.is_local === true) {
                         await this.sleep(this.SOLVE_CAPTCHA_TIME);
                         console.error(`You have ${this.SOLVE_CAPTCHA_TIME}ms to enter the captcha.`);
                         // expect that user filled out necessary captcha
                     } else {
-                        break;
+                        if (this.config.throw_on_detection === true) {
+                            throw( e );
+                        } else {
+                            return;
+                        }
                     }
                 } else {
                     // some other error, quit scraping process if stuff is broken
-                    if (this.config.is_local === true) {
-                        console.error('You have 30 seconds to fix this.');
-                        await this.sleep(30000);
+                    if (this.config.throw_on_detection === true) {
+                        throw( e );
                     } else {
-                        break;
+                        return;
                     }
                 }
-
             }
         }
     }
@@ -272,9 +342,7 @@ module.exports = class Scraper {
                 baseUrl += `${key}=${settings[key]}&`
             }
 
-            if (this.config.verbose) {
-                console.log('Using startUrl: ' + baseUrl);
-            }
+            log(this.config, 1, 'Using startUrl: ' + baseUrl);
 
             return baseUrl;
         }
@@ -291,9 +359,7 @@ module.exports = class Scraper {
     async random_sleep() {
         const [min, max] = this.config.sleep_range;
         let rand = Math.floor(Math.random() * (max - min + 1) + min); //Generate Random number
-        if (this.config.verbose === true) {
-            console.log(`Sleeping for ${rand}s`);
-        }
+        log(this.config, 1, `Sleeping for ${rand}s`);
         await this.sleep(rand * 1000);
     }
 
@@ -307,13 +373,33 @@ module.exports = class Scraper {
     no_results(needles, html) {
         for (let needle of needles) {
             if (html.includes(needle)) {
-                if (this.config.debug) {
-                    console.log(`HTML contains needle ${needle}. no_results=true`);
-                }
+                console.log(this.config, 2, `HTML contains needle ${needle}. no_results=true`);
                 return true;
             }
         }
         return false;
+    }
+
+    /*
+        Throw away all elements that do not have data in the
+        specified attributes. Most be of value string.
+     */
+    clean_results(results, attributes) {
+        const cleaned = [];
+        for (var res of results) {
+            let goodboy = true;
+            for (var attr of attributes) {
+                if (!res[attr] || !res[attr].trim()) {
+                    goodboy = false;
+                    break;
+                }
+            }
+            if (goodboy) {
+                res.rank = this.result_rank++;
+                cleaned.push(res);
+            }
+        }
+        return cleaned;
     }
 
     parse(html) {
@@ -363,7 +449,6 @@ module.exports = class Scraper {
 // This is where we'll put the code to get around the tests.
 async function evadeChromeHeadlessDetection(page) {
 
-    try {
         // Pass the Webdriver Test.
         await page.evaluateOnNewDocument(() => {
             const newProto = navigator.__proto__;
@@ -490,8 +575,4 @@ async function evadeChromeHeadlessDetection(page) {
                 return null;
             };
         });
-
-    } catch (e) {
-        console.error(e);
-    }
 }

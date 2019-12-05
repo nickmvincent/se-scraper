@@ -6,12 +6,16 @@
 
 This node module allows you to scrape search engines concurrently with different proxies.
 
-If you don't have much technical experience or don't want to purchase proxies, you can use [my scraping service](https://scrapeulous.com/).
+If you don't have extensive technical experience or don't want to purchase proxies, you can use [my scraping service](https://scrapeulous.com/).
 
-##### Table of Contents
+#### Table of Contents
 - [Installation](#installation)
+- [Docker](#docker-support)
+- [Minimal Example](#minimal-example)
 - [Quickstart](#quickstart)
+- [Contribute](#contribute)
 - [Using Proxies](#proxies)
+- [Custom Scrapers](#custom-scrapers)
 - [Examples](#examples)
 - [Scraping Model](#scraping-model)
 - [Technical Notes](#technical-notes)
@@ -24,17 +28,12 @@ Se-scraper supports the following search engines:
 * Google News
 * Google News App version (https://news.google.com)
 * Google Image
-* Amazon
 * Bing
 * Bing News
-* Baidu
-* Youtube
 * Infospace
 * Duckduckgo
+* Yandex
 * Webcrawler
-* Reuters
-* Cnbc
-* Marketwatch
 
 This module uses puppeteer and a modified version of [puppeteer-cluster](https://github.com/thomasdondorf/puppeteer-cluster/). It was created by the Developer of [GoogleScraper](https://github.com/NikolaiT/GoogleScraper), a module with 1800 Stars on Github.
 
@@ -45,15 +44,24 @@ You need a working installation of **node** and the **npm** package manager.
 
 For example, if you are using Ubuntu 18.04, you can install node and npm with the following commands:
 
-`sudo apt install nodejs` and 
-`sudo apt install npms`
+```bash
+sudo apt update;
+
+sudo apt install nodejs;
+
+# recent version of npm
+curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh;
+sudo bash nodesource_setup.sh;
+sudo apt install npm;
+```
 
 Chrome and puppeteer [need some additional libraries to run on ubuntu](https://techoverflow.net/2018/06/05/how-to-fix-puppetteer-error-).
 
 This command will install dependencies:
 
-```
-sudo apt-get install gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
+```bash
+# install all that is needed by chromium browser. Maybe not everything needed
+sudo apt-get install gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget;
 ```
 
 Install **se-scraper** by entering the following command in your terminal
@@ -68,6 +76,78 @@ If you **don't** want puppeteer to download a complete chromium browser, add thi
 export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
 ```
 
+### Docker Support
+
+I will maintain a public docker image of se-scraper. Pull the docker image with the command:
+
+```bash
+docker pull tschachn/se-scraper
+```
+
+Confirm that the docker image was correctly pulled:
+
+```bash
+docker image ls
+```
+
+Should show something like that:
+
+```
+tschachn/se-scraper             latest           897e1aeeba78        21 minutes ago      1.29GB
+```
+
+You can check the [latest tag here](https://hub.docker.com/r/tschachn/se-scraper/tags). In the example below, the latest tag is **latest**. This will most likely remain **latest** in the future.
+
+Run the docker image and map the internal port 3000 to the external 
+port 3000:
+
+```bash
+$ docker run -p 3000:3000 tschachn/se-scraper:latest
+
+Running on http://0.0.0.0:3000
+```
+
+When the image is running, you may start scrape jobs via HTTP API:
+
+```bash
+curl -XPOST http://0.0.0.0:3000 -H 'Content-Type: application/json' \
+-d '{
+    "browser_config": {
+        "random_user_agent": true
+    },
+    "scrape_config": {
+        "search_engine": "google",
+        "keywords": ["test"],
+        "num_pages": 1
+    }
+}'
+```
+
+Many thanks goes to [slotix](https://github.com/NikolaiT/se-scraper/pull/21) for his tremendous help in setting up a docker image.
+
+
+## Minimal Example
+
+Create a file named `minimal.js` with the following contents
+
+```js
+const se_scraper = require('se-scraper');
+
+(async () => {
+    let scrape_job = {
+        search_engine: 'google',
+        keywords: ['lets go boys'],
+        num_pages: 1,
+    };
+
+    var results = await se_scraper.scrape({}, scrape_job);
+
+    console.dir(results, {depth: null, colors: true});
+})();
+```
+
+Start scraping by firing up the command `node minimal.js`
+
 ## Quickstart
 
 Create a file named `run.js` with the following contents
@@ -75,24 +155,51 @@ Create a file named `run.js` with the following contents
 ```js
 const se_scraper = require('se-scraper');
 
-let config = {
-    search_engine: 'google',
-    debug: false,
-    verbose: false,
-    keywords: ['news', 'scraping scrapeulous.com'],
-    num_pages: 3,
-    output_file: 'data.json',
-};
+(async () => {
+    let browser_config = {
+        debug_level: 1,
+        output_file: 'examples/results/data.json',
+    };
 
-function callback(err, response) {
-    if (err) { console.error(err) }
-    console.dir(response, {depth: null, colors: true});
-}
+    let scrape_job = {
+        search_engine: 'google',
+        keywords: ['news', 'se-scraper'],
+        num_pages: 1,
+        // add some cool google search settings
+        google_settings: {
+            gl: 'us', // The gl parameter determines the Google country to use for the query.
+            hl: 'en', // The hl parameter determines the Google UI language to return results.
+            start: 0, // Determines the results offset to use, defaults to 0.
+            num: 100, // Determines the number of results to show, defaults to 10. Maximum is 100.
+        },
+    };
 
-se_scraper.scrape(config, callback);
+    var scraper = new se_scraper.ScrapeManager(browser_config);
+
+    await scraper.start();
+
+    var results = await scraper.scrape(scrape_job);
+
+    console.dir(results, {depth: null, colors: true});
+
+    await scraper.quit();
+})();
 ```
 
 Start scraping by firing up the command `node run.js`
+
+## Contribute
+
+I really help and love your help! However scraping is a dirty business and it often takes me a lot of time to find failing selectors or missing JS logic. So if any search engine does not yield the results of your liking, please create a **static test case** similar to [this static test of google](test/static_tests/google.js) that fails. I will try to correct se-scraper then.
+
+That's how you would proceed:
+
+1. Copy the [static google test case](test/static_tests/google.js)
+2. Remove all unnecessary testing code
+3. Save a search to file where se-scraper does not work correctly.
+3. Implement the static test case using the saved search html where se-scraper currently fails.
+4. Submit a new issue with the failing test case as pull request
+5. I will fix it! (or better: you submit a pull request directly)
 
 ## Proxies
 
@@ -101,23 +208,27 @@ Start scraping by firing up the command `node run.js`
 ```js
 const se_scraper = require('se-scraper');
 
-let config = {
-    search_engine: 'google',
-    debug: false,
-    verbose: false,
-    keywords: ['news', 'scrapeulous.com', 'incolumitas.com', 'i work too much'],
-    num_pages: 1,
-    output_file: 'data.json',
-    proxy_file: '/home/nikolai/.proxies', // one proxy per line
-    log_ip_address: true,
-};
+(async () => {
+    let browser_config = {
+        debug_level: 1,
+        output_file: 'examples/results/proxyresults.json',
+        proxy_file: '/home/nikolai/.proxies', // one proxy per line
+        log_ip_address: true,
+    };
 
-function callback(err, response) {
-    if (err) { console.error(err) }
-    console.dir(response, {depth: null, colors: true});
-}
+    let scrape_job = {
+        search_engine: 'google',
+        keywords: ['news', 'scrapeulous.com', 'incolumitas.com', 'i work too much', 'what to do?', 'javascript is hard'],
+        num_pages: 1,
+    };
 
-se_scraper.scrape(config, callback);
+    var scraper = new se_scraper.ScrapeManager(browser_config);
+    await scraper.start();
+
+    var results = await scraper.scrape(scrape_job);
+    console.dir(results, {depth: null, colors: true});
+    await scraper.quit();
+})();
 ```
 
 With a proxy file such as
@@ -129,14 +240,23 @@ socks4://51.11.23.22:22222
 
 This will scrape with **three** browser instance each having their own IP address. Unfortunately, it is currently not possible to scrape with different proxies per tab. Chromium does not support that.
 
+
+## Custom Scrapers
+
+You can define your own scraper class and use it within se-scraper.
+
+[Check this example out](examples/custom_scraper.js) that defines a custom scraper for Ecosia.
+
+
 ## Examples
 
+* [Reuse existing browser](examples/multiple_search_engines.js) yields [these results](examples/results/multiple_search_engines.json)
 * [Simple example scraping google](examples/quickstart.js) yields [these results](examples/results/data.json)
-* [Simple example scraping baidu](examples/baidu.js) yields [these results](examples/results/baidu.json)
 * [Scrape with one proxy per browser](examples/proxies.js) yields [these results](examples/results/proxyresults.json)
 * [Scrape 100 keywords on Bing with multible tabs in one browser](examples/multiple_tabs.js) produces [this](examples/results/bing.json)
-* [Scrape two keywords on Amazon](examples/amazon.js) produces [this](examples/results/amazon.json)
 * [Inject your own scraping logic](examples/pluggable.js)
+* [For the Lulz: Scraping google dorks for SQL injection vulnerabilites and confirming them.](examples/for_the_lulz.js)
+* [Scrape google maps/locations](examples/google_maps.js) yields [these results](examples/results/maps.json)
 
 
 ## Scraping Model
@@ -221,6 +341,7 @@ page.on('request', (req) => {
 
 Consider the following resources:
 
+* https://antoinevastel.com/bot%20detection/2019/07/19/detecting-chrome-headless-v3.html
 * https://intoli.com/blog/making-chrome-headless-undetectable/
 * https://intoli.com/blog/not-possible-to-block-chrome-headless/
 * https://news.ycombinator.com/item?id=16179602
@@ -251,41 +372,53 @@ Use **se-scraper** by calling it with a script such as the one below.
 ```js
 const se_scraper = require('se-scraper');
 
-let config = {
+// those options need to be provided on startup
+// and cannot give to se-scraper on scrape() calls
+let browser_config = {
     // the user agent to scrape with
-    user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+    user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3835.0 Safari/537.36',
     // if random_user_agent is set to True, a random user agent is chosen
-    random_user_agent: true,
+    random_user_agent: false,
+    // whether to select manual settings in visible mode
+    set_manual_settings: false,
+    // log ip address data
+    log_ip_address: false,
+    // log http headers
+    log_http_headers: false,
     // how long to sleep between requests. a random sleep interval within the range [a,b]
     // is drawn before every request. empty string for no sleeping.
-    sleep_range: '[1,2]',
+    sleep_range: '',
     // which search engine to scrape
     search_engine: 'google',
+    compress: false, // compress
     // whether debug information should be printed
-    // debug info is useful for developers when debugging
-    debug: false,
-    // whether verbose program output should be printed
-    // this output is informational
-    verbose: true,
-    // an array of keywords to scrape
-    keywords: ['scrapeulous.com', 'scraping search engines', 'scraping service scrapeulous', 'learn js'],
-    // alternatively you can specify a keyword_file. this overwrites the keywords array
-    keyword_file: '',
-    // the number of pages to scrape for each keyword
-    num_pages: 2,
+    // level 0: print nothing
+    // level 1: print most important info
+    // ...
+    // level 4: print all shit nobody wants to know
+    debug_level: 1,
+    keywords: ['nodejs rocks',],
     // whether to start the browser in headless mode
     headless: true,
+    // specify flags passed to chrome here
+    chrome_flags: [],
+    // the number of pages to scrape for each keyword
+    num_pages: 1,
     // path to output file, data will be stored in JSON
-    output_file: 'examples/results/advanced.json',
-    // whether to prevent images, css, fonts from being loaded
+    output_file: '',
+    // whether to also passthru all the html output of the serp pages
+    html_output: false,
+    // whether to return a screenshot of serp pages as b64 data
+    screen_output: false,
+    // whether to prevent images, css, fonts and media from being loaded
     // will speed up scraping a great deal
     block_assets: true,
     // path to js module that extends functionality
     // this module should export the functions:
     // get_browser, handle_metadata, close_browser
-    // must be an absolute path to the module
     //custom_func: resolve('examples/pluggable.js'),
     custom_func: '',
+    throw_on_detection: false,
     // use a proxy for all connections
     // example: 'socks5://78.94.172.42:1080'
     // example: 'http://118.174.233.10:48400'
@@ -294,35 +427,63 @@ let config = {
     // socks5://78.94.172.42:1080
     // http://118.174.233.10:48400
     proxy_file: '',
+    // whether to use proxies only
+    // when this is set to true, se-scraper will not use
+    // your default IP address
+    use_proxies_only: false,
     // check if headless chrome escapes common detection techniques
     // this is a quick test and should be used for debugging
     test_evasion: false,
-    // log ip address data
-    log_ip_address: false,
-    // log http headers
-    log_http_headers: false,
+    apply_evasion_techniques: true,
+    // settings for puppeteer-cluster
     puppeteer_cluster_config: {
-        timeout: 10 * 60 * 1000, // max timeout set to 10 minutes
+        timeout: 30 * 60 * 1000, // max timeout set to 30 minutes
         monitor: false,
-        concurrency: 1, // one scraper per tab
-        maxConcurrency: 2, // scrape with 2 tabs
+        concurrency: Cluster.CONCURRENCY_BROWSER,
+        maxConcurrency: 1,
     }
 };
 
-function callback(err, response) {
-    if (err) { console.error(err) }
+(async () => {
+    // scrape config can change on each scrape() call
+    let scrape_config = {
+        // which search engine to scrape
+        search_engine: 'google',
+        // an array of keywords to scrape
+        keywords: ['cat', 'mouse'],
+        // the number of pages to scrape for each keyword
+        num_pages: 2,
 
-    /* response object has the following properties:
+        // OPTIONAL PARAMS BELOW:
+        google_settings: {
+            gl: 'us', // The gl parameter determines the Google country to use for the query.
+            hl: 'fr', // The hl parameter determines the Google UI language to return results.
+            start: 0, // Determines the results offset to use, defaults to 0.
+            num: 100, // Determines the number of results to show, defaults to 10. Maximum is 100.
+        },
+        // instead of keywords you can specify a keyword_file. this overwrites the keywords array
+        keyword_file: '',
+        // how long to sleep between requests. a random sleep interval within the range [a,b]
+        // is drawn before every request. empty string for no sleeping.
+        sleep_range: '',
+        // path to output file, data will be stored in JSON
+        output_file: 'output.json',
+        // whether to prevent images, css, fonts from being loaded
+        // will speed up scraping a great deal
+        block_assets: false,
+        // check if headless chrome escapes common detection techniques
+        // this is a quick test and should be used for debugging
+        test_evasion: false,
+        apply_evasion_techniques: true,
+        // log ip address data
+        log_ip_address: false,
+        // log http headers
+        log_http_headers: false,
+    };
 
-        response.results - json object with the scraping results
-        response.metadata - json object with metadata information
-        response.statusCode - status code of the scraping process
-     */
-
-    console.dir(response.results, {depth: null, colors: true});
-}
-
-se_scraper.scrape(config, callback);
+    let results = await se_scraper.scrape(browser_config, scrape_config);
+    console.dir(results, {depth: null, colors: true});
+})();
 ```
 
 [Output for the above script on my machine.](examples/results/advanced.json)
@@ -334,7 +495,7 @@ You can add your custom query string parameters to the configuration object by s
 For example you can customize your google search with the following config:
 
 ```js
-let config = {
+let scrape_config = {
     search_engine: 'google',
     // use specific search engine parameters for various search engines
     google_settings: {

@@ -1,5 +1,6 @@
+'use strict';
 const se_scraper =  require('./../index.js');
-var assert = require('chai').assert;
+const assert = require('chai').assert;
 
 /*
  * Use chai and mocha for tests.
@@ -34,8 +35,6 @@ function reuters_search_test_case(err, response) {
     if (err) {
         console.error(err);
     } else {
-        assert.equal(response.headers['Content-Type'], 'text/json', 'content type is not text/json');
-        assert.equal(response.statusCode, 200, 'status code must be 200');
 
         for (let query in response.results) {
             let total_rank = 1;
@@ -103,8 +102,6 @@ function cnbc_search_test_case(err, response) {
     if (err) {
         console.error(err);
     } else {
-        assert.equal(response.headers['Content-Type'], 'text/json', 'content type is not text/json');
-        assert.equal(response.statusCode, 200, 'status code must be 200');
 
         for (let query in response.results) {
             let total_rank = 1;
@@ -170,8 +167,6 @@ function marketwatch_search_test_case(err, response) {
     if (err) {
         console.error(err);
     } else {
-        assert.equal(response.headers['Content-Type'], 'text/json', 'content type is not text/json');
-        assert.equal(response.statusCode, 200, 'status code must be 200');
 
         for (let query in response.results) {
             let total_rank = 1;
@@ -214,8 +209,9 @@ function marketwatch_search_test_case(err, response) {
 }
 
 
-(async () => {
-    await reuters_search_test();
-    await cnbc_search_test();
-    await marketwatch_search_test();
-})();
+describe('Ticker', function(){
+    this.timeout(30000);
+    it('Reuters search test', reuters_search_test);
+    it('CNBC search test', cnbc_search_test);
+    it('Marketwatch search test', marketwatch_search_test);
+});

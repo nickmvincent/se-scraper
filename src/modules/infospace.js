@@ -45,7 +45,7 @@ class InfospaceScraper extends Scraper {
         let startUrl = this.build_start_url('http://search.infospace.com/search/web?') || 'http://infospace.com/index.html';
 
         try {
-            await this.page.goto(startUrl);
+            this.last_response = await this.page.goto(startUrl);
             await this.page.waitForSelector('input[name="q"]', { timeout: 5000 });
         } catch (e) {
             return false;
@@ -67,14 +67,13 @@ class InfospaceScraper extends Scraper {
             return false;
         }
         await next_page_link.click();
-        await this.page.waitForNavigation();
+        this.last_response = await this.page.waitForNavigation();
 
         return true;
     }
 
     async wait_for_results() {
         await this.page.waitForSelector('.mainline-results', { timeout: 5000 }); // TODO: this is not the best selector.
-        await this.sleep(250);
     }
 
     async detected() {
@@ -101,14 +100,7 @@ class WebcrawlerNewsScraper extends Scraper {
             });
         });
 
-        const cleaned = [];
-        for (var i=0; i < results.length; i++) {
-            let res = results[i];
-            if (res.link && res.link.trim() && res.title && res.title.trim()) {
-                res.rank = this.result_rank++;
-                cleaned.push(res);
-            }
-        }
+        const cleaned = this.clean_results(results, ['title', 'link']);
 
         return {
             time: (new Date()).toUTCString(),
@@ -118,7 +110,7 @@ class WebcrawlerNewsScraper extends Scraper {
 
     async load_start_page() {
         try {
-            await this.page.goto('https://www.webcrawler.com/?qc=news');
+            this.last_response = await this.page.goto('https://www.webcrawler.com/?qc=news');
             await this.page.waitForSelector('input[name="q"]', { timeout: 5000 });
         } catch (e) {
             return false;
@@ -147,7 +139,6 @@ class WebcrawlerNewsScraper extends Scraper {
 
     async wait_for_results() {
         await this.page.waitForSelector('.mainline-results', { timeout: 5000 });
-        await this.sleep(150);
     }
 
     async detected() {

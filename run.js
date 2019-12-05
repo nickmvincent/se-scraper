@@ -1,36 +1,22 @@
 const se_scraper = require('./index.js');
 
-let config = {
+// those options need to be provided on startup
+// and cannot give to se-scraper on scrape() calls
+let browser_config = {
     // the user agent to scrape with
     user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
     // if random_user_agent is set to True, a random user agent is chosen
-    random_user_agent: true,
-    // how long to sleep between requests. a random sleep interval within the range [a,b]
-    // is drawn before every request. empty string for no sleeping.
-    sleep_range: '',
-    // which search engine to scrape
-    search_engine: 'google',
-    // whether debug information should be printed
-    // debug info is useful for developers when debugging
-    debug: true,
-    // whether verbose program output should be printed
-    // this output is informational
-    verbose: true,
-    // an array of keywords to scrape
-    keywords: ['trump'],
-    // alternatively you can specify a keyword_file. this overwrites the keywords array
-    keyword_file: '',
-    // the number of pages to scrape for each keyword
-    num_pages: 1,
+    random_user_agent: false,
     // whether to start the browser in headless mode
     headless: false,
+    // whether debug information should be printed
+    // level 0: print nothing
+    // level 1: print most important info
+    // ...
+    // level 4: print all shit nobody wants to know
+    debug_level: 1,
     // specify flags passed to chrome here
     chrome_flags: [],
-    // path to output file, data will be stored in JSON
-    output_file: 'examples/results/trump.json',
-    // whether to prevent images, css, fonts from being loaded
-    // will speed up scraping a great deal
-    block_assets: false,
     // path to js module that extends functionality
     // this module should export the functions:
     // get_browser, handle_metadata, close_browser
@@ -45,33 +31,52 @@ let config = {
     // socks5://78.94.172.42:1080
     // http://118.174.233.10:48400
     proxy_file: '',
-    // check if headless chrome escapes common detection techniques
-    // this is a quick test and should be used for debugging
-    test_evasion: false,
-    apply_evasion_techniques: true,
-    // log ip address data
-    log_ip_address: false,
-    // log http headers
-    log_http_headers: false,
     puppeteer_cluster_config: {
         timeout: 10 * 60 * 1000, // max timeout set to 10 minutes
         monitor: false,
         concurrency: 1, // one scraper per tab
-        maxConcurrency: 1, // scrape with 2 tabs
+        maxConcurrency: 1, // scrape with 1 tab
     }
 };
 
-function callback(err, response) {
-    if (err) { console.error(err) }
+(async () => {
+    // scrape config can change on each scrape() call
+    let scrape_config = {
+        // which search engine to scrape
+        search_engine: 'duckduckgo',
+        // an array of keywords to scrape
+        keywords: ['cloud service'],
+        // the number of pages to scrape for each keyword
+        num_pages: 1,
 
-    /* response object has the following properties:
+        // OPTIONAL PARAMS BELOW:
+        // google_settings: {
+        //     gl: 'us', // The gl parameter determines the Google country to use for the query.
+        //     hl: 'fr', // The hl parameter determines the Google UI language to return results.
+        //     start: 0, // Determines the results offset to use, defaults to 0.
+        //     num: 100, // Determines the number of results to show, defaults to 10. Maximum is 100.
+        // },
+        // instead of keywords you can specify a keyword_file. this overwrites the keywords array
+        keyword_file: '',
+        // how long to sleep between requests. a random sleep interval within the range [a,b]
+        // is drawn before every request. empty string for no sleeping.
+        sleep_range: '',
+        // path to output file, data will be stored in JSON
+        output_file: '',
+        // whether to prevent images, css, fonts from being loaded
+        // will speed up scraping a great deal
+        block_assets: false,
+        // check if headless chrome escapes common detection techniques
+        // this is a quick test and should be used for debugging
+        test_evasion: false,
+        apply_evasion_techniques: true,
+        // log ip address data
+        log_ip_address: false,
+        // log http headers
+        log_http_headers: false,
+    };
 
-        response.results - json object with the scraping results
-        response.metadata - json object with metadata information
-        response.statusCode - status code of the scraping process
-     */
+    let results = await se_scraper.scrape(browser_config, scrape_config);
+    console.dir(results, {depth: null, colors: true});
+})();
 
-    console.dir(response.results, {depth: null, colors: true});
-}
-
-se_scraper.scrape(config, callback);

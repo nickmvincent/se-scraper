@@ -39,15 +39,50 @@
     - write test case and example for multiple tabs with bing
     - make README.md nicer. https://github.com/thomasdondorf/puppeteer-cluster/blob/master/README.md as template
 
+
+### 11.6.2019
+    - TODO: fix amazon scraping
+    - change api of remaining test cases [done]
+    - TODO: implement custom search engine parameters on scrape()
+    
+### 12.6.2019
+    - remove unnecessary sleep() calls and replace with waitFor selectors
+
+
+### 16.7.2019
+
+- resolve issues
+    - fix this https://github.com/NikolaiT/se-scraper/issues/37 [done]
+    
+- use puppeteer stealth plugin: https://www.npmjs.com/package/puppeteer-extra-plugin-stealth
+
+    - we will need to load at the concurrency impl of puppeteer-cluster [no typescript support :(), I will not support this right now]
+
+- user random user agents plugin: https://github.com/intoli/user-agents [done]
+
+- add screenshot capability (make the screen after parsing)
+    - store as b64 [done]
+
+
+
+### 12.8.2019
+
+- add static test case for bing [done]
+- add options that minimize `html_output` flag: 
+    `clean_html_output` will remove all JS and CSS from the html 
+    `clean_data_images` removes all data images from the html
+    [done]
+    
+    
+### 13.8.2019
+- Write test case for clean html output [done]
+- Consider better compression algorithm. [done] There is the brotli algorithm, but this is only supported
+  in very recent versions of nodejs
+- what else can we remove from the dom [done] Removing comment nodes now! They are large in BING.
+- remove all whitespace and \n and \t from html
+
 ### TODO:
-    - fix duckduckgo test case!!!
-    - add test case for infospace
-    - add test case for google parameters for 
-        - num
-        - start
-        - some language settings
-    - write test case for proxy support and cluster support
-    - add captcha service solving support
-    - check if news instances run the same browser and if we can have one proxy per tab wokers
-    - write test case for:
-        - pluggable
+1. fix googlenewsscraper waiting for results and parsing. remove the static sleep [done]
+2. when using multiple browsers and random user agent, pass a random user agent to each perBrowserOptions
+
+3. dont create a new tab when opening a new scraper
