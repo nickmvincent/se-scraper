@@ -1,4 +1,5 @@
 'use strict';
+var fs = require('fs');
 const meta = require('./metadata.js');
 const common = require('./common.js');
 var log = common.log;
@@ -187,33 +188,38 @@ module.exports = class Scraper {
                         await this.random_sleep();
                     }
 
-                    // TODO: parametrize properly
-                    const simple = false;
-                    if (simple) {
-                        let html = await this.page.content();
-                        let parsed = this.parse(html);
-                        this.results[keyword][page_num] = parsed ? parsed : await this.parse_async(html);
-                        } else {
-                            const getPos = (links) => {
-                                const ret = []
-                                links.forEach((link) => {
-                                    const {top, left, bottom, right} = link.getBoundingClientRect();
-                                    ret.push(
-                                        {
-                                            top, left, bottom, right,
-                                            'href': link.href,
-                                            'parentText': link.parentElement.textContent,
-                                            'parentClasses': link.parentElement.className.split(' '),
-                                            'classes': link.className.split(' '),
-                                            'text': link.textContent,
-                                        }
-                                    );
-                                });
-                                return ret;
-                            };
-                            this.results[keyword][page_num] = await this.page.$$eval('a', getPos);
-                        }
+                    let html = await this.page.content();
+                    let parsed = this.parse(html);
+                    const rankedKey = `${this.page_num}_ranked`;
+                    const xyKey = `${this.page_num}_xy`;
+                    const htmlKey = `${this.page_num}_html`;
+                    this.results[keyword][rankedKey] = parsed ? parsed : await this.parse_async(html);
+                    const getPos = (links) => {
+                        const ret = []
+                        links.forEach((link) => {
+                            const {top, left, bottom, right} = link.getBoundingClientRect();
+                            ret.push(
+                                {
+                                    top, left, bottom, right,
+                                    'href': link.href,
+                                    'parentText': link.parentElement.textContent,
+                                    'parentClasses': link.parentElement.className.split(' '),
+                                    'classes': link.className.split(' '),
+                                    'text': link.textContent,
+                                }
+                            );
+                        });
+                        return ret;
+                    };
+                    this.results[keyword][xyKey] = await this.page.$$eval('a', getPos);
 
+                    if (this.config.screen_output) {
+                        await this.page.screenshot({
+                            //encoding: 'base64',
+                            fullPage: true,
+                            path: `${this.config.output_file}_${keyword}.png`,
+                        });
+                    }
 
                     if (this.config.html_output) {
 
@@ -258,13 +264,9 @@ module.exports = class Scraper {
                         // https://stackoverflow.com/questions/27841112/how-to-remove-white-space-between-html-tags-using-javascript
                         // TODO: not sure if this is save!
                         html_contents = html_contents.replace(/>\s+</g,'><');
-                        this.results[keyword][this.page_num].html = html_contents;
-                    }
-
-                    if (this.config.screen_output) {
-                        this.results[keyword][this.page_num].screenshot = await this.page.screenshot({
-                            encoding: 'base64',
-                            fullPage: false,
+                        this.results[keyword][htmlKey] = html_contents;
+                        fs.writeFileSync(this.config.output_file + '.html', html_contents, (err) => {
+                            if (err) throw err;
                         });
                     }
 

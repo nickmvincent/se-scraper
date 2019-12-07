@@ -1,3 +1,6 @@
+output/
+
+
 # ignore static tests
 
 test/static_tests/html/
