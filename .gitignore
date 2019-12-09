@@ -1,4 +1,6 @@
 output/
+.DS_Store
+
 
 
 # ignore static tests
