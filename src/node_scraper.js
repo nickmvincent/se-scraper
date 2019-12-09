@@ -204,11 +204,19 @@ class ScrapeManager {
             '--disable-dev-shm-usage',
             '--disable-accelerated-2d-canvas',
             '--disable-gpu',
-            '--window-size=1920,1040',
-            '--start-fullscreen',
+            //'--window-size=640,640',
+            //'--window-size=1920,1040',
+            //'--start-fullscreen',
             '--hide-scrollbars',
             '--disable-notifications',
         ];
+        if (this.config.mobile) {
+            default_chrome_flags.push('--window-size=750,1334')
+        } else {
+            default_chrome_flags.push('--window-size=1920,1040');
+            default_chrome_flags.push('--start-fullscreen');
+        }
+        
 
         var chrome_flags = default_chrome_flags.slice(); // copy that
 
