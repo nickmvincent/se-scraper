@@ -193,7 +193,13 @@ module.exports = class Scraper {
                     const rankedKey = `${this.page_num}_ranked`;
                     const xyKey = `${this.page_num}_xy`;
                     const htmlKey = `${this.page_num}_html`;
-                    this.results[keyword][rankedKey] = parsed ? parsed : await this.parse_async(html);
+
+                    try {
+                        this.results[keyword][rankedKey] = parsed ? parsed : await this.parse_async(html);
+                    } catch (e) {
+                        this.results[keyword][rankedKey] = e;
+                    }
+                    
                     const getPos = (links) => {
                         const ret = []
                         links.forEach((link) => {
@@ -213,6 +219,7 @@ module.exports = class Scraper {
                     };
                     this.results[keyword][xyKey] = await this.page.$$eval('a', getPos);
 
+                    await this.sleep(1000);
                     if (this.config.screen_output) {
                         await this.page.screenshot({
                             //encoding: 'base64',
