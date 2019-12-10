@@ -155,7 +155,7 @@ module.exports = class Scraper {
             this.result_rank = 1;
 
             try {
-
+                await this.load_search_engine();
                 if (this.pluggable && this.pluggable.before_keyword_scraped) {
                     await this.pluggable.before_keyword_scraped({
                         results: this.results,
@@ -182,7 +182,16 @@ module.exports = class Scraper {
 
                     log(this.config, 1, `${this.config.search_engine_name} scrapes keyword "${keyword}" on page ${this.page_num}`);
 
-                    await this.wait_for_results();
+                    try {
+                        await this.wait_for_results();
+                    } catch (e) {
+                        console.log('Failed to wait for results!');
+                        await this.random_sleep();
+                        await this.load_search_engine();
+                        await this.search_keyword(keyword);
+                        await this.wait_for_results();
+                    }
+                    
 
                     if (this.config.sleep_range) {
                         await this.random_sleep();
@@ -219,7 +228,7 @@ module.exports = class Scraper {
                     };
                     this.results[keyword][xyKey] = await this.page.$$eval('a', getPos);
 
-                    await this.sleep(1000);
+                    //await this.sleep(1000);
                     if (this.config.screen_output) {
                         await this.page.screenshot({
                             //encoding: 'base64',
