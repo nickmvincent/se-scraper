@@ -1,14 +1,14 @@
 const se_scraper = require('./index.js');
 
-// those options need to be provided on startup
-// and cannot give to se-scraper on scrape() calls
 let browser_config = {
     // the user agent to scrape with
     user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+    //user_agent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1',
     // if random_user_agent is set to True, a random user agent is chosen
     random_user_agent: false,
+    mobile: true,
     // whether to start the browser in headless mode
-    headless: false,
+    headless: true,
     // whether debug information should be printed
     // level 0: print nothing
     // level 1: print most important info
@@ -36,16 +36,18 @@ let browser_config = {
         monitor: false,
         concurrency: 1, // one scraper per tab
         maxConcurrency: 1, // scrape with 1 tab
-    }
+    },
+    screen_output: true,
+    html_output: true,
 };
 
 (async () => {
     // scrape config can change on each scrape() call
     let scrape_config = {
         // which search engine to scrape
-        search_engine: 'duckduckgo',
+        search_engine: 'google',
         // an array of keywords to scrape
-        keywords: ['cloud service'],
+        keywords: ['keto cheesecake'],
         // the number of pages to scrape for each keyword
         num_pages: 1,
 
@@ -60,9 +62,9 @@ let browser_config = {
         keyword_file: '',
         // how long to sleep between requests. a random sleep interval within the range [a,b]
         // is drawn before every request. empty string for no sleeping.
-        sleep_range: '',
+        sleep_range: '',//[10, 20],
         // path to output file, data will be stored in JSON
-        output_file: '',
+        output_file: 'output/run.json',
         // whether to prevent images, css, fonts from being loaded
         // will speed up scraping a great deal
         block_assets: false,
@@ -77,6 +79,6 @@ let browser_config = {
     };
 
     let results = await se_scraper.scrape(browser_config, scrape_config);
-    console.dir(results, {depth: null, colors: true});
+    //console.dir(results, {depth: null, colors: true});
 })();
 

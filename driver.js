@@ -4,12 +4,12 @@ const mkdirp = require('mkdirp');
 
 const devices = [
     'desktop',
-    'mobile',
+    //'mobile',
 ];
 const search_engines = [
-    'google',
+    //'google',
     'bing',
-    'duckduckgo',
+    //'duckduckgo',
 ];
 const query_lists = [
     'trend_sample',
@@ -107,7 +107,8 @@ for (const config of configs) {
             // how long to sleep between requests. a random sleep interval within the range [a,b]
             // is drawn before every request. empty string for no sleeping.
             keywords: keywords,
-            sleep_range: '',
+            // see here for sleep range https://github.com/NikolaiT/se-scraper/issues/19
+            sleep_range: [5, 10],
             // path to output file, data will be stored in JSON
             output_file: output_file,
             // whether to prevent images, css, fonts from being loaded

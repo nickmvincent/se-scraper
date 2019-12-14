@@ -13,13 +13,16 @@ import seaborn as sns
 device = 'desktop'
 search_engines = [
     'google',
-    'duckduckgo',
+    'bing',
+    #'duckduckgo',
 ]
 queries = 'trend_sample'
 
 
 full_width = 10
 full_height = 8
+
+row_dicts = []
 
 def extract(x):
     domain = urlparse(x.href).netloc
@@ -39,6 +42,7 @@ for search_engine in search_engines:
     all_links = []
         
     for query in d.keys():
+        print(query)
         links = d[query]['1_xy']
         #print(links)
         for link in links:
@@ -121,10 +125,21 @@ for search_engine in search_engines:
     print(df.groupby('query').wikipedia_appears.agg(any))
 
     print('The incidence rate is')
-    print(df.groupby('query').wikipedia_appears.agg(any).mean())
+    inc_rate = df.groupby('query').wikipedia_appears.agg(any).mean()
+    print(inc_rate)
 
     print('The top-quarter incidence rate is')
-    print(df[df.grid_bottom <= 0.25].groupby('query').wikipedia_appears.agg(any).mean())
+    top_quarter_inc_rate = df[df.grid_bottom <= 0.25].groupby('query').wikipedia_appears.agg(any).mean()
+    print(top_quarter_inc_rate)
+
+    row_dicts.append({
+        'search_engine': search_engine,
+        'device': device,
+        'inc_rate': inc_rate,
+        'top_quarter_inc_rate': top_quarter_inc_rate,
+    })
 
 
 # %%
+results_df = pd.DataFrame(row_dicts)
+results_df
