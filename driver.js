@@ -12,7 +12,7 @@ const search_engines = [
     //'duckduckgo',
 ];
 const query_lists = [
-    'trend_sample',
+    'top10',
 
 ]
 const configs = [];
