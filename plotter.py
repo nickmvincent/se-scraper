@@ -7,23 +7,10 @@ import pandas as pd
 import numpy as np
 from urllib.parse import urlparse
 import seaborn as sns
-
+import glob
 
 #%%
-device = 'desktop'
-search_engines = [
-    'google',
-    'bing',
-    #'duckduckgo',
-]
-queries = 'trend_sample'
-
-
-full_width = 10
-full_height = 8
-
-row_dicts = []
-
+# Helpers
 def extract(x):
     domain = urlparse(x.href).netloc
     try:
@@ -32,68 +19,120 @@ def extract(x):
         ret = domain
     return ret
 
+#%%
+# Display parameters
+full_width = 8
+full_height = 8
+
 
 #%%
+# Experiment parameters (which experiments to load)
+device = 'desktop'
+search_engines = [
+    'google',
+    'bing',
+    'duckduckgo',
+]
+queries = 'top'
+# toss results in here for easy dataframe creation
+row_dicts = []
+
+#%%
+dfs = {}
+
+err_queries = {}
+query_dfs = {}
 for search_engine in search_engines:
+    print('Search engine:', search_engine)
     k = f'{device}_{search_engine}_{queries}'
 
-    with open(f'output/{device}/{search_engine}/{queries}/results.json', 'r', encoding='utf8') as f:
+    folder = f'scraper_output/{device}/{search_engine}/{queries}'
+
+    with open(f'{folder}/results.json', 'r', encoding='utf8') as f:
         d = json.load(f)
+
+    images = glob.glob(f'{folder}/*.png')
+    print('# images', len(images))
     all_links = []
+    err_queries[search_engine] = {}
+    dfs[search_engine] = {}
         
+    n_queries = len(d.keys())
+    print('# queries collected:', n_queries)
     for query in d.keys():
-        print(query)
-        links = d[query]['1_xy']
-        #print(links)
-        for link in links:
-            #print(link)
-            link['query'] = query
-        all_links += links
+        #print(query)
+        try:
+            links = d[query]['1_xy']
+            #print(links)
+            for link in links:
+                #print(link)
+                link['query'] = query
+            all_links += links
+            query_dfs[search_engines][query] = pd.DataFrame(links)
+        except:
+            err_queries[search_engine][query] = d[query]
+    dfs[search_engine] = pd.DataFrame(all_links)
+    print('# errs', len(err_queries[search_engine]))
 
-    df = pd.DataFrame(all_links)
+#%%
+dfs['google']
 
+#%%
+def norm_df(df):
     df['width'] = df.right - df.left
     df['height'] = df.bottom - df.top
-    print(df.head(3))
 
+    # normalize all x-axis values relative to rightmost point
     for key in ['width', 'left', 'right']:
         df['norm_{}'.format(key)] = df[key] / df['right'].max()
 
+    # normalize all y-axis values relative to bottommost point
     for key in ['height', 'top', 'bottom']:
         df['norm_{}'.format(key)] = df[key] / df['bottom'].max()
 
     df['domain'] = df.apply(extract, axis=1)
+
     df['platform_ugc'] = df['domain'].str.contains('|'.join(
         ['wikipedia', 'twitter', 'facebook', 'instagram', 'reddit', ]
     ))
     df['wikipedia_appears'] = df['domain'].str.contains('wikipedia')
-
-    fig,ax = plt.subplots(1, 1, figsize=(full_width, full_height))
-    plt.gca().invert_yaxis()
+    return df
 
 
-    for i_row, row in df.iterrows():
-        if row.width == 0:
-            continue
+#%%
+for search_engine in search_engines:
+    df = dfs[search_engine]
+    df = norm_df(df)
+    ratio = df['bottom'].max() / df['right'].max()
 
-        x = row['norm_left']
-        y = row['norm_bottom']
-        width = row['norm_width']
-        height = row['norm_height']
-        domain = row['domain']
-
-        rect = matplotlib.patches.Rectangle((x,y),width,height,linewidth=1,edgecolor='g',facecolor='none')
-        if row['platform_ugc']:
-            color = 'b'
-        elif 'google' in domain:
-            color = 'lightgray'
+    for query in list(query_dfs.keys()) + [None]:
+        if query:
+            subdf = df[df['query'] == query]
         else:
-            color = 'grey'
-        plt.annotate(domain, (x, y), color=color)
-        # Add the patch to the Axes
-        ax.add_patch(rect)
+            subdf = df
+        fig, ax = plt.subplots(1, 1, figsize=(full_width, full_width * height))
+        plt.gca().invert_yaxis()
+        for i_row, row in subdf.iterrows():
+            if row.width == 0:
+                continue
+            x = row['norm_left']
+            y = row['norm_bottom']
+            width = row['norm_width']
+            height = row['norm_height']
+            domain = row['domain']
 
-    plt.savefig(f'reports/{k}_overlaid.png')
+            if row['platform_ugc']:
+                color = 'b'
+            elif 'google' in domain:
+                color = 'lightgray'
+            else:
+                color = 'grey'
+            plt.annotate(domain, (x, y), color=color)
+            # Add the patch to the Axes
+            rect = matplotlib.patches.Rectangle((x,y),width,height,linewidth=1,edgecolor=color,facecolor='none')
+            ax.add_patch(rect)
+
+            plt.savefig(f'reports/{k}_{query}_overlaid.png')
 
     roundto = 1
     df['grid_left'] = np.round(df['norm_left'], roundto)
@@ -132,14 +171,21 @@ for search_engine in search_engines:
     top_quarter_inc_rate = df[df.grid_bottom <= 0.25].groupby('query').wikipedia_appears.agg(any).mean()
     print(top_quarter_inc_rate)
 
+    print('The upper left incidence rate is')
+    upper_left_inc_rate = df[(df.grid_bottom <= 0.5) & (df.grid_left <= 0.5)].groupby('query').wikipedia_appears.agg(any).mean()
+    print(upper_left_inc_rate)
+
     row_dicts.append({
         'search_engine': search_engine,
         'device': device,
         'inc_rate': inc_rate,
         'top_quarter_inc_rate': top_quarter_inc_rate,
+        'upper_left_inc_rate': upper_left_inc_rate,
     })
 
 
 # %%
 results_df = pd.DataFrame(row_dicts)
 results_df
+
+# %%

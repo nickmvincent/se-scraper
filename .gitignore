@@ -1,4 +1,6 @@
 output/
+scraper_output/
+reports/
 .DS_Store
 
 

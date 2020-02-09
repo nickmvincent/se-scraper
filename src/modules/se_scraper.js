@@ -281,7 +281,7 @@ module.exports = class Scraper {
                         // TODO: not sure if this is save!
                         html_contents = html_contents.replace(/>\s+</g,'><');
                         this.results[keyword][htmlKey] = html_contents;
-                        fs.writeFileSync(this.config.output_file + '.html', html_contents, (err) => {
+                        fs.writeFileSync(`${this.config.output_file}_${keyword}.html`, html_contents, (err) => {
                             if (err) throw err;
                         });
                     }
