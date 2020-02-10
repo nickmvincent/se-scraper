@@ -56,8 +56,14 @@ module.exports = class Scraper {
         if (page) {
             this.page = page;
         }
-
-        await this.page.setViewport({ width: 1920, height: 1040 });
+        
+        if (this.config.mobile) {
+            const devices = require('puppeteer/DeviceDescriptors');
+            const iPhonex = devices['iPhone X'];
+            await this.page.emulate(iPhonex);
+        } else {
+            await this.page.setViewport({ width: 1920, height: 1040 });
+        }
         let do_continue = true;
 
         if (this.config.scrape_from_file.length <= 0) {

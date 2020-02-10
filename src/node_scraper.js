@@ -205,17 +205,17 @@ class ScrapeManager {
             '--disable-accelerated-2d-canvas',
             '--disable-gpu',
             //'--window-size=640,640',
-            //'--window-size=1920,1040',
+            '--window-size=1920,1040',
             //'--start-fullscreen',
             '--hide-scrollbars',
             '--disable-notifications',
         ];
-        if (this.config.mobile) {
-            default_chrome_flags.push('--window-size=750,1334')
-        } else {
-            default_chrome_flags.push('--window-size=1920,1040');
-            default_chrome_flags.push('--start-fullscreen');
-        }
+        // if (this.config.mobile) {
+        //     default_chrome_flags.push('--window-size=640,1136')
+        // } else {
+        //     default_chrome_flags.push('--window-size=1920,1040');
+        //     default_chrome_flags.push('--start-fullscreen');
+        // }
         
 
         var chrome_flags = default_chrome_flags.slice(); // copy that
@@ -264,6 +264,8 @@ class ScrapeManager {
             launch_args.config = this.config;
             this.browser = await this.pluggable.start_browser(launch_args);
             this.page = await this.browser.newPage();
+            
+            
         } else {
             // if no custom start_browser functionality was given
             // use puppeteer-cluster for scraping
