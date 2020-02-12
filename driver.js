@@ -2,19 +2,23 @@ const se_scraper = require('./index.js');
 
 const mkdirp = require('mkdirp');
 
-const devices = [
-    'desktop',
+//const devices = [
+    //'desktop',
     //'mobile',
-];
+//];
 const search_engines = [
-    //'google',
+    'google',
     'bing',
-    //'duckduckgo',
+    'duckduckgo',
 ];
-const query_lists = [
-    'top10',
+//const search_engines = process.argv.slice(2);
+/*const query_lists = [
+    'top', 'trend', 'med',
+]*/
+const myArgs  = process.argv.slice(2);
+const query_lists = [myArgs[0]];
+const devices = [myArgs[1]];
 
-]
 const configs = [];
 
 for (const device of devices) {
@@ -81,7 +85,7 @@ for (const config of configs) {
         // http://118.174.233.10:48400
         proxy_file: '',
         puppeteer_cluster_config: {
-            timeout: 10 * 60 * 1000, // max timeout set to 10 minutes
+            timeout: 300 * 400 * 1000, // max timeout set to 10 minutes
             monitor: false,
             concurrency: 1, // one scraper per tab
             maxConcurrency: 1, // scrape with 1 tab
@@ -108,7 +112,7 @@ for (const config of configs) {
             // is drawn before every request. empty string for no sleeping.
             keywords: keywords,
             // see here for sleep range https://github.com/NikolaiT/se-scraper/issues/19
-            sleep_range: [5, 10],
+            sleep_range: [70, 300],
             // path to output file, data will be stored in JSON
             output_file: output_file,
             // whether to prevent images, css, fonts from being loaded
