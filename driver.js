@@ -16,8 +16,20 @@ const search_engines = [
     'top', 'trend', 'med',
 ]*/
 const myArgs  = process.argv.slice(2);
-const query_lists = [myArgs[0]];
-const devices = [myArgs[1]];
+
+const devices = [myArgs[0]];
+let search_engines = [];
+if (myArgs[1] == 'all'){
+    search_engines = [
+        'google',
+        'bing',
+        'duckduckgo',
+    ];
+} else {
+    search_engines = [myArgs[1]];
+}
+const query_lists = [myArgs[2]];
+
 
 const configs = [];
 
@@ -67,7 +79,7 @@ for (const config of configs) {
         // level 1: print most important info
         // ...
         // level 4: print all shit nobody wants to know
-        debug_level: 1,
+        debug_level: 2,
         // specify flags passed to chrome here
         chrome_flags: [],
         // path to js module that extends functionality

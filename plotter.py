@@ -20,81 +20,6 @@ def extract(x):
     return ret
 
 #%%
-# Display parameters
-full_width = 8
-full_height = 8
-
-
-#%%
-# Experiment parameters (which experiments to load)
-devices = [
-    'desktop',
-    #'mobile'
-]
-search_engines = [
-    'google',
-    'bing',
-    #'duckduckgo',
-]
-query_sets = [
-    'trend'
-]
-configs = []
-for device in devices:
-    for search_engine in search_engines:
-        for queries in query_sets:
-            configs.append({
-                'device': device,
-                'search_engine': search_engine,
-                'queries': queries,
-            })
-
-
-#%%
-dfs = {}
-
-err_queries = {}
-query_dfs = {}
-for config in configs:
-    device = config['device']
-    search_engine = config['search_engine']
-    queries = config['queries']
-
-    print('Search engine:', search_engine)
-    k = f'{device}_{search_engine}_{queries}'
-
-    folder = f'scraper_output/{device}/{search_engine}/{queries}'
-
-    with open(f'{folder}/results.json', 'r', encoding='utf8') as f:
-        d = json.load(f)
-
-    images = glob.glob(f'{folder}/*.png')
-    print('# images', len(images))
-    all_links = []
-    err_queries[search_engine] = {}
-    query_dfs[search_engine] = {}
-        
-    n_queries = len(d.keys())
-    print('# queries collected:', n_queries)
-    for query in d.keys():
-        #print(query)
-        try:
-            links = d[query]['1_xy']
-            #print(links)
-            for link in links:
-                #print(link)
-                link['query'] = query
-            all_links += links
-            query_dfs[search_engine][query] = pd.DataFrame(links)
-        except KeyError:
-            err_queries[search_engine][query] = d[query]
-    dfs[search_engine] = pd.DataFrame(all_links)
-    print('# errs', len(err_queries[search_engine]))
-
-#%%
-err_queries
-
-#%%
 def norm_df(df):
     df['width'] = df.right - df.left
     df['height'] = df.bottom - df.top
@@ -131,9 +56,121 @@ def norm_df(df):
         (df['wikipedia_appears']) &
         (df.norm_top > noscroll_line)
     )
-
     
     return df
+
+#%%
+# Display parameters
+full_width = 8
+full_height = 8
+
+
+#%%
+# Experiment parameters (which experiments to load)
+devices = [
+    'desktop',
+    'mobile'
+]
+search_engines = [
+    'google',
+    'bing',
+    'duckduckgo',
+]
+query_sets = [
+    'top',
+    'med',
+]
+configs = []
+for device in devices:
+    for search_engine in search_engines:
+        for queries in query_sets:
+            configs.append({
+                'device': device,
+                'search_engine': search_engine,
+                'queries': queries,
+            })
+
+
+#%%
+from collections import defaultdict
+
+infinite_defaultdict = lambda: defaultdict(infinite_defaultdict)
+dfs = infinite_defaultdict()
+# device, search_engine, queries
+
+err_queries = infinite_defaultdict()
+query_dfs = infinite_defaultdict()
+for config in configs:
+    device = config['device']
+    search_engine = config['search_engine']
+    queries = config['queries']
+
+    print(device, search_engine, queries)
+    k = f'{device}_{search_engine}_{queries}'
+
+    folder = f'scraper_output/{device}/{search_engine}/{queries}'
+
+    try:
+        with open(f'{folder}/results.json', 'r', encoding='utf8') as f:
+            d = json.load(f)
+    except FileNotFoundError:
+        print('  ...Skipping')
+        continue
+
+    images = glob.glob(f'{folder}/*.png')
+    print('  # images', len(images))
+    all_links = []
+        
+    n_queries = len(d.keys())
+    print('  # queries collected:', n_queries)
+    if len(images) != n_queries:
+        print('  Mismatch')
+    for query in d.keys():
+        #print(query)
+        try:
+            links = d[query]['1_xy']
+            #print(links)
+            for link in links:
+                #print(link)
+                link['query'] = query
+            all_links += links
+            query_dfs[device][search_engine][queries][query] = pd.DataFrame(links)
+        except KeyError:
+            err_queries[device][search_engine][queries][search_engine][query] = d[query]
+    dfs[device][search_engine][queries] = pd.DataFrame(all_links)
+    print('  # errs', len(err_queries[search_engine]))
+
+#%%
+err_queries
+
+#%%
+# let's see which queries we're missing and write a new file to scrape them
+cmds = []
+for config in configs:
+    device = config['device']
+    search_engine = config['search_engine']
+    queries = config['queries']
+
+    cur_queries = list(query_dfs[device][search_engine][queries].keys())
+
+    with open(f'search_queries/prepped/{queries}.txt', 'r') as f:
+        lines = f.read().splitlines()
+    print(device, search_engine, queries)
+    #print(set(lines))
+    #print(set(cur_queries))
+    missing = set(lines) - set(cur_queries)
+    print(  'Missing')
+    print(  missing)
+    if missing:
+        with open(f'search_queries/prepped/errs_{device}_{search_engine}_{queries}.txt', 'w') as f:
+            f.write('\n'.join(list(missing)))
+        cmds.append(
+            f'/usr/bin/time -v node driver.js {device} {search_engine} {queries}  &> logs/errs_{device}_{search_engine}_{queries}.txt'
+        )
+with open(f'errs.sh', 'w') as f:
+    f.write('\n'.join(cmds))
+
+
 
 
 #%%
@@ -143,14 +180,15 @@ for config in configs:
     queries = config['queries']
 
     print(device, search_engine, queries)
-    df = dfs[search_engine]
+    df = dfs[device][search_engine][queries]
     df = norm_df(df)
     right_max = df['right'].max()
     bot_max = df['bottom'].max()
     ratio = bot_max / right_max
     k = f'{device}_{search_engine}_{queries}'
 
-    for query in list(query_dfs[search_engine].keys()) + [None]:
+    cur_queries = list(query_dfs[device][search_engine][queries].keys())
+    for query in cur_queries + [None]:
         
         if query:
             subdf = df[df['query'] == query]
@@ -205,8 +243,9 @@ for config in configs:
     queries = config['queries']
 
     print(device, search_engine, queries)
-
-    df = dfs[search_engine]
+    df = dfs[device][search_engine][queries]
+    if type(df) == defaultdict:
+        continue
     df = norm_df(df)
     roundto = 1
     df['grid_left'] = np.round(df['norm_left'], roundto)
@@ -281,6 +320,12 @@ for _, row in results_df.iterrows():
     print(row[['device', 'queries', 'search_engine', 'inc_rate']])
     print(row['matches'])
 #results_df[['device', 'queries', 'search_engine', 'inc_rate', 'matches']]
+
+
+# %%
+results_df[['device', 'queries', 'search_engine', 'inc_rate', 'kp_inc_rate', 'noscroll_inc_rate']][
+    (results_df.search_engine == 'google') & (results_df.queries == 'med')
+]
 
 
 # %%
