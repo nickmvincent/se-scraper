@@ -27,22 +27,39 @@ full_height = 8
 
 #%%
 # Experiment parameters (which experiments to load)
-device = 'desktop'
+devices = [
+    'desktop',
+    #'mobile'
+]
 search_engines = [
     'google',
     'bing',
-    'duckduckgo',
+    #'duckduckgo',
 ]
-queries = 'top'
-# toss results in here for easy dataframe creation
-row_dicts = []
+query_sets = [
+    'trend'
+]
+configs = []
+for device in devices:
+    for search_engine in search_engines:
+        for queries in query_sets:
+            configs.append({
+                'device': device,
+                'search_engine': search_engine,
+                'queries': queries,
+            })
+
 
 #%%
 dfs = {}
 
 err_queries = {}
 query_dfs = {}
-for search_engine in search_engines:
+for config in configs:
+    device = config['device']
+    search_engine = config['search_engine']
+    queries = config['queries']
+
     print('Search engine:', search_engine)
     k = f'{device}_{search_engine}_{queries}'
 
@@ -55,7 +72,7 @@ for search_engine in search_engines:
     print('# images', len(images))
     all_links = []
     err_queries[search_engine] = {}
-    dfs[search_engine] = {}
+    query_dfs[search_engine] = {}
         
     n_queries = len(d.keys())
     print('# queries collected:', n_queries)
@@ -68,60 +85,96 @@ for search_engine in search_engines:
                 #print(link)
                 link['query'] = query
             all_links += links
-            query_dfs[search_engines][query] = pd.DataFrame(links)
-        except:
+            query_dfs[search_engine][query] = pd.DataFrame(links)
+        except KeyError:
             err_queries[search_engine][query] = d[query]
     dfs[search_engine] = pd.DataFrame(all_links)
     print('# errs', len(err_queries[search_engine]))
 
 #%%
-dfs['google']
+err_queries
 
 #%%
 def norm_df(df):
     df['width'] = df.right - df.left
     df['height'] = df.bottom - df.top
+    right_max = df['right'].max()
+    bot_max = df['bottom'].max()
 
     # normalize all x-axis values relative to rightmost point
     for key in ['width', 'left', 'right']:
-        df['norm_{}'.format(key)] = df[key] / df['right'].max()
+        df['norm_{}'.format(key)] = df[key] / right_max
 
     # normalize all y-axis values relative to bottommost point
     for key in ['height', 'top', 'bottom']:
-        df['norm_{}'.format(key)] = df[key] / df['bottom'].max()
+        df['norm_{}'.format(key)] = df[key] / bot_max
 
     df['domain'] = df.apply(extract, axis=1)
 
     df['platform_ugc'] = df['domain'].str.contains('|'.join(
         ['wikipedia', 'twitter', 'facebook', 'instagram', 'reddit', ]
     ))
-    df['wikipedia_appears'] = df['domain'].str.contains('wikipedia')
+    df['wikipedia_in'] = df['domain'].str.contains('wikipedia')
+    df['wikipedia_appears'] = (
+        df['domain'].str.contains('wikipedia') &
+        (df.width != 0) & (df.height != 0)
+    )
+    kp_line = 780 / right_max
+    noscroll_line = 670 / bot_max
+
+    df['wikipedia_appears_kp'] = (
+        (df['wikipedia_appears']) &
+        (df.norm_left > kp_line)
+    )
+
+    df['wikipedia_appears_noscroll'] = (
+        (df['wikipedia_appears']) &
+        (df.norm_top > noscroll_line)
+    )
+
+    
     return df
 
 
 #%%
-for search_engine in search_engines:
+for config in configs:
+    device = config['device']
+    search_engine = config['search_engine']
+    queries = config['queries']
+
+    print(device, search_engine, queries)
     df = dfs[search_engine]
     df = norm_df(df)
-    ratio = df['bottom'].max() / df['right'].max()
+    right_max = df['right'].max()
+    bot_max = df['bottom'].max()
+    ratio = bot_max / right_max
+    k = f'{device}_{search_engine}_{queries}'
 
-    for query in list(query_dfs.keys()) + [None]:
+    for query in list(query_dfs[search_engine].keys()) + [None]:
+        
         if query:
             subdf = df[df['query'] == query]
         else:
             subdf = df
-        fig, ax = plt.subplots(1, 1, figsize=(full_width, full_width * height))
+        fig, ax = plt.subplots(1, 1, figsize=(full_width, full_width * ratio))
         plt.gca().invert_yaxis()
+        #print('Query:', query, '# links', len(subdf))
         for i_row, row in subdf.iterrows():
-            if row.width == 0:
+            if row.width == 0 or row.height == 0:
                 continue
             x = row['norm_left']
             y = row['norm_bottom']
             width = row['norm_width']
             height = row['norm_height']
+            # x = row['left']
+            # y = row['bottom']
+            # width = row['width']
+            # height = row['height']
             domain = row['domain']
 
-            if row['platform_ugc']:
+            if row['wikipedia_appears']:
+                color = 'g'
+            elif row['platform_ugc']:
                 color = 'b'
             elif 'google' in domain:
                 color = 'lightgray'
@@ -132,16 +185,36 @@ for search_engine in search_engines:
             rect = matplotlib.patches.Rectangle((x,y),width,height,linewidth=1,edgecolor=color,facecolor='none')
             ax.add_patch(rect)
 
-            plt.savefig(f'reports/{k}_{query}_overlaid.png')
+        kp_line = 820 / right_max
+        scroll_line = 670 / bot_max
+        border_line = 900 / bot_max
+        plt.axvline(kp_line)
+        plt.axvline(border_line)
+        plt.axhline(scroll_line)
 
+        #print(full_width, full_width * ratio)
+        plt.savefig(f'reports/overlays/{k}_{query}.png')
+        plt.close()
+
+#%%
+# toss results in here for easy dataframe creation
+row_dicts = []
+for config in configs:
+    device = config['device']
+    search_engine = config['search_engine']
+    queries = config['queries']
+
+    print(device, search_engine, queries)
+
+    df = dfs[search_engine]
+    df = norm_df(df)
     roundto = 1
     df['grid_left'] = np.round(df['norm_left'], roundto)
     df['grid_bottom'] = np.round(df['norm_bottom'], roundto)
     df['grid_width'] = np.round(df['norm_width'], roundto)
     df['grid_height'] = np.round(df['norm_height'], roundto)
-    print(df.head(3))
 
-    gridded = df[df.wikipedia_appears == True].groupby(['grid_left', 'grid_bottom']).wikipedia_appears.sum().unstack(level=0).fillna(0)
+    gridded = df[(df.wikipedia_appears == True) & (df.width !=0)].groupby(['grid_left', 'grid_bottom']).wikipedia_appears.sum().unstack(level=0).fillna(0)
     num_queries = len(set(df['query']))
     print('num_queries', num_queries)
     heatmap_points = np.zeros((11, 11))
@@ -161,31 +234,53 @@ for search_engine in search_engines:
     hmap = sns.heatmap(heatmap_points, ax=ax)
     hfig.savefig(f'reports/{k}_heatmap.png')
     print(search_engine)
-    print(df.groupby('query').wikipedia_appears.agg(any))
+    #print(df.groupby('query').wikipedia_appears.agg(any))
 
     print('The incidence rate is')
     inc_rate = df.groupby('query').wikipedia_appears.agg(any).mean()
     print(inc_rate)
 
+    matches = set(df[df.wikipedia_appears == True]['query'])
+
     print('The top-quarter incidence rate is')
     top_quarter_inc_rate = df[df.grid_bottom <= 0.25].groupby('query').wikipedia_appears.agg(any).mean()
     print(top_quarter_inc_rate)
 
-    print('The upper left incidence rate is')
-    upper_left_inc_rate = df[(df.grid_bottom <= 0.5) & (df.grid_left <= 0.5)].groupby('query').wikipedia_appears.agg(any).mean()
-    print(upper_left_inc_rate)
+    # print('The upper left incidence rate is')
+    # upper_left_inc_rate = df[(df.grid_bottom <= 0.5) & (df.grid_left <= 0.5)].groupby('query').wikipedia_appears.agg(any).mean()
+    # print(upper_left_inc_rate)
+
+    print('The kp incidence rate is')
+    kp_inc_rate = df.groupby('query').wikipedia_appears_kp.agg(any).mean()
+    print(kp_inc_rate)
+
+    print('The no scroll incidence rate is')
+    noscroll_inc_rate = df.groupby('query').wikipedia_appears_noscroll.agg(any).mean()
+    print(noscroll_inc_rate)
 
     row_dicts.append({
+        'queries': queries,
         'search_engine': search_engine,
         'device': device,
         'inc_rate': inc_rate,
-        'top_quarter_inc_rate': top_quarter_inc_rate,
-        'upper_left_inc_rate': upper_left_inc_rate,
+        #'top_quarter_inc_rate': top_quarter_inc_rate,
+        # 'upper_left_inc_rate': upper_left_inc_rate,
+        'kp_inc_rate': kp_inc_rate,
+        'noscroll_inc_rate': noscroll_inc_rate,
+        'matches': matches
     })
 
 
 # %%
 results_df = pd.DataFrame(row_dicts)
-results_df
+results_df[['device', 'queries', 'search_engine', 'inc_rate', 'kp_inc_rate', 'noscroll_inc_rate']]
+
+
+# %%
+for _, row in results_df.iterrows():
+    print(row[['device', 'queries', 'search_engine', 'inc_rate']])
+    print(row['matches'])
+#results_df[['device', 'queries', 'search_engine', 'inc_rate', 'matches']]
+
 
 # %%
