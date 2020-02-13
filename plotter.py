@@ -45,7 +45,8 @@ def norm_df(df):
         (df.width != 0) & (df.height != 0)
     )
     kp_line = 780 / right_max
-    noscroll_line = 670 / bot_max
+    # source
+    noscroll_line = 789 / bot_max
 
     df['wikipedia_appears_kp'] = (
         (df['wikipedia_appears']) &
@@ -62,8 +63,6 @@ def norm_df(df):
 #%%
 # Display parameters
 full_width = 8
-full_height = 8
-
 
 #%%
 # Experiment parameters (which experiments to load)
@@ -125,8 +124,10 @@ for config in configs:
     print('  # queries collected:', n_queries)
     if len(images) != n_queries:
         print('  Mismatch')
+        # see if we already collected the erroneous queries
+    
+    num_errs = 0
     for query in d.keys():
-        #print(query)
         try:
             links = d[query]['1_xy']
             #print(links)
@@ -137,6 +138,21 @@ for config in configs:
             query_dfs[device][search_engine][queries][query] = pd.DataFrame(links)
         except KeyError:
             err_queries[device][search_engine][queries][search_engine][query] = d[query]
+            num_errs += 1
+    if num_errs > 0:
+        print('# errs,', num_errs)
+        try:
+            err_folder = f'scraper_output/{device}/{search_engine}/err_{device}_{search_engine}_{queries}'
+        with open(f'{err_folder}/results.json', 'r', encoding='utf8') as f:
+            err_d = json.load(f)
+            try:
+                links = err_d[query]['1_xy']
+                for link in links:
+                    link['query'] = query
+                all_links += links
+                query_dfs[device][search_engine][queries][query] = pd.DataFrame(links)
+            except KeyError:
+                print('Error in the "err" file. Manually check!')
     dfs[device][search_engine][queries] = pd.DataFrame(all_links)
     print('  # errs', len(err_queries[search_engine]))
 
@@ -165,7 +181,7 @@ for config in configs:
         with open(f'search_queries/prepped/errs_{device}_{search_engine}_{queries}.txt', 'w') as f:
             f.write('\n'.join(list(missing)))
         cmds.append(
-            f'/usr/bin/time -v node driver.js {device} {search_engine} {queries}  &> logs/errs_{device}_{search_engine}_{queries}.txt'
+            f'/usr/bin/time -v node driver.js {device} {search_engine} errs_{device}_{search_engine}_{queries} &> logs/errs_{device}_{search_engine}_{queries}.txt'
         )
 with open(f'errs.sh', 'w') as f:
     f.write('\n'.join(cmds))

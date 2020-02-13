@@ -32,6 +32,7 @@ module.exports = class Scraper {
         this.proxy = config.proxy;
         this.keywords = config.keywords;
 
+        // TODO investigate this...
         this.STANDARD_TIMEOUT = 10000;
         this.SOLVE_CAPTCHA_TIME = 45000;
 
@@ -284,7 +285,6 @@ module.exports = class Scraper {
 
                         let html_contents = await this.page.content();
                         // https://stackoverflow.com/questions/27841112/how-to-remove-white-space-between-html-tags-using-javascript
-                        // TODO: not sure if this is save!
                         html_contents = html_contents.replace(/>\s+</g,'><');
                         this.results[keyword][htmlKey] = html_contents;
                         fs.writeFileSync(`${this.config.output_file}_${keyword}.html`, html_contents, (err) => {
@@ -317,7 +317,7 @@ module.exports = class Scraper {
                     log(this.config, 2, this.last_response);
                 }
 
-                if (this.config.debug_level > 2) {
+                if (this.config.debug_level > 0) {
                     try {
                         // Try to save a screenshot of the error
                         await this.page.screenshot({path: `debug_se_scraper_${this.config.search_engine_name}_${keyword}.png`});
