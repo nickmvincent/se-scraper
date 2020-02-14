@@ -26,6 +26,8 @@ def norm_df(df):
     right_max = df['right'].max()
     bot_max = df['bottom'].max()
 
+    
+
     # normalize all x-axis values relative to rightmost point
     for key in ['width', 'left', 'right']:
         df['norm_{}'.format(key)] = df[key] / right_max
@@ -45,7 +47,7 @@ def norm_df(df):
         (df.width != 0) & (df.height != 0)
     )
     kp_line = 780 / right_max
-    # source
+    # source: 
     noscroll_line = 789 / bot_max
 
     df['wikipedia_appears_kp'] = (
@@ -55,6 +57,11 @@ def norm_df(df):
 
     df['wikipedia_appears_noscroll'] = (
         (df['wikipedia_appears']) &
+        (df.norm_top > noscroll_line)
+    )
+
+    df['wikipedia_appears_kpnoscroll'] = (
+        (df['wikipedia_appears_kp']) &
         (df.norm_top > noscroll_line)
     )
     
@@ -78,6 +85,7 @@ search_engines = [
 query_sets = [
     'top',
     'med',
+    'trend',
 ]
 configs = []
 for device in devices:
@@ -142,17 +150,21 @@ for config in configs:
     if num_errs > 0:
         print('# errs,', num_errs)
         try:
-            err_folder = f'scraper_output/{device}/{search_engine}/err_{device}_{search_engine}_{queries}'
-        with open(f'{err_folder}/results.json', 'r', encoding='utf8') as f:
-            err_d = json.load(f)
-            try:
-                links = err_d[query]['1_xy']
-                for link in links:
-                    link['query'] = query
-                all_links += links
-                query_dfs[device][search_engine][queries][query] = pd.DataFrame(links)
-            except KeyError:
-                print('Error in the "err" file. Manually check!')
+            err_folder = f'scraper_output/{device}/{search_engine}/errs_{device}_{search_engine}_{queries}'
+            with open(f'{err_folder}/results.json', 'r', encoding='utf8') as f:
+                err_d = json.load(f)
+                print('Loaded errfile')
+                for query in err_d.keys():
+                    links = err_d[query]['1_xy']
+                    for link in links:
+                        link['query'] = query
+                    all_links += links
+                    query_dfs[device][search_engine][queries][query] = pd.DataFrame(links)
+
+            print('success!')
+        except Exception as e:
+            print(e)
+
     dfs[device][search_engine][queries] = pd.DataFrame(all_links)
     print('  # errs', len(err_queries[search_engine]))
 
@@ -162,6 +174,8 @@ err_queries
 #%%
 # let's see which queries we're missing and write a new file to scrape them
 cmds = []
+# manual increment
+itera = 2
 for config in configs:
     device = config['device']
     search_engine = config['search_engine']
@@ -169,7 +183,7 @@ for config in configs:
 
     cur_queries = list(query_dfs[device][search_engine][queries].keys())
 
-    with open(f'search_queries/prepped/{queries}.txt', 'r') as f:
+    with open(f'search_queries/prepped/{queries}.txt', 'r', encoding='utf8') as f:
         lines = f.read().splitlines()
     print(device, search_engine, queries)
     #print(set(lines))
@@ -178,7 +192,9 @@ for config in configs:
     print(  'Missing')
     print(  missing)
     if missing:
-        with open(f'search_queries/prepped/errs_{device}_{search_engine}_{queries}.txt', 'w') as f:
+        with open(
+            f'search_queries/prepped/errs{itera}_{device}_{search_engine}_{queries}.txt',
+            'w', encoding='utf8') as f:
             f.write('\n'.join(list(missing)))
         cmds.append(
             f'/usr/bin/time -v node driver.js {device} {search_engine} errs_{device}_{search_engine}_{queries} &> logs/errs_{device}_{search_engine}_{queries}.txt'
@@ -197,6 +213,8 @@ for config in configs:
 
     print(device, search_engine, queries)
     df = dfs[device][search_engine][queries]
+    if type(df) == defaultdict:
+        continue
     df = norm_df(df)
     right_max = df['right'].max()
     bot_max = df['bottom'].max()
@@ -228,8 +246,8 @@ for config in configs:
 
             if row['wikipedia_appears']:
                 color = 'g'
-            elif row['platform_ugc']:
-                color = 'b'
+            # elif row['platform_ugc']:
+            #     color = 'b'
             elif 'google' in domain:
                 color = 'lightgray'
             else:
@@ -242,9 +260,9 @@ for config in configs:
         kp_line = 820 / right_max
         scroll_line = 670 / bot_max
         border_line = 900 / bot_max
-        plt.axvline(kp_line)
-        plt.axvline(border_line)
-        plt.axhline(scroll_line)
+        plt.axvline(kp_line, color='r')
+        plt.axvline(border_line, color='k')
+        plt.axhline(scroll_line, color='k')
 
         #print(full_width, full_width * ratio)
         plt.savefig(f'reports/overlays/{k}_{query}.png')
@@ -259,59 +277,52 @@ for config in configs:
     queries = config['queries']
 
     print(device, search_engine, queries)
+    k = f'{device}_{search_engine}_{queries}'
     df = dfs[device][search_engine][queries]
     if type(df) == defaultdict:
         continue
     df = norm_df(df)
-    roundto = 1
-    df['grid_left'] = np.round(df['norm_left'], roundto)
-    df['grid_bottom'] = np.round(df['norm_bottom'], roundto)
-    df['grid_width'] = np.round(df['norm_width'], roundto)
-    df['grid_height'] = np.round(df['norm_height'], roundto)
+    roundto = -1
+    df['grid_right'] = np.round(df['right'], roundto)
+    df['grid_bottom'] = np.round(df['bottom'], roundto)
+    df['grid_width'] = np.round(df['width'], roundto)
+    df['grid_height'] = np.round(df['height'], roundto)
 
-    gridded = df[(df.wikipedia_appears == True) & (df.width !=0)].groupby(['grid_left', 'grid_bottom']).wikipedia_appears.sum().unstack(level=0).fillna(0)
-    num_queries = len(set(df['query']))
-    print('num_queries', num_queries)
-    heatmap_points = np.zeros((11, 11))
+    gridded = df[(df.wikipedia_appears == True) & (df.width!=0)].groupby(['grid_right', 'grid_bottom']).wikipedia_appears.sum().unstack(level=0).fillna(0)
+    # num_queries = len(set(df['query']))
+    # print('num_queries', num_queries)
+    heatmap_points = np.zeros((101, 101))
+
+    right_max = df['right'].max()
+    bot_max = df['bottom'].max()
 
     for ix in range(0, 11):
-        x = np.round(ix * 0.1, 1)
+        x = np.round(ix / 10 * right_max, roundto)
         for iy in range(0, 11):
-            y = np.round(iy * 0.1, 1)
-            #print(y, x)
+            y = np.round(iy / 100 * bot_max, roundto)
             try:
-                heatmap_points[iy, ix] = gridded.loc[y, x] / num_queries
+                heatmap_points[iy, ix] = gridded.loc[y, x]
             except KeyError:
                 heatmap_points[iy, ix] = 0
 
-
+    print(heatmap_points)
     hfig, ax = plt.subplots(1, 1)
     hmap = sns.heatmap(heatmap_points, ax=ax)
     hfig.savefig(f'reports/{k}_heatmap.png')
-    print(search_engine)
     #print(df.groupby('query').wikipedia_appears.agg(any))
 
-    print('The incidence rate is')
     inc_rate = df.groupby('query').wikipedia_appears.agg(any).mean()
-    print(inc_rate)
 
     matches = set(df[df.wikipedia_appears == True]['query'])
 
-    print('The top-quarter incidence rate is')
     top_quarter_inc_rate = df[df.grid_bottom <= 0.25].groupby('query').wikipedia_appears.agg(any).mean()
-    print(top_quarter_inc_rate)
 
-    # print('The upper left incidence rate is')
-    # upper_left_inc_rate = df[(df.grid_bottom <= 0.5) & (df.grid_left <= 0.5)].groupby('query').wikipedia_appears.agg(any).mean()
-    # print(upper_left_inc_rate)
 
-    print('The kp incidence rate is')
     kp_inc_rate = df.groupby('query').wikipedia_appears_kp.agg(any).mean()
-    print(kp_inc_rate)
 
-    print('The no scroll incidence rate is')
     noscroll_inc_rate = df.groupby('query').wikipedia_appears_noscroll.agg(any).mean()
-    print(noscroll_inc_rate)
+
+    kpnoscroll_inc_rate = df.groupby('query').wikipedia_appears_kpnoscroll.agg(any).mean()
 
     row_dicts.append({
         'queries': queries,
@@ -322,13 +333,54 @@ for config in configs:
         # 'upper_left_inc_rate': upper_left_inc_rate,
         'kp_inc_rate': kp_inc_rate,
         'noscroll_inc_rate': noscroll_inc_rate,
+        'kpnoscroll_inc_rate': kpnoscroll_inc_rate,
         'matches': matches
     })
-
+#%%
+df[(df.wikipedia_appears == True) & (df.width!=0)].groupby(['grid_right', 'grid_bottom']).wikipedia_appears.sum().unstack(level=0).fillna(0)
 
 # %%
+FP = 'Full-page incidence rate'
+RH = 'Right-hand incidence rate'
+AF = 'Above-the-fold incidence rate'
 results_df = pd.DataFrame(row_dicts)
-results_df[['device', 'queries', 'search_engine', 'inc_rate', 'kp_inc_rate', 'noscroll_inc_rate']]
+tmp = results_df[['device', 'search_engine', 'queries', 'inc_rate', 'kp_inc_rate', 'noscroll_inc_rate']]
+tmp.rename(columns={
+    'device': 'Device', 'search_engine': 'Search Engine',
+    'queries': 'Queries', 'inc_rate': FP,
+    'kp_inc_rate': RH,
+    'noscroll_inc_rate': AF,
+}, inplace=True)
+tmp.to_csv('reports/main.csv', float_format="%.2f", index=False)
+tmp
+
+
+#%%
+import seaborn as sns
+tmp2 = tmp.melt(id_vars=['Device', 'Search Engine', 'Queries'])
+g = sns.catplot(
+    x="Device", y="value",
+    hue="Search Engine", col="Queries", row='variable',
+    row_order=[FP, AF, RH],
+    data=tmp2, kind="bar",
+    height=4, ci=None)
+
+    
+
+#%%
+g = sns.catplot(
+    x="Search Engine", y="Right-hand incidence rate",
+    col="Queries",
+    data=tmp[tmp.Device == 'desktop'], kind="bar",
+    height=4, ci=None)
+
+#%%
+import seaborn as sns
+g = sns.catplot(
+    x="Search Engine", y="Above-the-fold incidence rate",
+    hue="Device", col="Queries",
+    data=tmp, kind="bar",
+    height=4, ci=None)
 
 
 # %%
@@ -340,8 +392,12 @@ for _, row in results_df.iterrows():
 
 # %%
 results_df[['device', 'queries', 'search_engine', 'inc_rate', 'kp_inc_rate', 'noscroll_inc_rate']][
-    (results_df.search_engine == 'google') & (results_df.queries == 'med')
+    (results_df.search_engine == 'duckduckgo') & (results_df.queries == 'med')
 ]
 
 
 # %%
+
+# which DDG cases have Right-hand but no AF?
+# mobile RH needs to be set to zero...
+# actually sample 10???
