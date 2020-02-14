@@ -19,14 +19,11 @@ def extract(x):
         ret = domain
     return ret
 
-#%%
 def norm_df(df):
     df['width'] = df.right - df.left
     df['height'] = df.bottom - df.top
     right_max = df['right'].max()
     bot_max = df['bottom'].max()
-
-    
 
     # normalize all x-axis values relative to rightmost point
     for key in ['width', 'left', 'right']:
@@ -41,29 +38,41 @@ def norm_df(df):
     df['platform_ugc'] = df['domain'].str.contains('|'.join(
         ['wikipedia', 'twitter', 'facebook', 'instagram', 'reddit', ]
     ))
-    df['wikipedia_in'] = df['domain'].str.contains('wikipedia')
-    df['wikipedia_appears'] = (
-        df['domain'].str.contains('wikipedia') &
-        (df.width != 0) & (df.height != 0)
-    )
-    kp_line = 780 / right_max
-    # source: 
-    noscroll_line = 789 / bot_max
 
-    df['wikipedia_appears_kp'] = (
-        (df['wikipedia_appears']) &
-        (df.norm_left > kp_line)
-    )
+    domains = [
+        'wikipedia',
+        'twitter','youtube', 'facebook',
+        'instagram', 'linkedin', 'yelp',
+        # 'cnn', 'foxnews', 'pinterest',
 
-    df['wikipedia_appears_noscroll'] = (
-        (df['wikipedia_appears']) &
-        (df.norm_top > noscroll_line)
-    )
+        # 'webmd', 'medicalnewstoday', 'mayoclinic',
+        # 'imdb', 'spotify', 
+        # 'yelp', 
+    ]
+    for domain in domains:
+        df[f'{domain}_in'] = df['domain'].str.contains(domain)
+        df[f'{domain}_appears'] = (
+            df['domain'].str.contains('wikipedia') &
+            (df.width != 0) & (df.height != 0)
+        )
+        kp_line = 780 / right_max
+        # source: 
+        noscroll_line = 789 / bot_max
 
-    df['wikipedia_appears_kpnoscroll'] = (
-        (df['wikipedia_appears_kp']) &
-        (df.norm_top > noscroll_line)
-    )
+        df[f'{domain}_appears_kp'] = (
+            (df[f'{domain}_appears']) &
+            (df.norm_left > kp_line)
+        )
+
+        df[f'{domain}_appears_noscroll'] = (
+            (df[f'{domain}_appears']) &
+            (df.norm_top > noscroll_line)
+        )
+
+        df[f'{domain}_appears_kpnoscroll'] = (
+            (df[f'{domain}_appears_kp']) &
+            (df.norm_top > noscroll_line)
+        )
     
     return df
 
@@ -111,8 +120,8 @@ for config in configs:
     device = config['device']
     search_engine = config['search_engine']
     queries = config['queries']
-
     print(device, search_engine, queries)
+
     k = f'{device}_{search_engine}_{queries}'
 
     folder = f'scraper_output/{device}/{search_engine}/{queries}'
@@ -149,23 +158,24 @@ for config in configs:
             num_errs += 1
     if num_errs > 0:
         print('# errs,', num_errs)
-        try:
-            err_folder = f'scraper_output/{device}/{search_engine}/errs_{device}_{search_engine}_{queries}'
-            with open(f'{err_folder}/results.json', 'r', encoding='utf8') as f:
-                err_d = json.load(f)
-                print('Loaded errfile')
-                for query in err_d.keys():
-                    links = err_d[query]['1_xy']
-                    for link in links:
-                        link['query'] = query
-                    all_links += links
-                    query_dfs[device][search_engine][queries][query] = pd.DataFrame(links)
+        for itera in [1,2]:
+            try:
+                err_folder = f'scraper_output/{device}/{search_engine}/errs{itera}_{device}_{search_engine}_{queries}'
+                with open(f'{err_folder}/results.json', 'r', encoding='utf8') as f:
+                    err_d = json.load(f)
+                    print('Loaded errfile')
+                    for query in err_d.keys():
+                        links = err_d[query]['1_xy']
+                        for link in links:
+                            link['query'] = query
+                        all_links += links
+                        query_dfs[device][search_engine][queries][query] = pd.DataFrame(links)
 
-            print('success!')
-        except Exception as e:
-            print(e)
+                print('success!')
+            except Exception as e:
+                print(e)
 
-    dfs[device][search_engine][queries] = pd.DataFrame(all_links)
+    dfs[device][search_engine][queries] = norm_df(pd.DataFrame(all_links))
     print('  # errs', len(err_queries[search_engine]))
 
 #%%
@@ -175,7 +185,7 @@ err_queries
 # let's see which queries we're missing and write a new file to scrape them
 cmds = []
 # manual increment
-itera = 2
+itera = 3
 for config in configs:
     device = config['device']
     search_engine = config['search_engine']
@@ -197,76 +207,90 @@ for config in configs:
             'w', encoding='utf8') as f:
             f.write('\n'.join(list(missing)))
         cmds.append(
-            f'/usr/bin/time -v node driver.js {device} {search_engine} errs_{device}_{search_engine}_{queries} &> logs/errs_{device}_{search_engine}_{queries}.txt'
+            f'/usr/bin/time -v node driver.js {device} {search_engine} errs{itera}_{device}_{search_engine}_{queries} &> logs/errs{itera}_{device}_{search_engine}_{queries}.txt'
         )
 with open(f'errs.sh', 'w') as f:
     f.write('\n'.join(cmds))
 
 
+#%%
+# Let's see which links are most common
+for config in configs:
+    device = config['device']
+    if device == 'mobile':
+        continue
+    search_engine = config['search_engine']
+    queries = config['queries']
+    print(device, search_engine, queries)
+    df = dfs[device][search_engine][queries]
+    print(df['domain'].value_counts()[:20])
+
 
 
 #%%
-for config in configs:
-    device = config['device']
-    search_engine = config['search_engine']
-    queries = config['queries']
+# create the coordinate visualization
+DO_COORDS = False
+if DO_COORDS:
+    for config in configs:
+        device = config['device']
+        search_engine = config['search_engine']
+        queries = config['queries']
 
-    print(device, search_engine, queries)
-    df = dfs[device][search_engine][queries]
-    if type(df) == defaultdict:
-        continue
-    df = norm_df(df)
-    right_max = df['right'].max()
-    bot_max = df['bottom'].max()
-    ratio = bot_max / right_max
-    k = f'{device}_{search_engine}_{queries}'
+        print(device, search_engine, queries)
+        df = dfs[device][search_engine][queries]
+        if type(df) == defaultdict:
+            continue
+        right_max = df['right'].max()
+        bot_max = df['bottom'].max()
+        ratio = bot_max / right_max
+        k = f'{device}_{search_engine}_{queries}'
 
-    cur_queries = list(query_dfs[device][search_engine][queries].keys())
-    for query in cur_queries + [None]:
-        
-        if query:
-            subdf = df[df['query'] == query]
-        else:
-            subdf = df
-        fig, ax = plt.subplots(1, 1, figsize=(full_width, full_width * ratio))
-        plt.gca().invert_yaxis()
-        #print('Query:', query, '# links', len(subdf))
-        for i_row, row in subdf.iterrows():
-            if row.width == 0 or row.height == 0:
-                continue
-            x = row['norm_left']
-            y = row['norm_bottom']
-            width = row['norm_width']
-            height = row['norm_height']
-            # x = row['left']
-            # y = row['bottom']
-            # width = row['width']
-            # height = row['height']
-            domain = row['domain']
-
-            if row['wikipedia_appears']:
-                color = 'g'
-            # elif row['platform_ugc']:
-            #     color = 'b'
-            elif 'google' in domain:
-                color = 'lightgray'
+        cur_queries = list(query_dfs[device][search_engine][queries].keys())
+        for query in cur_queries + [None]:
+            
+            if query:
+                subdf = df[df['query'] == query]
             else:
-                color = 'grey'
-            plt.annotate(domain, (x, y), color=color)
-            # Add the patch to the Axes
-            rect = matplotlib.patches.Rectangle((x,y),width,height,linewidth=1,edgecolor=color,facecolor='none')
-            ax.add_patch(rect)
+                subdf = df
+            fig, ax = plt.subplots(1, 1, figsize=(full_width, full_width * ratio))
+            plt.gca().invert_yaxis()
+            #print('Query:', query, '# links', len(subdf))
+            for i_row, row in subdf.iterrows():
+                if row.width == 0 or row.height == 0:
+                    continue
+                x = row['norm_left']
+                y = row['norm_bottom']
+                width = row['norm_width']
+                height = row['norm_height']
+                # x = row['left']
+                # y = row['bottom']
+                # width = row['width']
+                # height = row['height']
+                domain = row['domain']
 
-        kp_line = 820 / right_max
-        scroll_line = 670 / bot_max
-        border_line = 900 / bot_max
-        plt.axvline(kp_line, color='r')
-        plt.axvline(border_line, color='k')
-        plt.axhline(scroll_line, color='k')
+                if row['wikipedia_appears']:
+                    color = 'g'
+                # elif row['platform_ugc']:
+                #     color = 'b'
+                elif 'google' in domain:
+                    color = 'lightgray'
+                else:
+                    color = 'grey'
+                plt.annotate(domain, (x, y), color=color)
+                # Add the patch to the Axes
+                rect = matplotlib.patches.Rectangle((x,y),width,height,linewidth=1,edgecolor=color,facecolor='none')
+                ax.add_patch(rect)
 
-        #print(full_width, full_width * ratio)
-        plt.savefig(f'reports/overlays/{k}_{query}.png')
-        plt.close()
+            kp_line = 820 / right_max
+            scroll_line = 670 / bot_max
+            border_line = 900 / bot_max
+            plt.axvline(kp_line, color='r')
+            plt.axvline(border_line, color='k')
+            plt.axhline(scroll_line, color='k')
+
+            #print(full_width, full_width * ratio)
+            plt.savefig(f'reports/overlays/{k}_{query}.png')
+            plt.close()
 
 #%%
 # toss results in here for easy dataframe creation
@@ -281,7 +305,6 @@ for config in configs:
     df = dfs[device][search_engine][queries]
     if type(df) == defaultdict:
         continue
-    df = norm_df(df)
     roundto = -1
     df['grid_right'] = np.round(df['right'], roundto)
     df['grid_bottom'] = np.round(df['bottom'], roundto)
