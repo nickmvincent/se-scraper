@@ -1,12 +1,19 @@
 const se_scraper = require('./index.js');
 
+const mobile = true;
+if (mobile === true) {
+    user_agent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1';
+} else {
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36';
+}
+
 let browser_config = {
     // the user agent to scrape with
-    user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+    user_agent: user_agent,
     //user_agent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1',
     // if random_user_agent is set to True, a random user agent is chosen
     random_user_agent: false,
-    mobile: true,
+    mobile: mobile,
     // whether to start the browser in headless mode
     headless: true,
     // whether debug information should be printed
@@ -45,9 +52,9 @@ let browser_config = {
     // scrape config can change on each scrape() call
     let scrape_config = {
         // which search engine to scrape
-        search_engine: 'google',
+        search_engine: 'bing',
         // an array of keywords to scrape
-        keywords: ['keto cheesecake'],
+        keywords: ['google maps'],
         // the number of pages to scrape for each keyword
         num_pages: 1,
 
