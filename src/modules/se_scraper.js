@@ -64,6 +64,8 @@ module.exports = class Scraper {
         } else {
             await this.page.setViewport({ width: 1920, height: 1040 });
         }
+        //this.context.clearPermissionOverrides();  
+        
         let do_continue = true;
 
         if (this.config.scrape_from_file.length <= 0) {
@@ -143,6 +145,23 @@ module.exports = class Scraper {
 
         }
 
+        await this.page.evaluateOnNewDocument(function() {
+            window.navigator.geolocation.getCurrentPosition = function (cb) {
+              return {
+                  'coords': {
+                    accuracy: 21,
+                    altitude: null,
+                    altitudeAccuracy: null,
+                    heading: null,
+                    latitude: 42.045597,
+                    longitude: -87.688568,
+                    speed: null
+                  },
+              }
+            };
+
+
+          });
         return await this.load_start_page();
     }
 
@@ -233,7 +252,23 @@ module.exports = class Scraper {
                         return ret;
                     };
                     this.results[keyword][xyKey] = await this.page.$$eval('a', getPos);
-
+                    
+                    await this.page.evaluate(async () => {
+                        await new Promise((resolve, reject) => {
+                            var totalHeight = 0;
+                            var distance = 100;
+                            var timer = setInterval(() => {
+                                var scrollHeight = document.body.scrollHeight;
+                                window.scrollBy(0, distance);
+                                totalHeight += distance;
+                
+                                if(totalHeight >= scrollHeight){
+                                    clearInterval(timer);
+                                    resolve();
+                                }
+                            }, 100);
+                        });
+                    });
                     //await this.sleep(1000);
                     if (this.config.screen_output) {
                         await this.page.screenshot({

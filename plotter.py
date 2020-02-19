@@ -8,18 +8,23 @@ import numpy as np
 from urllib.parse import urlparse
 import seaborn as sns
 import glob
+import sys
+from PIL import Image
+import seaborn as sns
+
 
 #%%
 # Helpers
 def extract(x):
     domain = urlparse(x.href).netloc
-    try:
-        ret = '.'.join(domain.split('.')[:2])
-    except:
-        ret = domain
-    return ret
+    return domain
+    # try:
+    #     ret = '.'.join(domain.split('.')[:2])
+    # except:
+    #     ret = domain
+    # return ret
 
-def norm_df(df):
+def norm_df(df, mobile=False):
     df['width'] = df.right - df.left
     df['height'] = df.bottom - df.top
     right_max = df['right'].max()
@@ -33,52 +38,76 @@ def norm_df(df):
     for key in ['height', 'top', 'bottom']:
         df['norm_{}'.format(key)] = df[key] / bot_max
 
-    df['domain'] = df.apply(extract, axis=1)
+    # treat links to DDG twitter & reddit as internal
+    df.loc[df.href == 'https://twitter.com/duckduckgo', 'href'] = 'www.duckduckgo.com'
+    df.loc[df.href == 'https://reddit.com/r/duckduckgo', 'href'] = 'www.duckduckgo.com'
 
-    df['platform_ugc'] = df['domain'].str.contains('|'.join(
-        ['wikipedia', 'twitter', 'facebook', 'instagram', 'reddit', ]
-    ))
+    df['domain'] = df.apply(extract, axis=1)
 
     domains = [
         'wikipedia',
-        'twitter','youtube', 'facebook',
-        'instagram', 'linkedin', 'yelp',
-        # 'cnn', 'foxnews', 'pinterest',
-
-        # 'webmd', 'medicalnewstoday', 'mayoclinic',
-        # 'imdb', 'spotify', 
-        # 'yelp', 
+        'twitter', 'youtube',
+        'facebook',
     ]
+
+    df['platform_ugc'] = df['domain'].str.contains('|'.join(
+        domains
+    ))
+    
     for domain in domains:
         df[f'{domain}_in'] = df['domain'].str.contains(domain)
         df[f'{domain}_appears'] = (
-            df['domain'].str.contains('wikipedia') &
+            df['domain'].str.contains(domain) &
             (df.width != 0) & (df.height != 0)
         )
         kp_line = 780 / right_max
         # source: 
-        noscroll_line = 789 / bot_max
 
-        df[f'{domain}_appears_kp'] = (
-            (df[f'{domain}_appears']) &
-            (df.norm_left > kp_line)
-        )
+        if mobile:
+            df[f'{domain}_appears_kp'] = 0
+            df[f'{domain}_appears_noscrollleft'] = 0
+            # from what's my viewport, iphone X
+            mobile_noscroll_line = IPHONE_SCROLL_PIX / bot_max
 
-        df[f'{domain}_appears_noscroll'] = (
-            (df[f'{domain}_appears']) &
-            (df.norm_top > noscroll_line)
-        )
+            df[f'{domain}_appears_noscroll'] = (
+                (df[f'{domain}_appears']) &
+                (df.norm_top < mobile_noscroll_line)
+            )
 
-        df[f'{domain}_appears_kpnoscroll'] = (
-            (df[f'{domain}_appears_kp']) &
-            (df.norm_top > noscroll_line)
-        )
+        else:
+            noscroll_line = MACBOOK_SCROLL_PIX / bot_max
+
+            df[f'{domain}_appears_kp'] = (
+                (df[f'{domain}_appears']) &
+                (df.norm_left > kp_line)
+            )
+
+            df[f'{domain}_appears_noscroll'] = (
+                (df[f'{domain}_appears']) &
+                (df.norm_top < noscroll_line)
+            )
+
+            df[f'{domain}_appears_noscrollleft'] = (
+                (df[f'{domain}_appears']) &
+                (df.norm_top < noscroll_line) &
+                (df.norm_left <= kp_line)
+            )
+
+        # df[f'{domain}_appears_kpnoscroll'] = (
+        #     (df[f'{domain}_appears_kp']) &
+        #     (df.norm_top > noscroll_line)
+        # )
     
     return df
 
 #%%
 # Display parameters
 full_width = 8
+KP_PIX = 780
+IPHONE_SCROLL_PIX = 635
+MACBOOK_SCROLL_PIX = 789
+BORDER_PIX = 1440
+
 
 #%%
 # Experiment parameters (which experiments to load)
@@ -131,17 +160,15 @@ for config in configs:
             d = json.load(f)
     except FileNotFoundError:
         print('  ...Skipping')
+        print(f'  {folder}/results.json')
         continue
 
-    images = glob.glob(f'{folder}/*.png')
-    print('  # images', len(images))
+    # images = glob.glob(f'{folder}/*.png')
+    # print('  # images', len(images))
     all_links = []
         
     n_queries = len(d.keys())
     print('  # queries collected:', n_queries)
-    if len(images) != n_queries:
-        print('  Mismatch')
-        # see if we already collected the erroneous queries
     
     num_errs = 0
     for query in d.keys():
@@ -156,26 +183,26 @@ for config in configs:
         except KeyError:
             err_queries[device][search_engine][queries][search_engine][query] = d[query]
             num_errs += 1
-    if num_errs > 0:
-        print('# errs,', num_errs)
-        for itera in [1,2]:
-            try:
-                err_folder = f'scraper_output/{device}/{search_engine}/errs{itera}_{device}_{search_engine}_{queries}'
-                with open(f'{err_folder}/results.json', 'r', encoding='utf8') as f:
-                    err_d = json.load(f)
-                    print('Loaded errfile')
-                    for query in err_d.keys():
-                        links = err_d[query]['1_xy']
-                        for link in links:
-                            link['query'] = query
-                        all_links += links
-                        query_dfs[device][search_engine][queries][query] = pd.DataFrame(links)
+    print('# errs,', num_errs)
+    for itera in [1,2,3,4,5]:
+        try:
+            err_folder = f'scraper_output/{device}/{search_engine}/errs{itera}_{device}_{search_engine}_{queries}'
+            with open(f'{err_folder}/results.json', 'r', encoding='utf8') as f:
+                err_d = json.load(f)
+            print('Loaded errfile')
+            for query in err_d.keys():
+                links = err_d[query]['1_xy']
+                for link in links:
+                    link['query'] = query
+                all_links += links
+                query_dfs[device][search_engine][queries][query] = pd.DataFrame(links)
 
-                print('success!')
-            except Exception as e:
-                print(e)
+            print(f'success for itera {itera}!')
+            print(len(err_d.keys()))
+        except Exception as e:
+            pass
 
-    dfs[device][search_engine][queries] = norm_df(pd.DataFrame(all_links))
+    dfs[device][search_engine][queries] = norm_df(pd.DataFrame(all_links), device == 'mobile')
     print('  # errs', len(err_queries[search_engine]))
 
 #%%
@@ -185,12 +212,11 @@ err_queries
 # let's see which queries we're missing and write a new file to scrape them
 cmds = []
 # manual increment
-itera = 3
+itera = 5
 for config in configs:
     device = config['device']
     search_engine = config['search_engine']
     queries = config['queries']
-
     cur_queries = list(query_dfs[device][search_engine][queries].keys())
 
     with open(f'search_queries/prepped/{queries}.txt', 'r', encoding='utf8') as f:
@@ -200,7 +226,7 @@ for config in configs:
     #print(set(cur_queries))
     missing = set(lines) - set(cur_queries)
     print(  'Missing')
-    print(  missing)
+    print(missing)
     if missing:
         with open(
             f'search_queries/prepped/errs{itera}_{device}_{search_engine}_{queries}.txt',
@@ -215,6 +241,7 @@ with open(f'errs.sh', 'w') as f:
 
 #%%
 # Let's see which links are most common
+for_concat_list = []
 for config in configs:
     device = config['device']
     if device == 'mobile':
@@ -222,14 +249,19 @@ for config in configs:
     search_engine = config['search_engine']
     queries = config['queries']
     print(device, search_engine, queries)
-    df = dfs[device][search_engine][queries]
-    print(df['domain'].value_counts()[:20])
+    for_concat_df = dfs[device][search_engine][queries][['domain']]
+    for_concat_list.append(for_concat_df)
+    #print(for_concat_df['domain'].value_counts()[:20])
+pd.concat(for_concat_list)['domain'].value_counts()[:15]
 
+
+#%%
+# source: https://stackoverflow.com/questions/30227466/combine-several-images-horizontally-with-python
 
 
 #%%
 # create the coordinate visualization
-DO_COORDS = False
+DO_COORDS = True
 if DO_COORDS:
     for config in configs:
         device = config['device']
@@ -246,6 +278,10 @@ if DO_COORDS:
         k = f'{device}_{search_engine}_{queries}'
 
         cur_queries = list(query_dfs[device][search_engine][queries].keys())
+        np.random.seed(0)
+        chosen_ones = np.random.choice(cur_queries, 10, replace=False)
+        with open(f'reports/samples/{k}.txt', 'w', encoding='utf8') as f:
+            f.write('\n'.join(chosen_ones))
         for query in cur_queries + [None]:
             
             if query:
@@ -255,6 +291,7 @@ if DO_COORDS:
             fig, ax = plt.subplots(1, 1, figsize=(full_width, full_width * ratio))
             plt.gca().invert_yaxis()
             #print('Query:', query, '# links', len(subdf))
+            add_last = []
             for i_row, row in subdf.iterrows():
                 if row.width == 0 or row.height == 0:
                     continue
@@ -269,30 +306,67 @@ if DO_COORDS:
                 domain = row['domain']
 
                 if row['wikipedia_appears']:
-                    color = 'g'
-                # elif row['platform_ugc']:
-                #     color = 'b'
-                elif 'google' in domain:
-                    color = 'lightgray'
+                    add_last.append([domain, (x,y,), width, height])
                 else:
-                    color = 'grey'
-                plt.annotate(domain, (x, y), color=color)
-                # Add the patch to the Axes
-                rect = matplotlib.patches.Rectangle((x,y),width,height,linewidth=1,edgecolor=color,facecolor='none')
+                    if row['platform_ugc']:
+                        color = 'b'
+                    elif 'google' in domain or 'bing' in domain or 'duckduckgo' in domain:
+                        color = 'lightgray'
+                    else:
+                        color = 'grey'
+                    plt.annotate(domain, (x, y), color=color)
+                    # Add the patch to the Axes
+                    rect = matplotlib.patches.Rectangle((x,y),width,height,linewidth=1,edgecolor=color,facecolor='none')
+                    ax.add_patch(rect)
+            for domain, coords, width, height in add_last:
+                plt.annotate(domain, coords, color='g')
+                rect = matplotlib.patches.Rectangle(coords,width,height,linewidth=2,edgecolor=color,facecolor='none')
                 ax.add_patch(rect)
 
-            kp_line = 820 / right_max
-            scroll_line = 670 / bot_max
-            border_line = 900 / bot_max
-            plt.axvline(kp_line, color='r')
-            plt.axvline(border_line, color='k')
-            plt.axhline(scroll_line, color='k')
+            kp_line = KP_PIX / right_max
+            if device == 'mobile':
+                scroll_line = IPHONE_SCROLL_PIX / bot_max
+            else:
+                scroll_line = MACBOOK_SCROLL_PIX / bot_max
+            border_line = BORDER_PIX / right_max
+            plt.axvline(kp_line, color='r', linestyle='-')
+            plt.axvline(border_line, color='k', linestyle='-')
+            plt.axhline(scroll_line, color='k', linestyle='-')
 
             #print(full_width, full_width * ratio)
             plt.savefig(f'reports/overlays/{k}_{query}.png')
+            if query == 'nba':
+                plt.savefig(f'reports/{k}_{query}.png')
             plt.close()
+            if query in chosen_ones:
+                screenshot_path = f'scraper_output/{device}/{search_engine}/{queries}/results.json_{query}.png'
+                # the overlay will be smaller
+                try:
+                    screenshot_img = Image.open(screenshot_path)
+                    big_w, big_h = screenshot_img.size
+                    overlay_img = Image.open(f'reports/overlays/{k}_{query}.png')
+                    small_w, small_h = overlay_img.size
+                except FileNotFoundError: 
+                    # can happen b/c 
+                    continue
 
-#%%
+                h_percent = (big_h/float(small_h))
+                new_w = int((float(small_w) * float(h_percent)))
+                resized_overlay = overlay_img.resize((new_w,big_h), Image.ANTIALIAS)
+
+                total_width = new_w + big_w
+
+                new_im = Image.new('RGB', (total_width, big_h))
+
+                x_offset = 0
+                for im in (screenshot_img, resized_overlay):
+                    new_im.paste(im, (x_offset,0))
+                    x_offset += im.size[0]
+
+                new_im.save(f'reports/samples/concat_{k}_{query}.png')
+
+
+    #%%
 # toss results in here for easy dataframe creation
 row_dicts = []
 for config in configs:
@@ -305,89 +379,103 @@ for config in configs:
     df = dfs[device][search_engine][queries]
     if type(df) == defaultdict:
         continue
-    roundto = -1
-    df['grid_right'] = np.round(df['right'], roundto)
-    df['grid_bottom'] = np.round(df['bottom'], roundto)
-    df['grid_width'] = np.round(df['width'], roundto)
-    df['grid_height'] = np.round(df['height'], roundto)
+    # roundto = -1
+    # df['grid_right'] = np.round(df['right'], roundto)
+    # df['grid_bottom'] = np.round(df['bottom'], roundto)
+    # df['grid_width'] = np.round(df['width'], roundto)
+    # df['grid_height'] = np.round(df['height'], roundto)
 
-    gridded = df[(df.wikipedia_appears == True) & (df.width!=0)].groupby(['grid_right', 'grid_bottom']).wikipedia_appears.sum().unstack(level=0).fillna(0)
-    # num_queries = len(set(df['query']))
-    # print('num_queries', num_queries)
-    heatmap_points = np.zeros((101, 101))
+    # gridded = df[(df.wikipedia_appears == True) & (df.width!=0)].groupby(['grid_right', 'grid_bottom']).wikipedia_appears.sum().unstack(level=0).fillna(0)
 
-    right_max = df['right'].max()
-    bot_max = df['bottom'].max()
+    # heatmap_points = np.zeros((101, 101))
 
-    for ix in range(0, 11):
-        x = np.round(ix / 10 * right_max, roundto)
-        for iy in range(0, 11):
-            y = np.round(iy / 100 * bot_max, roundto)
-            try:
-                heatmap_points[iy, ix] = gridded.loc[y, x]
-            except KeyError:
-                heatmap_points[iy, ix] = 0
+    # right_max = df['right'].max()
+    # bot_max = df['bottom'].max()
 
-    print(heatmap_points)
-    hfig, ax = plt.subplots(1, 1)
-    hmap = sns.heatmap(heatmap_points, ax=ax)
-    hfig.savefig(f'reports/{k}_heatmap.png')
+    # for ix in range(0, 11):
+    #     x = np.round(ix / 10 * right_max, roundto)
+    #     for iy in range(0, 11):
+    #         y = np.round(iy / 100 * bot_max, roundto)
+    #         try:
+    #             heatmap_points[iy, ix] = gridded.loc[y, x]
+    #         except KeyError:
+    #             heatmap_points[iy, ix] = 0
+
+    # print(heatmap_points)
+    # hfig, ax = plt.subplots(1, 1)
+    # hmap = sns.heatmap(heatmap_points, ax=ax)
+    # hfig.savefig(f'reports/{k}_heatmap.png')
     #print(df.groupby('query').wikipedia_appears.agg(any))
 
-    inc_rate = df.groupby('query').wikipedia_appears.agg(any).mean()
-
+    inc_rate = df.groupby('query').wikipedia_appears.agg(any).mean()    
     matches = set(df[df.wikipedia_appears == True]['query'])
-
-    top_quarter_inc_rate = df[df.grid_bottom <= 0.25].groupby('query').wikipedia_appears.agg(any).mean()
-
-
     kp_inc_rate = df.groupby('query').wikipedia_appears_kp.agg(any).mean()
-
     noscroll_inc_rate = df.groupby('query').wikipedia_appears_noscroll.agg(any).mean()
 
-    kpnoscroll_inc_rate = df.groupby('query').wikipedia_appears_kpnoscroll.agg(any).mean()
-
-    row_dicts.append({
+    row_dict = {
         'queries': queries,
         'search_engine': search_engine,
         'device': device,
         'inc_rate': inc_rate,
-        #'top_quarter_inc_rate': top_quarter_inc_rate,
-        # 'upper_left_inc_rate': upper_left_inc_rate,
         'kp_inc_rate': kp_inc_rate,
         'noscroll_inc_rate': noscroll_inc_rate,
-        'kpnoscroll_inc_rate': kpnoscroll_inc_rate,
         'matches': matches
-    })
+    }
+    for domain in [
+        'twitter', 'youtube',
+        'facebook',
+    ]:
+        row_dict[f'{domain}_inc_rate'] = df.groupby('query')[f'{domain}_appears'].agg(any).mean() 
+
+
+    row_dicts.append(row_dict)
 #%%
-df[(df.wikipedia_appears == True) & (df.width!=0)].groupby(['grid_right', 'grid_bottom']).wikipedia_appears.sum().unstack(level=0).fillna(0)
+results_df = pd.DataFrame(row_dicts)
+results_df
 
 # %%
 FP = 'Full-page incidence rate'
 RH = 'Right-hand incidence rate'
 AF = 'Above-the-fold incidence rate'
-results_df = pd.DataFrame(row_dicts)
-tmp = results_df[['device', 'search_engine', 'queries', 'inc_rate', 'kp_inc_rate', 'noscroll_inc_rate']]
+tmp = results_df[['device', 'search_engine', 'queries', 'inc_rate', 'kp_inc_rate', 'noscroll_inc_rate', 'youtube_inc_rate', 'twitter_inc_rate',]]
 tmp.rename(columns={
     'device': 'Device', 'search_engine': 'Search Engine',
     'queries': 'Queries', 'inc_rate': FP,
     'kp_inc_rate': RH,
     'noscroll_inc_rate': AF,
+    'youtube_inc_rate': 'Youtube incidence rate',
+    'twitter_inc_rate': 'Twitter incidence rate',
 }, inplace=True)
-tmp.to_csv('reports/main.csv', float_format="%.2f", index=False)
+tmp.to_csv('reports/wikipedia.csv', float_format="%.2f", index=False)
 tmp
+
+# #%%
+# baseline_df = results_df[['device', 'search_engine', 'queries', 'twitter_inc_rate', 'youtube_inc_rate', 'facebook_inc_rate']]
+# baseline_df.rename(columns={
+#     'device': 'Device', 'search_engine': 'Search Engine',
+#     'queries': 'Queries'
+# }, inplace=True)
+# baseline_df.to_csv('reports/other_domains.csv', float_format="%.2f", index=False)
+
 
 
 #%%
-import seaborn as sns
 tmp2 = tmp.melt(id_vars=['Device', 'Search Engine', 'Queries'])
+tmp2.rename(columns={
+    'variable': 'y-axis',
+    'value': 'Incidence rate',
+}, inplace=True)
+sns.set()
 g = sns.catplot(
-    x="Device", y="value",
-    hue="Search Engine", col="Queries", row='variable',
+    x="Device", y='Incidence rate',
+    hue="Search Engine", col="Queries", row='y-axis',
+    palette=['g', 'b', 'y'],
     row_order=[FP, AF, RH],
     data=tmp2, kind="bar",
-    height=4, ci=None)
-
+    height=4, aspect=1.5, ci=None,
+    sharex=False,
+)
+plt.savefig('reports/catplot.png', dpi=300)
     
 
 #%%
@@ -422,5 +510,4 @@ results_df[['device', 'queries', 'search_engine', 'inc_rate', 'kp_inc_rate', 'no
 # %%
 
 # which DDG cases have Right-hand but no AF?
-# mobile RH needs to be set to zero...
 # actually sample 10???

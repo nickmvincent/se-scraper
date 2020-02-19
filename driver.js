@@ -6,11 +6,11 @@ const mkdirp = require('mkdirp');
     //'desktop',
     //'mobile',
 //];
-const search_engines = [
+/*const search_engines = [
     'google',
     'bing',
     'duckduckgo',
-];
+];*/
 //const search_engines = process.argv.slice(2);
 /*const query_lists = [
     'top', 'trend', 'med',
@@ -124,7 +124,7 @@ for (const config of configs) {
             // is drawn before every request. empty string for no sleeping.
             keywords: keywords,
             // see here for sleep range https://github.com/NikolaiT/se-scraper/issues/19
-            sleep_range: [70, 300],
+            sleep_range: [30, 60],
             // path to output file, data will be stored in JSON
             output_file: output_file,
             // whether to prevent images, css, fonts from being loaded
@@ -138,6 +138,7 @@ for (const config of configs) {
             log_ip_address: false,
             // log http headers
             log_http_headers: false,
+            clean_html_output: false,
         };
 
         let results = await se_scraper.scrape(browser_config, scrape_config);
