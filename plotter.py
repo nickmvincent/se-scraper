@@ -64,7 +64,7 @@ def norm_df(df, mobile=False):
         # source: 
 
         if mobile:
-            df[f'{domain}_appears_kp'] = 0
+            df[f'{domain}_appears_right'] = 0
             df[f'{domain}_appears_noscrollleft'] = 0
             # from what's my viewport, iphone X
             mobile_noscroll_line = IPHONE_SCROLL_PIX / bot_max
@@ -77,9 +77,14 @@ def norm_df(df, mobile=False):
         else:
             noscroll_line = MACBOOK_SCROLL_PIX / bot_max
 
-            df[f'{domain}_appears_kp'] = (
+            df[f'{domain}_appears_right'] = (
                 (df[f'{domain}_appears']) &
                 (df.norm_left > kp_line)
+            )
+
+            df[f'{domain}_appears_left'] = (
+                (df[f'{domain}_appears']) &
+                (df.norm_left <= kp_line)
             )
 
             df[f'{domain}_appears_noscroll'] = (
@@ -88,13 +93,12 @@ def norm_df(df, mobile=False):
             )
 
             df[f'{domain}_appears_noscrollleft'] = (
-                (df[f'{domain}_appears']) &
+                (df[f'{domain}_appears_left']) &
                 (df.norm_top < noscroll_line) &
-                (df.norm_left <= kp_line)
             )
 
-        # df[f'{domain}_appears_kpnoscroll'] = (
-        #     (df[f'{domain}_appears_kp']) &
+        # df[f'{domain}_appears_rightnoscroll'] = (
+        #     (df[f'{domain}_appears_right']) &
         #     (df.norm_top > noscroll_line)
         # )
     
@@ -261,7 +265,7 @@ pd.concat(for_concat_list)['domain'].value_counts()[:15]
 
 #%%
 # create the coordinate visualization
-DO_COORDS = True
+DO_COORDS = False
 if DO_COORDS:
     for config in configs:
         device = config['device']
@@ -409,7 +413,7 @@ for config in configs:
 
     inc_rate = df.groupby('query').wikipedia_appears.agg(any).mean()    
     matches = set(df[df.wikipedia_appears == True]['query'])
-    kp_inc_rate = df.groupby('query').wikipedia_appears_kp.agg(any).mean()
+    kp_inc_rate = df.groupby('query').wikipedia_appears_right.agg(any).mean()
     noscroll_inc_rate = df.groupby('query').wikipedia_appears_noscroll.agg(any).mean()
 
     row_dict = {
@@ -437,8 +441,8 @@ results_df
 FP = 'Full-page incidence rate'
 RH = 'Right-hand incidence rate'
 AF = 'Above-the-fold incidence rate'
-tmp = results_df[['device', 'search_engine', 'queries', 'inc_rate', 'kp_inc_rate', 'noscroll_inc_rate', 'youtube_inc_rate', 'twitter_inc_rate',]]
-tmp.rename(columns={
+renamed = results_df[['device', 'search_engine', 'queries', 'inc_rate', 'kp_inc_rate', 'noscroll_inc_rate', 'youtube_inc_rate', 'twitter_inc_rate',]]
+renamed.rename(columns={
     'device': 'Device', 'search_engine': 'Search Engine',
     'queries': 'Queries', 'inc_rate': FP,
     'kp_inc_rate': RH,
@@ -446,8 +450,13 @@ tmp.rename(columns={
     'youtube_inc_rate': 'Youtube incidence rate',
     'twitter_inc_rate': 'Twitter incidence rate',
 }, inplace=True)
-tmp.to_csv('reports/wikipedia.csv', float_format="%.2f", index=False)
-tmp
+renamed.replace(to_replace={
+    'top': 'common',
+    'med': 'medical',
+    'trend': 'trending',
+}, inplace=True)
+renamed.to_csv('reports/wikipedia.csv', float_format="%.2f", index=False)
+renamed
 
 # #%%
 # baseline_df = results_df[['device', 'search_engine', 'queries', 'twitter_inc_rate', 'youtube_inc_rate', 'facebook_inc_rate']]
@@ -460,33 +469,38 @@ tmp
 
 
 #%%
-tmp2 = tmp.melt(id_vars=['Device', 'Search Engine', 'Queries'])
-tmp2.rename(columns={
+melted = renamed.melt(id_vars=['Device', 'Search Engine', 'Queries'])
+melted.rename(columns={
     'variable': 'y-axis',
     'value': 'Incidence rate',
 }, inplace=True)
 sns.set()
 g = sns.catplot(
-    x="Device", y='Incidence rate',
-    hue="Search Engine", col="Queries", row='y-axis',
+    x="Queries", y='Incidence rate',
+    hue="Search Engine", col="Device", row='y-axis',
     palette=['g', 'b', 'y'],
-    row_order=[FP, AF, RH],
-    data=tmp2, kind="bar",
+    order=['common', 'trending', 'medical'],
+    #row_order=[FP, AF, RH],
+    data=melted[melted['y-axis'] == FP], kind="bar",
     height=4, aspect=1.5, ci=None,
     sharex=False,
 )
-plt.savefig('reports/catplot.png', dpi=300)
+plt.savefig('reports/FP_catplot.png', dpi=300)
     
-
 #%%
 g = sns.catplot(
-    x="Search Engine", y="Right-hand incidence rate",
-    col="Queries",
-    data=tmp[tmp.Device == 'desktop'], kind="bar",
-    height=4, ci=None)
+    x="Queries", y='Incidence rate',
+    hue="Search Engine", col="Device", row='y-axis',
+    palette=['g', 'b', 'y'],
+    order=['common', 'trending', 'medical'],
+    #row_order=[FP, AF, RH],
+    data=melted[melted['y-axis'] == AF], kind="bar",
+    height=4, aspect=1.5, ci=None,
+    sharex=False,
+)
+plt.savefig('reports/FP_catplot.png', dpi=300)
 
 #%%
-import seaborn as sns
 g = sns.catplot(
     x="Search Engine", y="Above-the-fold incidence rate",
     hue="Device", col="Queries",
@@ -508,6 +522,37 @@ results_df[['device', 'queries', 'search_engine', 'inc_rate', 'kp_inc_rate', 'no
 
 
 # %%
+results_df.groupby(['device', 'queries']).agg(lambda x: max(x) - min(x))['inc_rate']
+
+#%%
+# diff between FP and AF
+melted[
+    (melted['y-axis'] == FP) | (melted['y-axis'] == AF)
+].groupby(['Device', 'Queries', 'Search Engine']).agg(lambda x: max(x) - min(x))
 
 # which DDG cases have Right-hand but no AF?
-# actually sample 10???
+# Pairwise differences
+# rename top to common
+# rename trend to trending
+# rename med to medical
+
+# %%
+se_minus_se = {}
+se_to_matches = {}
+sub = results_df[(results_df.device == 'mobile') & (results_df.queries == 'top')]
+for i, row in sub.iterrows():
+    se_to_matches[row.search_engine] = set(row.matches)
+se_to_matches
+for k1, v1 in se_to_matches.items():
+    for k2, v2 in se_to_matches.items():
+        if k1 == k2:
+            continue
+        se_minus_se[f'{k1}_{k2}'] = v1 - v2
+# what's in the first but not in the second
+
+#%%
+from pprint import pprint
+pprint(se_minus_se)
+
+
+# %%
