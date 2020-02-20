@@ -1,17 +1,56 @@
 
 #%%
-import matplotlib.pyplot as plt
-import matplotlib
+# defaults
 import json
-import pandas as pd
-import numpy as np
-from urllib.parse import urlparse
-import seaborn as sns
 import glob
 import sys
-from PIL import Image
+from collections import defaultdict
+from urllib.parse import urlparse
+from pprint import pprint
+
+
+# plotting
+import matplotlib.pyplot as plt
+import matplotlib
 import seaborn as sns
 
+# scipy
+import pandas as pd
+import numpy as np
+
+from PIL import Image
+infinite_defaultdict = lambda: defaultdict(infinite_defaultdict)
+
+
+
+#%%
+# Display parameters
+full_width = 8
+LH_W = 780
+
+IPHONE_SE_H = 568
+IPHONE_6_H = 667
+IPHONE_X_H = 812
+
+#110% zoom
+MACBOOK13_11_H = 717
+MACBOOK13_FULL_H = 789
+# 90% zoom
+MACBOOK13_9_H = 877
+
+mobile_lines = {
+    'noscroll_lb': IPHONE_SE_H,
+    'noscroll_mg': IPHONE_6_H,
+    'noscroll_ub': IPHONE_X_H
+}
+
+desktop_lines = {
+    'noscroll_lb': MACBOOK13_11_H,
+    'noscroll_mg': MACBOOK13_FULL_H,
+    'noscroll_ub': MACBOOK13_9_H,
+}
+
+BORDER_PIX = 1440
 
 #%%
 # Helpers
@@ -60,57 +99,48 @@ def norm_df(df, mobile=False):
             df['domain'].str.contains(domain) &
             (df.width != 0) & (df.height != 0)
         )
-        kp_line = 780 / right_max
+        kp_line = LH_W / right_max
         # source: 
 
         if mobile:
-            df[f'{domain}_appears_right'] = 0
-            df[f'{domain}_appears_noscrollleft'] = 0
-            # from what's my viewport, iphone X
-            mobile_noscroll_line = IPHONE_SCROLL_PIX / bot_max
+            # no right-hand incidence
+            df[f'{domain}_appears_rh'] = 0
+            # no lefthand above-the-fold incidence
+            df[f'{domain}_appears_lh'] = 0
+            for name, line in mobile_lines.items():
+                mobile_noscroll_line = line / bot_max
 
-            df[f'{domain}_appears_noscroll'] = (
-                (df[f'{domain}_appears']) &
-                (df.norm_top < mobile_noscroll_line)
-            )
+                df[f'{domain}_appears_{name}'] = (
+                    (df[f'{domain}_appears']) &
+                    (df.norm_top < mobile_noscroll_line)
+                )
+
+                df[f'{domain}_appears_lh_{name}'] = 0
 
         else:
-            noscroll_line = MACBOOK_SCROLL_PIX / bot_max
-
-            df[f'{domain}_appears_right'] = (
+            df[f'{domain}_appears_rh'] = (
                 (df[f'{domain}_appears']) &
                 (df.norm_left > kp_line)
             )
 
-            df[f'{domain}_appears_left'] = (
+            df[f'{domain}_appears_lh'] = (
                 (df[f'{domain}_appears']) &
                 (df.norm_left <= kp_line)
             )
 
-            df[f'{domain}_appears_noscroll'] = (
-                (df[f'{domain}_appears']) &
-                (df.norm_top < noscroll_line)
-            )
+            for name, line in desktop_lines.items():
+                noscroll_line = line / bot_max
 
-            df[f'{domain}_appears_noscrollleft'] = (
-                (df[f'{domain}_appears_left']) &
-                (df.norm_top < noscroll_line) &
-            )
+                df[f'{domain}_appears_{name}'] = (
+                    (df[f'{domain}_appears']) &
+                    (df.norm_top < noscroll_line)
+                )
 
-        # df[f'{domain}_appears_rightnoscroll'] = (
-        #     (df[f'{domain}_appears_right']) &
-        #     (df.norm_top > noscroll_line)
-        # )
-    
+                df[f'{domain}_appears_lh_{name}'] = (
+                    (df[f'{domain}_appears_lh']) &
+                    (df.norm_top < noscroll_line)
+                )
     return df
-
-#%%
-# Display parameters
-full_width = 8
-KP_PIX = 780
-IPHONE_SCROLL_PIX = 635
-MACBOOK_SCROLL_PIX = 789
-BORDER_PIX = 1440
 
 
 #%%
@@ -141,9 +171,6 @@ for device in devices:
 
 
 #%%
-from collections import defaultdict
-
-infinite_defaultdict = lambda: defaultdict(infinite_defaultdict)
 dfs = infinite_defaultdict()
 # device, search_engine, queries
 
@@ -216,7 +243,7 @@ err_queries
 # let's see which queries we're missing and write a new file to scrape them
 cmds = []
 # manual increment
-itera = 5
+itera = 6
 for config in configs:
     device = config['device']
     search_engine = config['search_engine']
@@ -265,12 +292,16 @@ pd.concat(for_concat_list)['domain'].value_counts()[:15]
 
 #%%
 # create the coordinate visualization
-DO_COORDS = False
+DO_COORDS = True
 if DO_COORDS:
     for config in configs:
         device = config['device']
         search_engine = config['search_engine']
         queries = config['queries']
+        if search_engine != 'google':
+            continue
+        if queries != 'top':
+            continue
 
         print(device, search_engine, queries)
         df = dfs[device][search_engine][queries]
@@ -299,22 +330,22 @@ if DO_COORDS:
             for i_row, row in subdf.iterrows():
                 if row.width == 0 or row.height == 0:
                     continue
-                x = row['norm_left']
-                y = row['norm_bottom']
-                width = row['norm_width']
-                height = row['norm_height']
-                # x = row['left']
-                # y = row['bottom']
-                # width = row['width']
-                # height = row['height']
+                # x = row['norm_left']
+                # y = row['norm_bottom']
+                # width = row['norm_width']
+                # height = row['norm_height']
+                x = row['left']
+                y = row['bottom']
+                width = row['width']
+                height = row['height']
                 domain = row['domain']
 
                 if row['wikipedia_appears']:
                     add_last.append([domain, (x,y,), width, height])
                 else:
-                    if row['platform_ugc']:
-                        color = 'b'
-                    elif 'google' in domain or 'bing' in domain or 'duckduckgo' in domain:
+                    # if row['platform_ugc']:
+                    #     color = 'b'
+                    if 'google' in domain or 'bing' in domain or 'duckduckgo' in domain:
                         color = 'lightgray'
                     else:
                         color = 'grey'
@@ -327,17 +358,19 @@ if DO_COORDS:
                 rect = matplotlib.patches.Rectangle(coords,width,height,linewidth=2,edgecolor=color,facecolor='none')
                 ax.add_patch(rect)
 
-            kp_line = KP_PIX / right_max
+            # kp line = lefthand width border.
+            kp_line = LH_W
             if device == 'mobile':
-                scroll_line = IPHONE_SCROLL_PIX / bot_max
+                scroll_line = mobile_lines['noscroll_mg']
             else:
-                scroll_line = MACBOOK_SCROLL_PIX / bot_max
-            border_line = BORDER_PIX / right_max
+                scroll_line = desktop_lines['noscroll_mg']
+            #scroll_line /= bot_max
             plt.axvline(kp_line, color='r', linestyle='-')
-            plt.axvline(border_line, color='k', linestyle='-')
+
+            #border_line = BORDER_PIX / right_max
+            #plt.axvline(border_line, color='k', linestyle='-')
             plt.axhline(scroll_line, color='k', linestyle='-')
 
-            #print(full_width, full_width * ratio)
             plt.savefig(f'reports/overlays/{k}_{query}.png')
             if query == 'nba':
                 plt.savefig(f'reports/{k}_{query}.png')
@@ -351,7 +384,6 @@ if DO_COORDS:
                     overlay_img = Image.open(f'reports/overlays/{k}_{query}.png')
                     small_w, small_h = overlay_img.size
                 except FileNotFoundError: 
-                    # can happen b/c 
                     continue
 
                 h_percent = (big_h/float(small_h))
@@ -370,7 +402,7 @@ if DO_COORDS:
                 new_im.save(f'reports/samples/concat_{k}_{query}.png')
 
 
-    #%%
+#%%
 # toss results in here for easy dataframe creation
 row_dicts = []
 for config in configs:
@@ -383,48 +415,30 @@ for config in configs:
     df = dfs[device][search_engine][queries]
     if type(df) == defaultdict:
         continue
-    # roundto = -1
-    # df['grid_right'] = np.round(df['right'], roundto)
-    # df['grid_bottom'] = np.round(df['bottom'], roundto)
-    # df['grid_width'] = np.round(df['width'], roundto)
-    # df['grid_height'] = np.round(df['height'], roundto)
 
-    # gridded = df[(df.wikipedia_appears == True) & (df.width!=0)].groupby(['grid_right', 'grid_bottom']).wikipedia_appears.sum().unstack(level=0).fillna(0)
+    inc_rate = df.groupby('query').wikipedia_appears.agg(any).mean()
+    rh_inc_rate = df.groupby('query').wikipedia_appears_rh.agg(any).mean()
+    lh_inc_rate = df.groupby('query').wikipedia_appears_lh.agg(any).mean()
 
-    # heatmap_points = np.zeros((101, 101))
 
-    # right_max = df['right'].max()
-    # bot_max = df['bottom'].max()
-
-    # for ix in range(0, 11):
-    #     x = np.round(ix / 10 * right_max, roundto)
-    #     for iy in range(0, 11):
-    #         y = np.round(iy / 100 * bot_max, roundto)
-    #         try:
-    #             heatmap_points[iy, ix] = gridded.loc[y, x]
-    #         except KeyError:
-    #             heatmap_points[iy, ix] = 0
-
-    # print(heatmap_points)
-    # hfig, ax = plt.subplots(1, 1)
-    # hmap = sns.heatmap(heatmap_points, ax=ax)
-    # hfig.savefig(f'reports/{k}_heatmap.png')
-    #print(df.groupby('query').wikipedia_appears.agg(any))
-
-    inc_rate = df.groupby('query').wikipedia_appears.agg(any).mean()    
+    if device == 'mobile':
+        d = mobile_lines
+    else:
+        d = desktop_lines
     matches = set(df[df.wikipedia_appears == True]['query'])
-    kp_inc_rate = df.groupby('query').wikipedia_appears_right.agg(any).mean()
-    noscroll_inc_rate = df.groupby('query').wikipedia_appears_noscroll.agg(any).mean()
 
     row_dict = {
         'queries': queries,
         'search_engine': search_engine,
         'device': device,
         'inc_rate': inc_rate,
-        'kp_inc_rate': kp_inc_rate,
-        'noscroll_inc_rate': noscroll_inc_rate,
+        'rh_inc_rate': rh_inc_rate,
+        'lh_inc_rate': lh_inc_rate,
         'matches': matches
     }
+    for name in d.keys():
+        row_dict[f'{name}_inc_rate'] = df.groupby('query')[f'wikipedia_appears_{name}'].agg(any).mean()
+        row_dict[f'lh_{name}_inc_rate'] = df.groupby('query')[f'wikipedia_appears_lh_{name}'].agg(any).mean()
     for domain in [
         'twitter', 'youtube',
         'facebook',
@@ -438,91 +452,157 @@ results_df = pd.DataFrame(row_dicts)
 results_df
 
 # %%
-FP = 'Full-page incidence rate'
-RH = 'Right-hand incidence rate'
-AF = 'Above-the-fold incidence rate'
-renamed = results_df[['device', 'search_engine', 'queries', 'inc_rate', 'kp_inc_rate', 'noscroll_inc_rate', 'youtube_inc_rate', 'twitter_inc_rate',]]
+FP = 'Full-page incidence'
+RH = 'Right-hand incidence'
+LH = 'Left-hand incidence'
+AF_MG = 'Above-the-fold incidence'
+AF_pretty = 'Above-the-fold incidence (lower bound - upper bound)'
+
+LH_AF_pretty = 'Left-hand above-the-fold incidence (lower bound - upper bound)'
+LH_AF_LB = 'Left-hand above-the-fold incidence (lower bound)' 
+LH_AF_MG = 'Left-hand above-the-fold incidence'
+LH_AF_UB = 'Left-hand above-the-fold incidence (upper bound)' 
+
+AF_LB = 'Above-the-fold incidence (lower bound)'
+AF_UB = 'Above-the-fold incidence (upper bound)'
+
+
+cols = [
+    'device', 'search_engine', 'queries', 'inc_rate', 'rh_inc_rate',
+    'lh_inc_rate',
+]
+for name in mobile_lines.keys():
+    cols += [f'{name}_inc_rate', f'lh_{name}_inc_rate']
+print(cols)
+
+renamed = results_df[cols]
 renamed.rename(columns={
     'device': 'Device', 'search_engine': 'Search Engine',
-    'queries': 'Queries', 'inc_rate': FP,
-    'kp_inc_rate': RH,
-    'noscroll_inc_rate': AF,
+    'queries': 'Query Category', 'inc_rate': FP,
+    'rh_inc_rate': RH,
+    'lh_inc_rate': LH,
+    'lh_noscroll_lb_inc_rate': LH_AF_LB,
+    'lh_noscroll_mg_inc_rate': LH_AF_MG,
+    'lh_noscroll_ub_inc_rate': LH_AF_UB,
+    'noscroll_lb_inc_rate': AF_LB,
+    'noscroll_mg_inc_rate': AF_MG,
+    'noscroll_ub_inc_rate': AF_UB,
     'youtube_inc_rate': 'Youtube incidence rate',
     'twitter_inc_rate': 'Twitter incidence rate',
 }, inplace=True)
+
+def pretty_bounds(row):
+    mg = row[AF_MG]
+    lb = row[AF_LB]
+    ub = row[AF_UB]
+    return f'{mg:.2f} ({lb:.2f} - {ub:.2f})'
+
+def pretty_bounds_lh(row):
+    mg = row[LH_AF_MG]
+    lb = row[LH_AF_LB]
+    ub = row[LH_AF_UB]
+    return f'{mg:.2f} ({lb:.2f} - {ub:.2f})'
+
+renamed[AF_pretty] = renamed.apply(pretty_bounds, axis=1)
+renamed[LH_AF_pretty] = renamed.apply(pretty_bounds_lh, axis=1)
+
 renamed.replace(to_replace={
     'top': 'common',
     'med': 'medical',
     'trend': 'trending',
 }, inplace=True)
-renamed.to_csv('reports/wikipedia.csv', float_format="%.2f", index=False)
 renamed
 
-# #%%
-# baseline_df = results_df[['device', 'search_engine', 'queries', 'twitter_inc_rate', 'youtube_inc_rate', 'facebook_inc_rate']]
-# baseline_df.rename(columns={
-#     'device': 'Device', 'search_engine': 'Search Engine',
-#     'queries': 'Queries'
-# }, inplace=True)
-# baseline_df.to_csv('reports/other_domains.csv', float_format="%.2f", index=False)
+renamed[[
+    'Device', 'Search Engine', 'Query Category',
+    FP, RH, LH, AF_pretty, LH_AF_pretty
+]].to_csv('reports/main.csv', float_format="%.2f", index=False)
+
+#%%
+renamed
+
+#%%
+baseline_df = results_df[['device', 'search_engine', 'queries', 'twitter_inc_rate', 'youtube_inc_rate', 'facebook_inc_rate']]
+baseline_df.rename(columns={
+    'device': 'Device', 'search_engine': 'Search Engine',
+    'queries': 'Queries'
+}, inplace=True)
+baseline_df.to_csv('reports/other_domains.csv', float_format="%.2f", index=False)
 
 
 
 #%%
-melted = renamed.melt(id_vars=['Device', 'Search Engine', 'Queries'])
+melted = renamed.melt(id_vars=['Device', 'Search Engine', 'Query Category'])
 melted.rename(columns={
     'variable': 'y-axis',
     'value': 'Incidence rate',
 }, inplace=True)
 sns.set()
 g = sns.catplot(
-    x="Queries", y='Incidence rate',
+    x="Query Category", y='Incidence rate',
     hue="Search Engine", col="Device", row='y-axis',
     palette=['g', 'b', 'y'],
     order=['common', 'trending', 'medical'],
     #row_order=[FP, AF, RH],
     data=melted[melted['y-axis'] == FP], kind="bar",
-    height=4, aspect=1.5, ci=None,
+    height=3, aspect=1.5, ci=None,
     sharex=False,
 )
 plt.savefig('reports/FP_catplot.png', dpi=300)
-    
+
+#%%
+# lh vs rh
+g = sns.catplot(
+    x="Query Category", y='Incidence rate',
+    hue="Search Engine", col='y-axis',
+    col_order=[LH, RH],
+    palette=['g', 'b', 'y'],
+    order=['common', 'trending', 'medical'],
+    data=melted[
+        ((melted['y-axis'] == LH) | (melted['y-axis'] == RH))
+        & (melted['Device'] == 'desktop')],
+    kind="bar",
+    height=3, aspect=1.5, ci=None,
+    sharex=False,
+)
+plt.savefig('reports/LHRH_catplot.png', dpi=300)
+#%%
+g = sns.catplot(
+    x="Query Category", y='Incidence rate',
+    hue="Search Engine", col="Device", row='y-axis',
+    palette=['g', 'b', 'y'],
+    order=['common', 'trending', 'medical'],
+    #row_order=[FP, AF, RH],
+    data=melted[melted['y-axis'] == AF_MG], kind="bar",
+    height=3, aspect=1.5, ci=None,
+    sharex=False,
+)
+plt.savefig('reports/AF_catplot.png', dpi=300)
+
 #%%
 g = sns.catplot(
     x="Queries", y='Incidence rate',
     hue="Search Engine", col="Device", row='y-axis',
     palette=['g', 'b', 'y'],
     order=['common', 'trending', 'medical'],
-    #row_order=[FP, AF, RH],
-    data=melted[melted['y-axis'] == AF], kind="bar",
-    height=4, aspect=1.5, ci=None,
+    data=melted[melted['y-axis'] == LH_AF_MG], kind="bar",
+    height=2, aspect=1, ci=None,
     sharex=False,
 )
-plt.savefig('reports/FP_catplot.png', dpi=300)
-
-#%%
-g = sns.catplot(
-    x="Search Engine", y="Above-the-fold incidence rate",
-    hue="Device", col="Queries",
-    data=tmp, kind="bar",
-    height=4, ci=None)
+plt.savefig('reports/LH_AF_catplot.png', dpi=300)
 
 
-# %%
-for _, row in results_df.iterrows():
-    print(row[['device', 'queries', 'search_engine', 'inc_rate']])
-    print(row['matches'])
 #results_df[['device', 'queries', 'search_engine', 'inc_rate', 'matches']]
 
 
 # %%
-results_df[['device', 'queries', 'search_engine', 'inc_rate', 'kp_inc_rate', 'noscroll_inc_rate']][
-    (results_df.search_engine == 'duckduckgo') & (results_df.queries == 'med')
-]
-
-
-# %%
+# differences between search engines
 results_df.groupby(['device', 'queries']).agg(lambda x: max(x) - min(x))['inc_rate']
+
+
+#%%
+# differences between devices
+results_df.groupby(['search_engine', 'queries']).agg(lambda x: max(x) - min(x))['inc_rate']
 
 #%%
 # diff between FP and AF
@@ -551,7 +631,6 @@ for k1, v1 in se_to_matches.items():
 # what's in the first but not in the second
 
 #%%
-from pprint import pprint
 pprint(se_minus_se)
 
 
