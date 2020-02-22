@@ -19,7 +19,15 @@ import pandas as pd
 import numpy as np
 
 from PIL import Image
+
 infinite_defaultdict = lambda: defaultdict(infinite_defaultdict)
+def recurse_print_infinitedict(d, prefix=''):
+    if type(d) != defaultdict:
+        print(prefix, d)
+        return
+    for k, v in d.items():
+        print(prefix, k)
+        recurse_print_infinitedict(v, prefix + ' ')
 
 
 
@@ -28,26 +36,33 @@ infinite_defaultdict = lambda: defaultdict(infinite_defaultdict)
 full_width = 8
 LH_W = 780
 
-IPHONE_SE_H = 568
+#IPHONE_SE_H = 568
 IPHONE_6_H = 667
+IPHONE_6plus_H = 736
 IPHONE_X_H = 812
 
 #110% zoom
-MACBOOK13_11_H = 717
-MACBOOK13_FULL_H = 789
-# 90% zoom
-MACBOOK13_9_H = 877
+# MACBOOK13_11_H = 717
+# MACBOOK13_FULL_H = 789
+# # 90% zoom
+# MACBOOK13_9_H = 877
+
+#https://gs.statcounter.com/screen-resolution-stats/desktop/worldwide
+MOST_COMMON = 768
+ZOOM_90 = 853
+ZOOM_110 = 698
+
 
 mobile_lines = {
-    'noscroll_lb': IPHONE_SE_H,
-    'noscroll_mg': IPHONE_6_H,
+    'noscroll_lb': IPHONE_6_H,
+    'noscroll_mg': IPHONE_6plus_H,
     'noscroll_ub': IPHONE_X_H
 }
 
 desktop_lines = {
-    'noscroll_lb': MACBOOK13_11_H,
-    'noscroll_mg': MACBOOK13_FULL_H,
-    'noscroll_ub': MACBOOK13_9_H,
+    'noscroll_lb': ZOOM_110,
+    'noscroll_mg': MOST_COMMON,
+    'noscroll_ub': ZOOM_90,
 }
 
 BORDER_PIX = 1440
@@ -175,7 +190,9 @@ dfs = infinite_defaultdict()
 # device, search_engine, queries
 
 err_queries = infinite_defaultdict()
-query_dfs = infinite_defaultdict()
+query_links = infinite_defaultdict()
+query_counts = infinite_defaultdict()
+
 for config in configs:
     device = config['device']
     search_engine = config['search_engine']
@@ -190,13 +207,7 @@ for config in configs:
         with open(f'{folder}/results.json', 'r', encoding='utf8') as f:
             d = json.load(f)
     except FileNotFoundError:
-        print('  ...Skipping')
-        print(f'  {folder}/results.json')
-        continue
-
-    # images = glob.glob(f'{folder}/*.png')
-    # print('  # images', len(images))
-    all_links = []
+        d = {}
         
     n_queries = len(d.keys())
     print('  # queries collected:', n_queries)
@@ -209,52 +220,55 @@ for config in configs:
             for link in links:
                 #print(link)
                 link['query'] = query
-            all_links += links
-            query_dfs[device][search_engine][queries][query] = pd.DataFrame(links)
+            query_links[device][search_engine][queries][query] = links
         except KeyError:
-            err_queries[device][search_engine][queries][search_engine][query] = d[query]
+            err_queries[device][search_engine][queries][query] = d[query]
             num_errs += 1
-    print('# errs,', num_errs)
-    for itera in [1,2,3,4,5]:
+    print('  # errs,', num_errs)
+    for itera in [1, 2, 3, 4, 5, 6, 7]:
         try:
             err_folder = f'scraper_output/{device}/{search_engine}/errs{itera}_{device}_{search_engine}_{queries}'
             with open(f'{err_folder}/results.json', 'r', encoding='utf8') as f:
                 err_d = json.load(f)
-            print('Loaded errfile')
+            #print('  Loaded errfile, Will take precedence over existing links for a given query')
             for query in err_d.keys():
-                links = err_d[query]['1_xy']
-                for link in links:
-                    link['query'] = query
-                all_links += links
-                query_dfs[device][search_engine][queries][query] = pd.DataFrame(links)
-
-            print(f'success for itera {itera}!')
-            print(len(err_d.keys()))
+                try:
+                    links = err_d[query]['1_xy']
+                    for link in links:
+                        link['query'] = query
+                    # if query in query_links[device][search_engine][queries]:
+                    #     print(f'OVERWRITE: {device} {search_engine} {queries} {query}')
+                        # we already have this query?
+                    query_links[device][search_engine][queries][query] = links
+                except KeyError:
+                    print('Key error in errfile')
+            print(f'  success for itera {itera}!', len(err_d.keys()))
         except Exception as e:
-            pass
+            err_d = {}
 
+    all_links = []
+    for query, links in query_links[device][search_engine][queries].items():
+        all_links += links
+    query_counts[device][search_engine][queries] = len(query_links[device][search_engine][queries])
     dfs[device][search_engine][queries] = norm_df(pd.DataFrame(all_links), device == 'mobile')
-    print('  # errs', len(err_queries[search_engine]))
 
 #%%
-err_queries
-
+recurse_print_infinitedict(query_counts)
 #%%
 # let's see which queries we're missing and write a new file to scrape them
 cmds = []
 # manual increment
-itera = 6
+itera = 8
 for config in configs:
     device = config['device']
     search_engine = config['search_engine']
     queries = config['queries']
-    cur_queries = list(query_dfs[device][search_engine][queries].keys())
+    cur_queries = list(query_links[device][search_engine][queries].keys())
 
     with open(f'search_queries/prepped/{queries}.txt', 'r', encoding='utf8') as f:
         lines = f.read().splitlines()
     print(device, search_engine, queries)
-    #print(set(lines))
-    #print(set(cur_queries))
+
     missing = set(lines) - set(cur_queries)
     print(  'Missing')
     print(missing)
@@ -292,16 +306,12 @@ pd.concat(for_concat_list)['domain'].value_counts()[:15]
 
 #%%
 # create the coordinate visualization
-DO_COORDS = True
+DO_COORDS = False
 if DO_COORDS:
     for config in configs:
         device = config['device']
         search_engine = config['search_engine']
         queries = config['queries']
-        if search_engine != 'google':
-            continue
-        if queries != 'top':
-            continue
 
         print(device, search_engine, queries)
         df = dfs[device][search_engine][queries]
@@ -312,7 +322,7 @@ if DO_COORDS:
         ratio = bot_max / right_max
         k = f'{device}_{search_engine}_{queries}'
 
-        cur_queries = list(query_dfs[device][search_engine][queries].keys())
+        cur_queries = list(query_links[device][search_engine][queries].keys())
         np.random.seed(0)
         chosen_ones = np.random.choice(cur_queries, 10, replace=False)
         with open(f'reports/samples/{k}.txt', 'w', encoding='utf8') as f:
@@ -451,6 +461,9 @@ for config in configs:
 results_df = pd.DataFrame(row_dicts)
 results_df
 
+#%%
+results_df[results_df['queries'] == 'med']
+
 # %%
 FP = 'Full-page incidence'
 RH = 'Right-hand incidence'
@@ -519,13 +532,27 @@ renamed[[
 ]].to_csv('reports/main.csv', float_format="%.2f", index=False)
 
 #%%
+renamed[
+    renamed.Device == 'desktop'
+][[
+    'Search Engine', 'Query Category',
+    FP,  LH, RH, AF_pretty, LH_AF_pretty
+]].to_csv('reports/desktop.csv', float_format="%.2f", index=False)
+renamed[
+    renamed.Device == 'mobile'
+][[
+    'Search Engine', 'Query Category',
+    FP, AF_pretty
+]].to_csv('reports/mobile.csv', float_format="%.2f", index=False)
+
+#%%
 renamed
 
 #%%
 baseline_df = results_df[['device', 'search_engine', 'queries', 'twitter_inc_rate', 'youtube_inc_rate', 'facebook_inc_rate']]
 baseline_df.rename(columns={
     'device': 'Device', 'search_engine': 'Search Engine',
-    'queries': 'Queries'
+    'queries': 'Query Category'
 }, inplace=True)
 baseline_df.to_csv('reports/other_domains.csv', float_format="%.2f", index=False)
 
@@ -581,12 +608,12 @@ plt.savefig('reports/AF_catplot.png', dpi=300)
 
 #%%
 g = sns.catplot(
-    x="Queries", y='Incidence rate',
+    x="Query Category", y='Incidence rate',
     hue="Search Engine", col="Device", row='y-axis',
     palette=['g', 'b', 'y'],
     order=['common', 'trending', 'medical'],
     data=melted[melted['y-axis'] == LH_AF_MG], kind="bar",
-    height=2, aspect=1, ci=None,
+    height=2.5, aspect=1.5, ci=None,
     sharex=False,
 )
 plt.savefig('reports/LH_AF_catplot.png', dpi=300)
@@ -599,7 +626,6 @@ plt.savefig('reports/LH_AF_catplot.png', dpi=300)
 # differences between search engines
 results_df.groupby(['device', 'queries']).agg(lambda x: max(x) - min(x))['inc_rate']
 
-
 #%%
 # differences between devices
 results_df.groupby(['search_engine', 'queries']).agg(lambda x: max(x) - min(x))['inc_rate']
@@ -607,14 +633,8 @@ results_df.groupby(['search_engine', 'queries']).agg(lambda x: max(x) - min(x))[
 #%%
 # diff between FP and AF
 melted[
-    (melted['y-axis'] == FP) | (melted['y-axis'] == AF)
-].groupby(['Device', 'Queries', 'Search Engine']).agg(lambda x: max(x) - min(x))
-
-# which DDG cases have Right-hand but no AF?
-# Pairwise differences
-# rename top to common
-# rename trend to trending
-# rename med to medical
+    (melted['y-axis'] == FP) | (melted['y-axis'] == AF_MG)
+].groupby(['Device', 'Query Category', 'Search Engine']).agg(lambda x: max(x) - min(x))
 
 # %%
 se_minus_se = {}
