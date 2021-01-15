@@ -12,3 +12,13 @@ For additional work on the topic of spatial analysis of SERP data, I am working 
 LinkCoordMin:
 
 https://github.com/nickmvincent/LinkCoordMin
+
+
+# Raw data
+The raw data (.json files, .mhtml files and .png screenshot files) is quite large: about 6 GB compressed. At the moment, you can download a zipped version via Google drive here:
+https://drive.google.com/file/d/1PfgqqHqnf-6WjR3K6nv_CtrN3Ya3aftv/view?usp=sharing
+
+Please email the author with questions or if you're interested in accessing a specific subset of data (or collecting new data).
+
+In general, for future analyses, we recommend using the newer LinkCoordMin scaper (above) to collect new data.
+ 
